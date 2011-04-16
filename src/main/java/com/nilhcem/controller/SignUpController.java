@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 import com.nilhcem.business.UserBo;
-import com.nilhcem.form.SignUp;
+import com.nilhcem.form.SignUpForm;
 import com.nilhcem.validator.SignUpValidator;
 
 /**
@@ -29,18 +29,18 @@ public class SignUpController {
 
 	/**
 	 * Register a user who has just signed up.
-	 * @param user
+	 * @param signUpForm
 	 * @param result
 	 * @param status
 	 * @return a new view (SignUpCompleted)
 	 */
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
-	public ModelAndView submitSignUpPage(@ModelAttribute("signupForm") SignUp user, BindingResult result, SessionStatus status) {
-		signUpValidator.validate(user, result);
+	public ModelAndView submitSignUpPage(@ModelAttribute("signupform") SignUpForm signUpForm, BindingResult result, SessionStatus status) {
+		signUpValidator.validate(signUpForm, result);
 		if (result.hasErrors())
 			return new ModelAndView("SignUp");
 
-		userBo.signUpUser(user);
+		userBo.signUpUser(signUpForm.getUser());
 		status.setComplete();
 		return new ModelAndView("redirectWithoutModel:signup-completed");
 	}
@@ -52,8 +52,8 @@ public class SignUpController {
 	 */
 	@RequestMapping(value = "/signup", method = RequestMethod.GET)
 	public String initSignUpPage(ModelMap model) {
-		SignUp user = new SignUp();
-		model.addAttribute("signupForm", user);
+		SignUpForm signUpForm = new SignUpForm();
+		model.addAttribute("signupform", signUpForm);
 		return "SignUp";
 	}
 

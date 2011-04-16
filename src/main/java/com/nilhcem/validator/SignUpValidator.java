@@ -3,7 +3,7 @@ package com.nilhcem.validator;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
-import com.nilhcem.form.SignUp;
+import com.nilhcem.form.SignUpForm;
 
 /**
  * Validate SignUp Form using Spring MVC Validator.
@@ -17,7 +17,7 @@ public class SignUpValidator implements Validator {
 	 */
 	@Override
 	public boolean supports(Class<?> clazz) {
-		return SignUp.class.isAssignableFrom(clazz);
+		return SignUpForm.class.isAssignableFrom(clazz);
 	}
 
 	/**
@@ -27,11 +27,11 @@ public class SignUpValidator implements Validator {
 	 */
 	@Override
 	public void validate(Object target, Errors errors) {
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "email", "Email should not be empty");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "password", "Password should not be empty");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "user.email", "email", "Email should not be empty");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "user.password", "password", "Password should not be empty");
 
-		SignUp user = (SignUp)target;
-		if (!user.getPassword().equals(user.getPasswordConfirmation()))
-			errors.rejectValue("password", "password", "Passwords do not match");
+		SignUpForm signUpForm = (SignUpForm)target;
+		if (!signUpForm.getUser().getPassword().equals(signUpForm.getPasswordConfirmation()))
+			errors.rejectValue("user.password", "password", "Passwords do not match");
 	}
 }

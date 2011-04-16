@@ -30,17 +30,15 @@ public class UserBo {
 	 */
 	@WithTransaction
 	public void signUpUser(User user) {
-		User u = new User();
 		try {
-			//TODO: Dirty but temporary
-			u.setEmail(user.getEmail());
-			u.setPassword(md5Hasher.toMd5(user.getPassword()));
-			u.setEnabled(true);
+			user.setPassword(md5Hasher.toMd5(user.getPassword()));
+			user.setEnabled(true);
+			//TODO: Get and Set Authorities
 		} catch (Exception e) {
 			logger.error("Can't sign password in Md5");
 			logger.error(e.getStackTrace().toString());
 		}
-		userDao.save(u);
+		userDao.save(user);
 	}
 
 	/**
