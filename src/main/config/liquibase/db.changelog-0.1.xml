@@ -37,20 +37,22 @@
 		<createSequence sequenceName="rights_right_id_seq" />
 	</changeSet>
 
-    <changeSet id="0.1.3" author="nilhcem" runAlways="false">
-      <comment>Insert data into "rights"</comment>
-      <sql>INSERT INTO rights(right_id, name) VALUES (nextval('rights_right_id_seq'), 'RIGHT_SAYHELLO');</sql>
-      <sql>INSERT INTO rights(right_id, name) VALUES (nextval('rights_right_id_seq'), 'RIGHT_ADMIN');</sql>
-    </changeSet>
+	<changeSet id="0.1.3" author="nilhcem" runAlways="false">
+		<comment>Insert data into "rights"</comment>
+		<sql>INSERT INTO rights(right_id, name) VALUES(nextval('rights_right_id_seq'), 'RIGHT_USER');</sql>
+		<sql>INSERT INTO rights(right_id, name) VALUES(nextval('rights_right_id_seq'), 'RIGHT_ADMIN');</sql>
+	</changeSet>
 
 	<changeSet id="0.1.4" author="nilhcem" runAlways="false">
 		<comment>Create table "users_rights"</comment>
 		<createTable tableName="users_rights">
 			<column name="user_id" type="bigint">
-				<constraints primaryKey="true" nullable="false" foreignKeyName="users_rights_user_id_fk" references="users(user_id)" />
+				<constraints primaryKey="true" nullable="false"
+					foreignKeyName="users_rights_user_id_fk" references="users(user_id)" />
 			</column>
 			<column name="right_id" type="bigint">
-				<constraints primaryKey="true" nullable="false" foreignKeyName="users_rights_right_id_fk" references="rights(right_id)" />
+				<constraints primaryKey="true" nullable="false"
+					foreignKeyName="users_rights_right_id_fk" references="rights(right_id)" />
 			</column>
 		</createTable>
 	</changeSet>

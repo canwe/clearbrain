@@ -1,43 +1,77 @@
 package com.nilhcem.controller;
 
 import static org.junit.Assert.*;
-import java.util.HashMap;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.MapBindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.bind.support.SimpleSessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 import com.nilhcem.form.SignUpForm;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:/META-INF/spring/applicationContext.xml", "classpath:/META-INF/spring/springmvc/mvc-dispatcher-servlet.xml"})
+@ContextConfiguration(locations = {"classpath:/META-INF/spring/applicationContext.xml", "classpath:/META-INF/spring/mvc/mvc-dispatcher-servlet.xml"})
 public class SignUpControllerTest {
 	@Autowired
 	private SignUpController controller;
-
-	@Test
-	public void submitSignUpPageWithWrongObjectShouldRedirectToInitialForm() {
-		SignUpForm signupForm = new SignUpForm();
-		signupForm.getUser().setEmail("");
-		signupForm.getUser().setPassword("");
-
-		@SuppressWarnings("rawtypes")
-		BindingResult br = new MapBindingResult(new HashMap(), "objectName");
-
-		ModelAndView modelAndView = controller.submitSignUpPage(signupForm, br, null);
-		assertEquals(modelAndView.getViewName(), "SignUp");
-	    assertNotNull(modelAndView.getModel());
-	}
 
 	@Test
 	public void signUpPageShouldBeCorrectlyInitialized() {
 		ModelMap model = new ModelMap();
 		assertEquals(controller.initSignUpPage(model), "SignUp");
 		assertTrue(model.containsAttribute("signupform"));
+	}
+
+	private ModelAndView getModelAndViewSignUpPage(String email, String password, String passwordConfirmation) {
+        MockHttpServletRequest request = new MockHttpServletRequest("post", "/signup");
+        request.setParameter("user.email", email);
+        request.setParameter("user.password", password);
+        request.setParameter("passwordConfirmation", passwordConfirmation);
+
+        SignUpForm signUpForm = new SignUpForm();
+        WebDataBinder binder = new WebDataBinder(signUpForm, "signupform");
+        binder.bind(new MutablePropertyValues(request.getParameterMap()));
+        SessionStatus status = new SimpleSessionStatus();
+
+        return controller.submitSignUpPage(signUpForm, binder.getBindingResult(), status);
+	}
+
+	@Test
+	public void submitSignUpPageWithBadEmailShouldRedirectToInitialForm() {
+		ModelAndView modelAndView = getModelAndViewSignUpPage("", "myP#ssW0Rd", "myP#ssW0Rd");
+		assertEquals(modelAndView.getViewName(), "SignUp");
+	    assertNotNull(modelAndView.getModel());
+	}
+
+	@Test
+	public void submitSignUpPageWithEmptyPwdShouldRedirectToInitialForm() {
+		ModelAndView modelAndView = getModelAndViewSignUpPage("my.email@company.com", "", "");
+		assertEquals(modelAndView.getViewName(), "SignUp");
+	    assertNotNull(modelAndView.getModel());
+	}
+
+	@Test
+	public void submitSignUpPageWithBadPwdConfirmationShouldRedirectToInitialForm() {
+		ModelAndView modelAndView = getModelAndViewSignUpPage("my.email@company.com", "myP#ssW0Rd", "notTheSame");
+		assertEquals(modelAndView.getViewName(), "SignUp");
+	    assertNotNull(modelAndView.getModel());
+	}
+
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void submitSignUpPageWithValidObjectShouldRedirectToCompletedView() {
+		ModelAndView modelAndView = getModelAndViewSignUpPage("my.email@company.com", "myP#ssW0Rd", "myP#ssW0Rd");
+		assertEquals(modelAndView.getViewName(), "redirectWithoutModel:signup-completed");
+	    assertNotNull(modelAndView.getModel());
 	}
 
 	@Test

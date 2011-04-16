@@ -3,6 +3,7 @@ package com.nilhcem.business;
 import com.nilhcem.model.User;
 import com.nilhcem.utils.MD5Hasher;
 import com.nilhcem.core.hibernate.WithTransaction;
+import com.nilhcem.dao.RightDao;
 import com.nilhcem.dao.UserDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,8 @@ public class UserBo {
 	@Autowired
 	private UserDao userDao;
 	@Autowired
+	private RightDao rightDao;
+	@Autowired
 	private MD5Hasher md5Hasher;
 	private Logger logger = LoggerFactory.getLogger(UserBo.class);
 
@@ -33,7 +36,7 @@ public class UserBo {
 		try {
 			user.setPassword(md5Hasher.toMd5(user.getPassword()));
 			user.setEnabled(true);
-			//TODO: Get and Set Authorities
+			user.getRights().add(rightDao.findByName(RightDao.RIGHT_USER));
 		} catch (Exception e) {
 			logger.error("Can't sign password in Md5");
 			logger.error(e.getStackTrace().toString());
