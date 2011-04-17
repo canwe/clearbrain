@@ -1,0 +1,78 @@
+/* header */
+.main {
+	min-height: 100%;
+	min-width: 100%;
+	position: absolute;
+}
+
+#content {
+	margin-bottom: 3.5em; /* same as footer height */
+}
+
+#header {
+	background-color: #142A3D;
+	border-bottom: 1px solid #B3CCD3;
+	color: #D2D1D0;
+	height: 54px;
+	padding: 0px 3px;
+}
+
+#header-logo {
+	color: #FFFFFF;
+	font-size: 3em;
+	font-weight: bold;
+}
+
+#header-logo a, #footer a {
+	color: #FFFFFF;
+	text-decoration: none;
+}
+
+.login-bt-container {
+	padding: 32px 2px 0px 0px;
+	text-align: right;
+}
+
+a.login {
+	background-color: #6689A3;
+	border-radius: 12px 12px 0px 0px;
+	color: #FFFFFF;
+	font-weight: bold;
+	padding: 6px 26px;
+}
+
+#subheader {
+	background-color: #395972;
+	border-bottom: 1px solid black;
+	color: #FFFFFF;
+	font-weight: bold;
+	height: 1.5em;
+	padding: 0px 3px;
+}
+
+#subheader-slogan {
+	font-style: italic;
+	font-weight: normal;
+}
+
+.language-container {
+	padding: 2px 3px;
+}
+
+/* sign up */
+p.createaccount {
+	padding-top: 20px;
+}
+
+/* footer */
+#footer {
+	background-color: #395972;
+	border-top: 1px solid black;
+	bottom: 0;
+	color: #FFFFFF;
+	font-weight: bold;
+	height: 3.5em; /* same as content margin-bottom */
+	min-width: 100%;
+	position: absolute;
+	text-align: center;
+}

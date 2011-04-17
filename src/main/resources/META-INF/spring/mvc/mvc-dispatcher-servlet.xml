@@ -24,9 +24,12 @@
 	<mvc:annotation-driven />
 
 	<!-- Forwards requests to some views -->
-	<mvc:view-controller path="/" view-name="Welcome"/>
+	<mvc:view-controller path="/" view-name="front/welcome"/>
 	<mvc:view-controller path="/access-denied" view-name="AccessDenied"/>
-	<mvc:view-controller path="/login" view-name="Login"/>
-	<mvc:view-controller path="/protected-page" view-name="Protected"/>
+	<mvc:view-controller path="/login" view-name="front/login"/>
 
+	<!-- Exclude folders from being mapped by Spring MVC -->
+	<mvc:resources mapping="/css/**" location="/css/" />
+	<mvc:resources mapping="/images/**" location="/images/" />
+	<mvc:resources mapping="/js/**" location="/js/" />
 </beans>

@@ -14,5 +14,5 @@ Class-Path: antlr-2.7.6.jar aopalliance-1.0.jar asm-3.1.jar aspectjrt-
  ELEASE.jar spring-security-core-3.0.5.RELEASE.jar spring-security-tag
  libs-3.0.5.RELEASE.jar spring-security-web-3.0.5.RELEASE.jar spring-t
  x-3.0.5.RELEASE.jar spring-web-3.0.5.RELEASE.jar spring-webmvc-3.0.5.
- RELEASE.jar
+ RELEASE.jar standard-1.1.2.jar
 

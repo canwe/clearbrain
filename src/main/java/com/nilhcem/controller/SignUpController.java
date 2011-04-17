@@ -38,7 +38,7 @@ public class SignUpController {
 	public ModelAndView submitSignUpPage(@ModelAttribute("signupform") SignUpForm signUpForm, BindingResult result, SessionStatus status) {
 		signUpValidator.validate(signUpForm, result);
 		if (result.hasErrors())
-			return new ModelAndView("SignUp");
+			return new ModelAndView("front/signup");
 
 		userBo.signUpUser(signUpForm.getUser());
 		status.setComplete();
@@ -54,7 +54,7 @@ public class SignUpController {
 	public String initSignUpPage(ModelMap model) {
 		SignUpForm signUpForm = new SignUpForm();
 		model.addAttribute("signupform", signUpForm);
-		return "SignUp";
+		return "front/signup";
 	}
 
 	/**
@@ -63,6 +63,6 @@ public class SignUpController {
 	 */
 	@RequestMapping(value = "/signup-completed", method = RequestMethod.GET)
 	public String getSignUpCompletedPage() {
-		return "SignUpCompleted";
+		return "front/signupCompleted";
 	}
 }

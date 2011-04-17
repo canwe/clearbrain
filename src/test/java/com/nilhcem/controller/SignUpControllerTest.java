@@ -26,7 +26,7 @@ public class SignUpControllerTest {
 	@Test
 	public void signUpPageShouldBeCorrectlyInitialized() {
 		ModelMap model = new ModelMap();
-		assertEquals(controller.initSignUpPage(model), "SignUp");
+		assertEquals(controller.initSignUpPage(model), "front/signup");
 		assertTrue(model.containsAttribute("signupform"));
 	}
 
@@ -47,21 +47,21 @@ public class SignUpControllerTest {
 	@Test
 	public void submitSignUpPageWithBadEmailShouldRedirectToInitialForm() {
 		ModelAndView modelAndView = getModelAndViewSignUpPage("", "myP#ssW0Rd", "myP#ssW0Rd");
-		assertEquals(modelAndView.getViewName(), "SignUp");
+		assertEquals(modelAndView.getViewName(), "front/signup");
 	    assertNotNull(modelAndView.getModel());
 	}
 
 	@Test
 	public void submitSignUpPageWithEmptyPwdShouldRedirectToInitialForm() {
 		ModelAndView modelAndView = getModelAndViewSignUpPage("my.email@company.com", "", "");
-		assertEquals(modelAndView.getViewName(), "SignUp");
+		assertEquals(modelAndView.getViewName(), "front/signup");
 	    assertNotNull(modelAndView.getModel());
 	}
 
 	@Test
 	public void submitSignUpPageWithBadPwdConfirmationShouldRedirectToInitialForm() {
 		ModelAndView modelAndView = getModelAndViewSignUpPage("my.email@company.com", "myP#ssW0Rd", "notTheSame");
-		assertEquals(modelAndView.getViewName(), "SignUp");
+		assertEquals(modelAndView.getViewName(), "front/signup");
 	    assertNotNull(modelAndView.getModel());
 	}
 
@@ -76,6 +76,6 @@ public class SignUpControllerTest {
 
 	@Test
 	public void shouldGetCompletedSignUpPage() {
-		assertEquals(controller.getSignUpCompletedPage(), "SignUpCompleted");
+		assertEquals(controller.getSignUpCompletedPage(), "front/signupCompleted");
 	}
 }
