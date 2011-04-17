@@ -40,8 +40,8 @@
 		<property name="defaultEncoding" value="UTF-8" />
 		<property name="basenames">
 			<list>
-				<value>classpath:i18n/front</value> 
-				<value>classpath:i18n/logged</value> 
+				<value>classpath:i18n/front</value>
+				<value>classpath:i18n/logged</value>
 			</list>
 		</property>
 	</bean>
