@@ -27,11 +27,11 @@ public class SignUpValidator implements Validator {
 	 */
 	@Override
 	public void validate(Object target, Errors errors) {
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "user.email", "email", "Email should not be empty");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "user.password", "password", "Password should not be empty");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "user.email", "signup.error.email");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "user.password", "signup.error.password");
 
 		SignUpForm signUpForm = (SignUpForm)target;
 		if (!signUpForm.getUser().getPassword().equals(signUpForm.getPasswordConfirmation()))
-			errors.rejectValue("user.password", "password", "Passwords do not match");
+			errors.rejectValue("passwordConfirmation", "signup.error.passwordConfirmation");
 	}
 }

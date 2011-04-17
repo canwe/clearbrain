@@ -15,21 +15,43 @@
 
 	<!-- Enables auto-scan and components filtering -->
 	<context:component-scan base-package="com.nilhcem">
-	  <context:include-filter type="regex" expression="com.nilhcem.controller.*" />
-	  <context:include-filter type="regex" expression="com.nilhcem.validator.*" />
-	  <context:include-filter type="regex" expression="com.nilhcem.core.spring.RedirectViewResolver" />
+		<context:include-filter type="regex" expression="com.nilhcem.controller.*" />
+		<context:include-filter type="regex" expression="com.nilhcem.validator.*" />
+		<context:include-filter type="regex" expression="com.nilhcem.core.spring.RedirectViewResolver" />
 	</context:component-scan>
 
 	<!-- Configures the @Controller programming model -->
 	<mvc:annotation-driven />
 
 	<!-- Forwards requests to some views -->
-	<mvc:view-controller path="/" view-name="front/welcome"/>
-	<mvc:view-controller path="/access-denied" view-name="AccessDenied"/>
-	<mvc:view-controller path="/login" view-name="front/login"/>
+	<mvc:view-controller path="/" view-name="front/welcome" />
+	<!-- TODO
+	<mvc:view-controller path="/access-denied" view-name="AccessDenied" />
+	<mvc:view-controller path="/login" view-name="front/login" />
+	 -->
 
 	<!-- Exclude folders from being mapped by Spring MVC -->
 	<mvc:resources mapping="/css/**" location="/css/" />
 	<mvc:resources mapping="/images/**" location="/images/" />
 	<mvc:resources mapping="/js/**" location="/js/" />
+
+	<!-- i18n -->
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="defaultEncoding" value="UTF-8" />
+		<property name="basenames">
+			<list>
+				<value>classpath:i18n/front</value> 
+				<value>classpath:i18n/logged</value> 
+			</list>
+		</property>
+	</bean>
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+		<property name="defaultLocale" value="en_US" />
+	</bean>
+	<mvc:interceptors>
+	    <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+	    	<property name="paramName" value="lang" />
+	    </bean>
+	</mvc:interceptors>
+
 </beans>

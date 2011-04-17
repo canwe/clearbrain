@@ -60,6 +60,10 @@ a.login {
 }
 
 /* sign up */
+#signup-container {
+	margin-bottom: 20px;
+}
+
 p.createaccount {
 	padding-top: 20px;
 }

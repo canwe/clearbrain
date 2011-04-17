@@ -26,18 +26,19 @@
 			<div id="header">
 				<div id="header-logo" class="left"><a href="<spring:url value="/" />">S2NDBRN</a></div>
 				<div class="login-bt-container">
- 					<a class="login" href="<spring:url value="/login" htmlEscape="true" />">Log in</a></a>
+ 					<a class="login" href="<spring:url value="/login" htmlEscape="true" />"><spring:message code="header.logIn" /></a>
 				</div>
 			</div>
 			<div id="subheader">
-				<div id="subheader-slogan" class="left">Get organized, improve your productivity!</div>
+				<div id="subheader-slogan" class="left"><spring:message code="header.subtitle" /></div>
 				<div class="right">
+					<spring:message code="header.dateFormat" var="dateFormat" />
 					<c:set var="today" value="<%=new java.util.Date()%>" />
-  					<fmt:formatDate value="${today}" pattern="EEEE, MMMM dd, yyyy" />
+  					<fmt:formatDate value="${today}" pattern="${dateFormat}" />
   				</div>
 			</div>
 				<div class="right language-container">
-					<a href="#"><img src="<spring:url value="/images/lang/en_US.png" htmlEscape="true" />" title="English (United States)" alt="EN" /></a>&nbsp;
-					<a href="#"><img src="<spring:url value="/images/lang/fr_FR.png" htmlEscape="true" />" title="Fran&ccedil;ais (France)" alt="FR" /></a>
+					<a href="?lang=en_US"><img src="<spring:url value="/images/lang/en_US.png" htmlEscape="true" />" title="English (United States)" alt="EN" /></a>&nbsp;
+					<a href="?lang=fr_FR"><img src="<spring:url value="/images/lang/fr_FR.png" htmlEscape="true" />" title="Fran&ccedil;ais (France)" alt="FR" /></a>
 				</div>
 				<div class="container">
