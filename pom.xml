@@ -150,6 +150,15 @@
 		  <version>1.5</version>
 		</dependency>
 
+		<!-- Jax-RS provider for JSON content type, used for Ajax in Spring MVC -->
+		<dependency>
+		  <groupId>org.codehaus.jackson</groupId>
+		  <artifactId>jackson-jaxrs</artifactId>
+		  <version>1.6.4</version>
+		  <type>jar</type>
+		  <scope>compile</scope>
+		</dependency>
+
 		<!-- Tests -->
 		<dependency>
 			<groupId>junit</groupId>

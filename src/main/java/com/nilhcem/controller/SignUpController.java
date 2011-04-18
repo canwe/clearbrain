@@ -7,6 +7,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 import com.nilhcem.business.UserBo;
@@ -64,5 +66,15 @@ public class SignUpController {
 	@RequestMapping(value = "/signup-completed", method = RequestMethod.GET)
 	public String getSignUpCompletedPage() {
 		return "front/signupCompleted";
+	}
+
+	/**
+	 * Check if email is available
+	 * @param email
+	 * @return true if available, false is not available
+	 */
+	@RequestMapping(value = "/signup", method = RequestMethod.POST, params = { "emailToCheck" })
+	public @ResponseBody Boolean checkEmailAvailability(@RequestParam(value = "emailToCheck", required = true) String email) {
+		return (userBo.findByEmail(email) == null);
 	}
 }

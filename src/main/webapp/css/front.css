@@ -59,14 +59,25 @@ a.login {
 	padding: 2px 3px;
 }
 
+
 /* sign up */
 #signup-container {
 	margin-bottom: 20px;
 }
 
+.signup-line-height {
+	height: 3.5em;
+}
+
+#email-availability {
+	padding-top: 1px;
+	display: none;
+}
+
 p.createaccount {
 	padding-top: 20px;
 }
+
 
 /* footer */
 #footer {

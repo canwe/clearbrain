@@ -69,13 +69,24 @@ public class SignUpControllerTest {
 	@Transactional
 	@Rollback(true)
 	public void submitSignUpPageWithValidObjectShouldRedirectToCompletedView() {
-		ModelAndView modelAndView = getModelAndViewSignUpPage("my.email@company.com", "myP#ssW0Rd", "myP#ssW0Rd");
+		String email = "my.email@company.com";
+		ModelAndView modelAndView = getModelAndViewSignUpPage(email, "myP#ssW0Rd", "myP#ssW0Rd");
 		assertEquals(modelAndView.getViewName(), "redirectWithoutModel:signup-completed");
 	    assertNotNull(modelAndView.getModel());
+	    checkEmailAvailabilityShouldReturnFalse(email);
 	}
 
 	@Test
 	public void shouldGetCompletedSignUpPage() {
 		assertEquals(controller.getSignUpCompletedPage(), "front/signupCompleted");
+	}
+
+	@Test
+	public void checkEmailAvailabilityShouldReturnTrue() {
+		assertTrue(controller.checkEmailAvailability("###@###.###")); //I'm sure nobody has taken this email (anyway, it's not possible...)
+	}
+
+	public void checkEmailAvailabilityShouldReturnFalse(String email) {
+		assertFalse(controller.checkEmailAvailability(email));
 	}
 }

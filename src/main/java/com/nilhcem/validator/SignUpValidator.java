@@ -1,8 +1,10 @@
 package com.nilhcem.validator;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
+import com.nilhcem.business.UserBo;
 import com.nilhcem.form.SignUpForm;
 
 /**
@@ -11,6 +13,9 @@ import com.nilhcem.form.SignUpForm;
  * @since 1.0
  */
 public class SignUpValidator implements Validator {
+	@Autowired
+	private UserBo userBo;
+
 	/**
 	 * Only support SignUp class.
 	 * @param clazz The class which should be supported
@@ -30,8 +35,13 @@ public class SignUpValidator implements Validator {
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "user.email", "signup.error.email");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "user.password", "signup.error.password");
 
+		//Check password confirmation
 		SignUpForm signUpForm = (SignUpForm)target;
 		if (!signUpForm.getUser().getPassword().equals(signUpForm.getPasswordConfirmation()))
 			errors.rejectValue("passwordConfirmation", "signup.error.passwordConfirmation");
+
+		//Check email already registered
+		if (userBo.findByEmail(signUpForm.getUser().getEmail()) != null)
+			errors.rejectValue("user.email", "signup.error.emailAlreadyRegistered");
 	}
 }
