@@ -1,5 +1,7 @@
 package com.nilhcem.validator;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
@@ -32,7 +34,6 @@ public class SignUpValidator implements Validator {
 	 */
 	@Override
 	public void validate(Object target, Errors errors) {
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "user.email", "signup.error.email");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "user.password", "signup.error.password");
 
 		//Check password confirmation
@@ -40,8 +41,15 @@ public class SignUpValidator implements Validator {
 		if (!signUpForm.getUser().getPassword().equals(signUpForm.getPasswordConfirmation()))
 			errors.rejectValue("passwordConfirmation", "signup.error.passwordConfirmation");
 
-		//Check email already registered
-		if (userBo.findByEmail(signUpForm.getUser().getEmail()) != null)
-			errors.rejectValue("user.email", "signup.error.emailAlreadyRegistered");
+		//Check if email is valid
+		Pattern pattern = Pattern.compile("\\S+@\\S+");
+		Matcher matcher = pattern.matcher(signUpForm.getUser().getEmail());
+		if (!matcher.find())
+			errors.rejectValue("user.email", "signup.error.emailNotValid");
+		else {
+			//Check email already registered
+			if (userBo.findByEmail(signUpForm.getUser().getEmail()) != null)
+				errors.rejectValue("user.email", "signup.error.emailAlreadyRegistered");
+		}
 	}
 }
