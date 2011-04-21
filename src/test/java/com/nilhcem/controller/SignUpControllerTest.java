@@ -1,6 +1,7 @@
 package com.nilhcem.controller;
 
 import static org.junit.Assert.*;
+import java.util.Map;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.MutablePropertyValues;
@@ -31,38 +32,38 @@ public class SignUpControllerTest {
 	}
 
 	private ModelAndView getModelAndViewSignUpPage(String email, String password, String passwordConfirmation) {
-        MockHttpServletRequest request = new MockHttpServletRequest("post", "/signup");
-        request.setParameter("user.email", email);
-        request.setParameter("user.password", password);
-        request.setParameter("passwordConfirmation", passwordConfirmation);
+		MockHttpServletRequest request = new MockHttpServletRequest("post", "/signup");
+		request.setParameter("user.email", email);
+		request.setParameter("user.password", password);
+		request.setParameter("passwordConfirmation", passwordConfirmation);
 
-        SignUpForm signUpForm = new SignUpForm();
-        WebDataBinder binder = new WebDataBinder(signUpForm, "signupform");
-        binder.bind(new MutablePropertyValues(request.getParameterMap()));
-        SessionStatus status = new SimpleSessionStatus();
+		SignUpForm signUpForm = new SignUpForm();
+		WebDataBinder binder = new WebDataBinder(signUpForm, "signupform");
+		binder.bind(new MutablePropertyValues(request.getParameterMap()));
+		SessionStatus status = new SimpleSessionStatus();
 
-        return controller.submitSignUpPage(signUpForm, binder.getBindingResult(), status);
+		return controller.submitSignUpPage(signUpForm, binder.getBindingResult(), status);
 	}
 
 	@Test
 	public void submitSignUpPageWithBadEmailShouldRedirectToInitialForm() {
 		ModelAndView modelAndView = getModelAndViewSignUpPage("", "myP#ssW0Rd", "myP#ssW0Rd");
 		assertEquals(modelAndView.getViewName(), "front/signup");
-	    assertNotNull(modelAndView.getModel());
+		assertNotNull(modelAndView.getModel());
 	}
 
 	@Test
 	public void submitSignUpPageWithEmptyPwdShouldRedirectToInitialForm() {
 		ModelAndView modelAndView = getModelAndViewSignUpPage("my.email@company.com", "", "");
 		assertEquals(modelAndView.getViewName(), "front/signup");
-	    assertNotNull(modelAndView.getModel());
+		assertNotNull(modelAndView.getModel());
 	}
 
 	@Test
 	public void submitSignUpPageWithBadPwdConfirmationShouldRedirectToInitialForm() {
 		ModelAndView modelAndView = getModelAndViewSignUpPage("my.email@company.com", "myP#ssW0Rd", "notTheSame");
 		assertEquals(modelAndView.getViewName(), "front/signup");
-	    assertNotNull(modelAndView.getModel());
+		assertNotNull(modelAndView.getModel());
 	}
 
 	@Test
@@ -72,8 +73,8 @@ public class SignUpControllerTest {
 		String email = "my.email@company.com";
 		ModelAndView modelAndView = getModelAndViewSignUpPage(email, "myP#ssW0Rd", "myP#ssW0Rd");
 		assertEquals(modelAndView.getViewName(), "redirectWithoutModel:signup-completed");
-	    assertNotNull(modelAndView.getModel());
-	    checkEmailAvailabilityShouldReturnFalse(email);
+		assertNotNull(modelAndView.getModel());
+		checkEmailAvailabilityShouldReturnFalse(email);
 	}
 
 	@Test
@@ -83,10 +84,22 @@ public class SignUpControllerTest {
 
 	@Test
 	public void checkEmailAvailabilityShouldReturnTrue() {
-		assertTrue(controller.checkEmailAvailability("###@###.###")); //I'm sure nobody has taken this email (anyway, it's not possible...)
+		assertTrue(controller.checkEmailAvailability("###@###.###")); //this email should not be taken by anybody
 	}
 
 	public void checkEmailAvailabilityShouldReturnFalse(String email) {
 		assertFalse(controller.checkEmailAvailability(email));
+	}
+
+	@Test
+	public void testJavascriptLocales() throws Exception {
+		String[] keys = {"err.pwd", "err.pwdConf", "err.mailRegist", "err.mail", "ok.mail", "ok.pwd", "ok.pwdConf"};
+
+		MockHttpServletRequest request = new MockHttpServletRequest("get", "/signup");
+		Map<String, String> map = controller.i18nJs(request);
+		assertNotNull(map);
+
+		for (String key : keys)
+			assertNotNull(map.get(key));
 	}
 }

@@ -1,6 +1,11 @@
 package com.nilhcem.controller;
 
+import java.util.LinkedHashMap;
+import java.util.Locale;
+import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -11,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.support.RequestContextUtils;
 import com.nilhcem.business.UserBo;
 import com.nilhcem.form.SignUpForm;
 import com.nilhcem.validator.SignUpValidator;
@@ -28,6 +34,9 @@ public class SignUpController {
 
 	@Autowired
 	private UserBo userBo;
+
+	@Autowired
+	private MessageSource message;
 
 	/**
 	 * Register a user who has just signed up.
@@ -69,12 +78,29 @@ public class SignUpController {
 	}
 
 	/**
-	 * Check if email is available
+	 * Check if email is available.
 	 * @param email
 	 * @return true if available, false is not available
 	 */
 	@RequestMapping(value = "/signup", method = RequestMethod.POST, params = { "emailToCheck" })
 	public @ResponseBody Boolean checkEmailAvailability(@RequestParam(value = "emailToCheck", required = true) String email) {
 		return (userBo.findByEmail(email) == null);
+	}
+
+	/**
+	 * Inject localized strings into Javascript.
+	 * @param request
+	 * @return a map of i18n string for Javascript.
+	 * @throws Exception
+	 */
+	@ModelAttribute("i18nJS")
+	public Map<String, String> i18nJs(HttpServletRequest request) throws Exception {
+		String[] msgs = {"signup.err.pwd", "signup.err.pwdConf", "signup.err.mailRegist", "signup.err.mail", "signup.ok.mail", "signup.ok.pwd", "signup.ok.pwdConf"};
+
+		Map<String, String> i18n = new LinkedHashMap<String, String>();
+		Locale locale = RequestContextUtils.getLocale(request);
+		for (String msg : msgs)
+			i18n.put(msg.replaceFirst("^signup\\.", ""), message.getMessage(msg, null, locale));
+		return i18n;
 	}
 }

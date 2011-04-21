@@ -1,5 +1,6 @@
 /* header */
 .main {
+	background-color: #EDEDED;
 	min-height: 100%;
 	min-width: 100%;
 	position: absolute;
@@ -60,6 +61,20 @@ a.login {
 }
 
 
+/* all */
+.mainBox {
+	border: 1px solid #D0D0D0;
+	background-color: #FFFFFF;
+	padding: 30px 0px;
+}
+
+.successBlock, .errorBlock {
+	display: block;
+	height: 2em;
+	margin-right: 20px;
+	padding-top: 1px;
+}
+
 /* sign up */
 #signup-container {
 	margin-bottom: 20px;
@@ -76,6 +91,10 @@ a.login {
 
 p.createaccount {
 	padding-top: 20px;
+}
+
+.signup-input-size {
+	width: 200px;
 }
 
 

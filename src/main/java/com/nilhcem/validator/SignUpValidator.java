@@ -34,22 +34,22 @@ public class SignUpValidator implements Validator {
 	 */
 	@Override
 	public void validate(Object target, Errors errors) {
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "user.password", "signup.error.password");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "user.password", "signup.err.pwd");
 
 		//Check password confirmation
 		SignUpForm signUpForm = (SignUpForm)target;
 		if (!signUpForm.getUser().getPassword().equals(signUpForm.getPasswordConfirmation()))
-			errors.rejectValue("passwordConfirmation", "signup.error.passwordConfirmation");
+			errors.rejectValue("passwordConfirmation", "signup.err.pwdConf");
 
 		//Check if email is valid
 		Pattern pattern = Pattern.compile("\\S+@\\S+");
 		Matcher matcher = pattern.matcher(signUpForm.getUser().getEmail());
 		if (!matcher.find())
-			errors.rejectValue("user.email", "signup.error.emailNotValid");
+			errors.rejectValue("user.email", "signup.err.mail");
 		else {
 			//Check email already registered
 			if (userBo.findByEmail(signUpForm.getUser().getEmail()) != null)
-				errors.rejectValue("user.email", "signup.error.emailAlreadyRegistered");
+				errors.rejectValue("user.email", "signup.err.mailRegist");
 		}
 	}
 }
