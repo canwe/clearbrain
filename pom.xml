@@ -22,14 +22,6 @@
 			<version>2.5</version>
 			<scope>provided</scope>
 		</dependency>
-		<!-- 
-		<dependency>
-			<groupId>javax.servlet.jsp</groupId>
-			<artifactId>jsp-api</artifactId>
-			<version>2.1</version>
-			<scope>provided</scope>
-		</dependency>
-		-->
 
 		<!-- JSTL -->
 		<dependency>
@@ -242,7 +234,49 @@
 					</execution>
 				</executions>
 			</plugin>
+
+			<!-- Compress JS and CSS -->
+			<plugin>
+			  <groupId>net.alchim31.maven</groupId>
+			  <artifactId>yuicompressor-maven-plugin</artifactId>
+			  <version>1.1</version>
+
+			  <executions>
+			    <execution>
+			      <goals>
+				<goal>compress</goal>
+			      </goals>
+			    </execution>
+			  </executions>
+			  <configuration>
+			    <webappDirectory>
+			      ${project.build.directory}/minimized
+			    </webappDirectory>
+			    <nosuffix>true</nosuffix>
+			    <excludes>
+			      <exclude>**/jquery*.min.js</exclude> <!-- already compressed -->
+			      <exclude>**/link-icons/screen.css</exclude> <!-- yui compressor breaks on this file -->
+			    </excludes>
+			  </configuration>
+			</plugin>
+
+			<!-- Use compressed files from target/minimized to create the war file -->
+			<plugin>
+			  <groupId>org.apache.maven.plugins</groupId>
+			  <artifactId>maven-war-plugin</artifactId>
+			  <version>2.1.1</version>
+			  <configuration>
+			    <webResources>
+			      <resource>
+				<directory>
+				  ${project.build.directory}/minimized
+				</directory>
+				<targetPath>/</targetPath>
+				<filtering>false</filtering>
+			      </resource>
+			    </webResources>
+			  </configuration>
+			</plugin>
 		</plugins>
 	</build>
-
 </project>

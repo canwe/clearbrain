@@ -9,7 +9,6 @@ jQuery.fn.isBlank = function() {
 /* Sign up */
 //Display error or success message in the right of the screen
 function displayRightMsg(id, msg, success) {
-	var img;
 	if (success) {
 		$(id).addClass("success");
 		$(id).addClass("successBlock");
