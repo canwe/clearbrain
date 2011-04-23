@@ -2,7 +2,7 @@
 <br /><br /><br />
 <div class="mainBox span-24 last">
 	<div class="prepend-4 span-20 last">
-		<h2><img src="<spring:url value="/images/tick30px.png" htmlEscape="true" />" alt="" /> <spring:message code="signupcompleted.title" /></h2>
+		<h2><img src="<spring:url value="/images/front/tick-green.png" htmlEscape="true" />" alt="" /> <spring:message code="signupcompleted.title" /></h2>
 		<h3 class="alt"><spring:message code="signupcompleted.subtitle" /></h3>
 		<br />
 		<h4>

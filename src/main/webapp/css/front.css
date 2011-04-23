@@ -15,7 +15,7 @@
 	border-bottom: 1px solid #B3CCD3;
 	color: #D2D1D0;
 	height: 54px;
-	padding: 0px 3px;
+	padding: 0 3px;
 }
 
 #header-logo {
@@ -30,13 +30,13 @@
 }
 
 .login-bt-container {
-	padding: 32px 2px 0px 0px;
+	padding: 32px 2px 0 0;
 	text-align: right;
 }
 
 a.login {
 	background-color: #6689A3;
-	border-radius: 12px 12px 0px 0px;
+	border-radius: 12px 12px 0 0;
 	color: #FFFFFF;
 	font-weight: bold;
 	padding: 6px 26px;
@@ -48,7 +48,7 @@ a.login {
 	color: #FFFFFF;
 	font-weight: bold;
 	height: 1.5em;
-	padding: 0px 3px;
+	padding: 0 3px;
 }
 
 #subheader-slogan {
@@ -65,15 +65,27 @@ a.login {
 .mainBox {
 	border: 1px solid #D0D0D0;
 	background-color: #FFFFFF;
-	padding: 30px 0px;
+	padding: 30px 0;
 }
 
 .successBlock, .errorBlock {
+	background-position: 2% 54%;
+	background-repeat: no-repeat;
 	display: block;
 	height: 2em;
-	margin-right: 20px;
+	margin-right: 15px;
+	padding-left: 25px;
 	padding-top: 1px;
 }
+
+.errorBlock {
+	background-image: url('../images/front/cross.png');
+}
+
+.successBlock {
+	background-image: url('./blueprint/plugins/buttons/icons/tick.png');
+}
+
 
 /* sign up */
 #signup-container {

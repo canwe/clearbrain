@@ -3,7 +3,7 @@
 
 <div class="mainBox span-24 last">
 	<div id="signup-container" class="prepend-3 span-21 last">
-		<h2><spring:message code="signup.title" /></h2>
+		<h2><img src="<spring:url value="/images/front/tick-grey.png" htmlEscape="true" />" alt="" /> <spring:message code="signup.title" /></h2>
 		<h3 class="alt"><spring:message code="signup.subtitle" /></h3>
 	</div>
 

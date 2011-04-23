@@ -9,6 +9,7 @@ jQuery.fn.isBlank = function() {
 /* Sign up */
 //Display error or success message in the right of the screen
 function displayRightMsg(id, msg, success) {
+	var img;
 	if (success) {
 		$(id).addClass("success");
 		$(id).addClass("successBlock");
@@ -39,7 +40,7 @@ function checkEmail() {
 	}
 
 	//Use Ajax to check if email is available
-	$("#email-check").html("<img alt=\"loading...\" src=\"images/loading-circle.gif\" />");
+	$("#email-check").html("<img alt=\"loading...\" src=\"images/front/loading-circle.gif\" />");
 	$.post("signup", {
 		emailToCheck : $("#email").val()
 	}, function(data) {
