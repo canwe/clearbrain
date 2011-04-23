@@ -25,9 +25,9 @@
 
 	<!-- Forwards requests to some views -->
 	<mvc:view-controller path="/" view-name="front/welcome" />
+	<mvc:view-controller path="/login" view-name="front/login" />
 	<!-- TODO
 	<mvc:view-controller path="/access-denied" view-name="AccessDenied" />
-	<mvc:view-controller path="/login" view-name="front/login" />
 	 -->
 
 	<!-- Exclude folders from being mapped by Spring MVC -->

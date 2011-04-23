@@ -34,7 +34,7 @@
 			<div id="header">
 				<div id="header-logo" class="left"><a href="<spring:url value="/" />">S2NDBRN</a></div>
 				<div class="login-bt-container">
- 					<a class="login" href="<spring:url value="/login" htmlEscape="true" />"><spring:message code="header.logIn" /></a>
+					<a class="login" href="<spring:url value="/login" htmlEscape="true" />"><spring:message code="login.logIn" /></a>
 				</div>
 			</div>
 			<div id="subheader">

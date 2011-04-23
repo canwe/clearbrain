@@ -24,7 +24,7 @@
 		<beans:property name="authenticationManager" ref="authenticationManager" />
 		<beans:property name="authenticationFailureHandler">
 			<beans:bean class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
-				<beans:property name="defaultFailureUrl" value="/login?login_error=true" />
+				<beans:property name="defaultFailureUrl" value="/login?error" />
 			</beans:bean>
 		</beans:property>
 		<beans:property name="authenticationSuccessHandler">
