@@ -5,20 +5,22 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.authentication.dao.SaltSource;
+import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.nilhcem.business.UserBo;
 import com.nilhcem.core.hibernate.WithTransaction;
+import com.nilhcem.core.spring.UserDetailsAdapter;
 import com.nilhcem.dao.RightDao;
 import com.nilhcem.model.User;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:/META-INF/spring/applicationContext.xml"})
+@ContextConfiguration(locations = {"classpath:/META-INF/spring/applicationContext.xml", "classpath:/META-INF/spring/security/applicationContext-security.xml"})
 public class UserBoTest {
 	private final String EMAIL = "my.great@email.com";
 	private final String PASSWORD = "myPassword";
-	private final String EXPECTED_PWD = "deb1536f480475f7d593219aa1afd74c";
 
 	@Autowired
 	@Qualifier(value = "userBo")
@@ -26,6 +28,12 @@ public class UserBoTest {
 
 	@Autowired
 	private RightDao rightDao;
+
+	@Autowired
+	private ShaPasswordEncoder passwordEncoder;
+
+	@Autowired
+	private SaltSource saltSource;
 
 	//Sequence won't be rolled-back: 
 	//As explained in postgreSQL documentation:
@@ -48,7 +56,9 @@ public class UserBoTest {
 		User user = usersHandler.findByEmail(EMAIL);
 		assertNotNull(user);
 		assertEquals(user.getEmail(), EMAIL);
-		assertEquals(user.getPassword(), EXPECTED_PWD);
+
+		//Check password
+		assertEquals(user.getPassword(), passwordEncoder.encodePassword(PASSWORD, saltSource.getSalt(new UserDetailsAdapter(user))));
 		aUserWhoSignsUpShouldHaveUserRight(user);
 	}
 

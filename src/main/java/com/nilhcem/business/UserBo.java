@@ -1,13 +1,13 @@
 package com.nilhcem.business;
 
-import com.nilhcem.model.User;
-import com.nilhcem.utils.MD5Hasher;
 import com.nilhcem.core.hibernate.WithTransaction;
+import com.nilhcem.core.spring.UserDetailsAdapter;
 import com.nilhcem.dao.RightDao;
 import com.nilhcem.dao.UserDao;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.nilhcem.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.dao.SaltSource;
+import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -23,25 +23,26 @@ public class UserBo {
 	@Autowired
 	private RightDao rightDao;
 	@Autowired
-	private MD5Hasher md5Hasher;
-	private Logger logger = LoggerFactory.getLogger(UserBo.class);
+	private ShaPasswordEncoder passwordEncoder;
+	@Autowired
+	private SaltSource saltSource;
 
 	/**
-	 * Save a user in database and sign his password in Md5.
+	 * Save a user in database and hash his password in SHA-256.
 	 * 
 	 * @param user the User we want to save
 	 */
 	@WithTransaction
 	public void signUpUser(User user) {
-		try {
-			user.setPassword(md5Hasher.toMd5(user.getPassword()));
-			user.setEnabled(true);
-			user.getRights().add(rightDao.findByName(RightDao.RIGHT_USER));
-		} catch (Exception e) {
-			logger.error("Can't sign password in Md5");
-			logger.error(e.getStackTrace().toString());
-		}
+		user.setEnabled(true);
+		user.getRights().add(rightDao.findByName(RightDao.RIGHT_USER));
 		userDao.save(user);
+
+		//Hash password
+		UserDetailsAdapter userDetails = new UserDetailsAdapter(user);
+		Object salt = saltSource.getSalt(userDetails);
+		user.setPassword(passwordEncoder.encodePassword(userDetails.getPassword(), salt));
+		userDao.update(user);
 	}
 
 	/**

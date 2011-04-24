@@ -7,7 +7,7 @@ import com.nilhcem.model.User;
 
 /**
  * DAO class for accessing User data.
- * 
+ *
  * @author Nilhcem
  * @since 1.0
  */
@@ -15,7 +15,7 @@ import com.nilhcem.model.User;
 public class UserDao extends CustomHibernateDaoSupport {
 	/**
 	 * Save a user.
-	 * 
+	 *
 	 * @param user the User we need to save
 	 */
 	public void save(User user) {
@@ -23,8 +23,17 @@ public class UserDao extends CustomHibernateDaoSupport {
 	}
 
 	/**
+	 * Update a user.
+	 *
+	 * @param user the User we need to update
+	 */
+	public void update(User user) {
+		getHibernateTemplate().update(user);
+	}
+
+	/**
 	 * Find a user from his email.
-	 * 
+	 *
      * @param email email of the User we are searching for
      * @return a User object, or null if not found
 	 */

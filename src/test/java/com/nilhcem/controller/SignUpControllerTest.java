@@ -19,7 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.nilhcem.form.SignUpForm;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:/META-INF/spring/applicationContext.xml", "classpath:/META-INF/spring/mvc/mvc-dispatcher-servlet.xml"})
+@ContextConfiguration(locations = {"classpath:/META-INF/spring/applicationContext.xml", "classpath:/META-INF/spring/security/applicationContext-security.xml", "classpath:/META-INF/spring/mvc/mvc-dispatcher-servlet.xml"})
 public class SignUpControllerTest {
 	@Autowired
 	private SignUpController controller;

@@ -1,15 +1,8 @@
 package com.nilhcem.core.spring;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import com.nilhcem.business.UserBo;
-import com.nilhcem.model.Right;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.GrantedAuthorityImpl;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -37,12 +30,6 @@ public class HibernateUserDetailsService implements UserDetailsService {
 		com.nilhcem.model.User user = userBo.findByEmail(username);
 		if (user == null)
 			throw new UsernameNotFoundException("user not found");
-
-		Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-		for (Right auth : user.getRights())
-			authorities.add(new GrantedAuthorityImpl(auth.getName()));
-
-		User springUser = new User(user.getEmail(), user.getPassword(), user.isEnabled(), true, true, true, authorities);
-		return (springUser);
+		return new UserDetailsAdapter(user);
 	}
 }

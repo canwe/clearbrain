@@ -7,10 +7,22 @@
 	<!-- Custom UserDetailsService for authenticating using Hibernate -->
 	<beans:bean id="hibernateUserDetailsService" class="com.nilhcem.core.spring.HibernateUserDetailsService" />
 
+	<!-- Hash passwords using SHA-256 -->
+	<beans:bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder">
+		<beans:constructor-arg value="256" />
+	</beans:bean>
+
+	<!-- Add some salt -->
+	<beans:bean id="saltSource" class="org.springframework.security.authentication.dao.ReflectionSaltSource">
+		<beans:property name="userPropertyToUse" value="id" />
+	</beans:bean>
+
 	<!-- Configure authentication mechanism -->
 	<authentication-manager alias="authenticationManager">
 		<authentication-provider user-service-ref="hibernateUserDetailsService">
-			<password-encoder hash="md5" />
+			<password-encoder ref="passwordEncoder">
+				<salt-source ref="saltSource" />
+			</password-encoder>
 		</authentication-provider>
 	</authentication-manager>
 
@@ -37,7 +49,7 @@
 	<!-- HTTP security configuration -->
 	<http auto-config="false" access-denied-page="/access-denied" use-expressions="true" entry-point-ref="loginUrlEntryPoint">
 		<custom-filter position="FORM_LOGIN_FILTER" ref="loginFilter" />
-		<logout logout-url="/j_spring_security_logout" />
+		<logout invalidate-session="true" logout-url="/j_spring_security_logout" logout-success-url="/" />
 		<intercept-url pattern="/" access="permitAll()" />
 		<intercept-url pattern="/signup" access="permitAll()" />
 

@@ -49,7 +49,7 @@ public class User {
 		this.email = email;
 	}
 
-	@Column(name = "password", unique = false, nullable = false, length = 32)
+	@Column(name = "password", unique = false, nullable = false, length = 64)
 	public String getPassword() {
 		return this.password;
 	}
