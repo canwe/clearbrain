@@ -7,6 +7,11 @@
 	<!-- Custom UserDetailsService for authenticating using Hibernate -->
 	<beans:bean id="hibernateUserDetailsService" class="com.nilhcem.core.spring.HibernateUserDetailsService" />
 
+	<!--  RememberMeAuthenticationProvider for authenticating using a remember-me token -->
+	<beans:bean id="rememberMeAuthenticationProvider" class="org.springframework.security.authentication.RememberMeAuthenticationProvider">
+		<beans:property name="key" value="springRocks"/>
+	</beans:bean>
+
 	<!-- Hash passwords using SHA-256 -->
 	<beans:bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder">
 		<beans:constructor-arg value="256" />
@@ -19,6 +24,7 @@
 
 	<!-- Configure authentication mechanism -->
 	<authentication-manager alias="authenticationManager">
+		<authentication-provider ref="rememberMeAuthenticationProvider" />
 		<authentication-provider user-service-ref="hibernateUserDetailsService">
 			<password-encoder ref="passwordEncoder">
 				<salt-source ref="saltSource" />
@@ -33,6 +39,7 @@
 
 	<!-- Custom UsernamePasswordAuthenticationFilter for logging after successful authentication -->
 	<beans:bean id="loginFilter" class="com.nilhcem.core.spring.LogAuthenticationFilter" >
+		<beans:property name="rememberMeServices" ref="rememberMeServices" />
 		<beans:property name="authenticationManager" ref="authenticationManager" />
 		<beans:property name="authenticationFailureHandler">
 			<beans:bean class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
@@ -46,9 +53,29 @@
 		</beans:property>
 	</beans:bean>
 
+	<!-- Custom RememberMeAuthenticationFilter for logging after successful authentication through 'remember me' -->
+	<beans:bean id="rememberMeFilter" class="com.nilhcem.core.spring.LogRememberMeAuthenticationFilter">
+		<beans:property name="rememberMeServices" ref="rememberMeServices" />
+		<beans:property name="authenticationManager" ref="authenticationManager" />
+	</beans:bean>
+
+	<!-- Use a database to store 'remember-me' tokens -->
+	<beans:bean id="rememberMeServices" class="org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices">
+	    <beans:property name="alwaysRemember" value="false" />
+	    <beans:property name="tokenRepository">
+			<beans:bean class="org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl">
+			    <beans:property name="createTableOnStartup" value="false" />
+			    <beans:property name="dataSource" ref="dataSource" />
+			</beans:bean>
+	    </beans:property>
+		<beans:property name="userDetailsService" ref="hibernateUserDetailsService" />
+		<beans:property name="key" value="springRocks" />
+	</beans:bean>
+
 	<!-- HTTP security configuration -->
 	<http auto-config="false" access-denied-page="/access-denied" use-expressions="true" entry-point-ref="loginUrlEntryPoint">
 		<custom-filter position="FORM_LOGIN_FILTER" ref="loginFilter" />
+		<custom-filter position="REMEMBER_ME_FILTER" ref="rememberMeFilter"/>
 		<logout invalidate-session="true" logout-url="/j_spring_security_logout" logout-success-url="/" />
 		<intercept-url pattern="/" access="permitAll()" />
 		<intercept-url pattern="/signup" access="permitAll()" />

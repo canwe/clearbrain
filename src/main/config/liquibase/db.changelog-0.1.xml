@@ -22,6 +22,7 @@
 			<column name="enabled" type="boolean" defaultValue="true" />
 		</createTable>
 		<createSequence sequenceName="users_user_id_seq" />
+		<addUniqueConstraint tableName="users" columnNames="email" constraintName="users_email_unique" />
 	</changeSet>
 
 	<changeSet id="0.1.2" author="nilhcem" runAlways="false">
@@ -57,4 +58,21 @@
 		</createTable>
 	</changeSet>
 
+	<changeSet id="0.1.5" author="nilhcem" runAlways="false">
+		<comment>Create table "persistent_logins" for spring security "rememberme"</comment>
+		<createTable tableName="persistent_logins">
+			<column name="series" type="varchar(64)">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="username" type="varchar(254)">
+				<constraints nullable="false" foreignKeyName="persistent_logins_username_fk" references="users(email)" />
+			</column>
+			<column name="token" type="varchar(64)">
+				<constraints nullable="false" />
+			</column>
+			<column name="last_used" type="timestamp without time zone">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+	</changeSet>
 </databaseChangeLog>
