@@ -1,6 +1,7 @@
 package com.nilhcem.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +13,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * Hibernate mapped class for "users" table.
@@ -23,11 +26,12 @@ import javax.persistence.Table;
 @Table(name = "users")
 @SequenceGenerator(name = "seq_user", sequenceName = "users_user_id_seq", allocationSize = 1)
 public class User {
-	protected Long id;
-	protected String email;
-	protected String password;
-	protected boolean enabled;
-	protected List<Right> rights = new ArrayList<Right>();
+	private Long id;
+	private String email;
+	private String password;
+	private Date registrationDate;
+	private boolean enabled;
+	private List<Right> rights = new ArrayList<Right>();
 
 	public User() {}
 
@@ -55,6 +59,15 @@ public class User {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "registration_date", nullable = false)
+	public Date getRegistrationDate() {
+		return this.registrationDate;
+	}
+	public void setRegistrationDate(Date registrationDate) {
+		this.registrationDate = registrationDate;
 	}
 
 	@Column(name = "enabled")

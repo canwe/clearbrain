@@ -1,6 +1,8 @@
 package com.nilhcem.business;
 
 import static org.junit.Assert.*;
+import java.util.Calendar;
+import java.util.Date;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,11 +48,13 @@ public class UserBoTest {
 		user.setEmail(EMAIL);
 		user.setPassword(PASSWORD);
 		user.setEnabled(true);
+		Date before = Calendar.getInstance().getTime();
 		usersHandler.signUpUser(user);
-		checkIfUserIsSavedInDB();
+		Date after = Calendar.getInstance().getTime();
+		checkIfUserIsSavedInDB(before, after);
 	}
 
-	private void checkIfUserIsSavedInDB() {
+	private void checkIfUserIsSavedInDB(Date before, Date after) {
 		User userNull = usersHandler.findByEmail("");
 		assertNull(userNull);
 		User user = usersHandler.findByEmail(EMAIL);
@@ -60,11 +64,17 @@ public class UserBoTest {
 		//Check password
 		assertEquals(user.getPassword(), passwordEncoder.encodePassword(PASSWORD, saltSource.getSalt(new UserDetailsAdapter(user))));
 		aUserWhoSignsUpShouldHaveUserRight(user);
+		testRegistrationDate(before, user.getRegistrationDate(), after);
 	}
 
 	private void aUserWhoSignsUpShouldHaveUserRight(User user) {
 		assertNotNull(user.getRights());
 		assertEquals(user.getRights().size(), 1);
 		assertEquals(user.getRights().get(0), rightDao.findByName(RightDao.RIGHT_USER));
+	}
+
+	private void testRegistrationDate(Date before, Date registrationDate, Date after) {
+		assertTrue(before.before(registrationDate));
+		assertTrue(after.after(registrationDate));
 	}
 }

@@ -1,5 +1,6 @@
 package com.nilhcem.business;
 
+import java.util.Calendar;
 import javax.servlet.http.HttpServletRequest;
 import com.nilhcem.core.hibernate.WithTransaction;
 import com.nilhcem.core.spring.UserDetailsAdapter;
@@ -46,6 +47,7 @@ public class UserBo {
 	@WithTransaction
 	public void signUpUser(User user) {
 		user.setEnabled(true);
+		user.setRegistrationDate(Calendar.getInstance().getTime());
 		user.getRights().add(rightDao.findByName(RightDao.RIGHT_USER));
 		userDao.save(user);
 

@@ -19,6 +19,9 @@
 			<column name="password" type="varchar(64)">
 				<constraints nullable="false" />
 			</column>
+			<column name="registration_date" type="timestamp">
+				<constraints nullable="false" />
+			</column>
 			<column name="enabled" type="boolean" defaultValue="true" />
 		</createTable>
 		<createSequence sequenceName="users_user_id_seq" />
