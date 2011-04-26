@@ -9,7 +9,7 @@
 
 	<!--  RememberMeAuthenticationProvider for authenticating using a remember-me token -->
 	<beans:bean id="rememberMeAuthenticationProvider" class="org.springframework.security.authentication.RememberMeAuthenticationProvider">
-		<beans:property name="key" value="springRocks"/>
+		<beans:property name="key" value="${rememberme.key}" />
 	</beans:bean>
 
 	<!-- Hash passwords using SHA-256 -->
@@ -38,7 +38,7 @@
 	</beans:bean>
 
 	<!-- Custom UsernamePasswordAuthenticationFilter for logging after successful authentication -->
-	<beans:bean id="loginFilter" class="com.nilhcem.core.spring.LogAuthenticationFilter" >
+	<beans:bean id="loginFilter" class="com.nilhcem.core.spring.LogAuthenticationFilter">
 		<beans:property name="rememberMeServices" ref="rememberMeServices" />
 		<beans:property name="authenticationManager" ref="authenticationManager" />
 		<beans:property name="authenticationFailureHandler">
@@ -51,6 +51,17 @@
 		 		<beans:property name="defaultTargetUrl" value="/login" />
 			</beans:bean>
 		</beans:property>
+	</beans:bean>
+
+	<!-- Logout filter-->
+	<beans:bean id="logoutFilter" class="org.springframework.security.web.authentication.logout.LogoutFilter">
+		<beans:constructor-arg value="/" />
+		<beans:constructor-arg>
+			<beans:list>
+				<beans:ref bean="rememberMeServices" />
+				<beans:bean class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler" />
+			</beans:list>
+		</beans:constructor-arg>
 	</beans:bean>
 
 	<!-- Custom RememberMeAuthenticationFilter for logging after successful authentication through 'remember me' -->
@@ -69,24 +80,25 @@
 			</beans:bean>
 	    </beans:property>
 		<beans:property name="userDetailsService" ref="hibernateUserDetailsService" />
-		<beans:property name="key" value="springRocks" />
+		<beans:property name="key" value="${rememberme.key}" />
 	</beans:bean>
 
 	<!-- HTTP security configuration -->
 	<http auto-config="false" access-denied-page="/access-denied" use-expressions="true" entry-point-ref="loginUrlEntryPoint">
 		<custom-filter position="FORM_LOGIN_FILTER" ref="loginFilter" />
-		<custom-filter position="REMEMBER_ME_FILTER" ref="rememberMeFilter"/>
-		<logout invalidate-session="true" logout-url="/j_spring_security_logout" logout-success-url="/" />
+		<custom-filter position="REMEMBER_ME_FILTER" ref="rememberMeFilter" />
+		<custom-filter position="LOGOUT_FILTER" ref="logoutFilter" />
+
+		<intercept-url pattern="/css/**" filters="none" />
+		<intercept-url pattern="/images/**" filters="none" />
+		<intercept-url pattern="/js/**" filters="none" />
+
 		<intercept-url pattern="/" access="permitAll()" />
 		<intercept-url pattern="/signup" access="permitAll()" />
-
 		<intercept-url pattern="/signup-completed" access="permitAll()" />
 		<intercept-url pattern="/access-denied" access="permitAll()" />
 		<intercept-url pattern="/login" access="permitAll()" />
 
-		<intercept-url pattern="/css/**" access="permitAll()" />
-		<intercept-url pattern="/images/**" access="permitAll()" />
-		<intercept-url pattern="/js/**" access="permitAll()" />
  		<intercept-url pattern="/**" access="isAuthenticated()" />
 		<session-management session-fixation-protection="newSession" />
 	</http>

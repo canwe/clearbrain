@@ -43,21 +43,23 @@ public class SignUpController {
 	 * @param signUpForm
 	 * @param result
 	 * @param status
+	 * @param request
 	 * @return a new view (SignUpCompleted)
 	 */
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
-	public ModelAndView submitSignUpPage(@ModelAttribute("signupform") SignUpForm signUpForm, BindingResult result, SessionStatus status) {
+	public ModelAndView submitSignUpPage(@ModelAttribute("signupform") SignUpForm signUpForm, BindingResult result, SessionStatus status, HttpServletRequest request) {
 		signUpValidator.validate(signUpForm, result);
 		if (result.hasErrors())
 			return new ModelAndView("front/signup");
 
 		userBo.signUpUser(signUpForm.getUser());
 		status.setComplete();
+		userBo.autoLoginAfterSignup(signUpForm.getUser().getEmail(), signUpForm.getPasswordConfirmation(), request);
 		return new ModelAndView("redirectWithoutModel:signup-completed");
 	}
 
 	/**
-	 * Init sign up form, giving it the SignUp model.
+	 * Initialize sign up form, giving it the SignUp model.
 	 * @param model
 	 * @return the SignUp view
 	 */

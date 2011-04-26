@@ -42,7 +42,7 @@ public class SignUpControllerTest {
 		binder.bind(new MutablePropertyValues(request.getParameterMap()));
 		SessionStatus status = new SimpleSessionStatus();
 
-		return controller.submitSignUpPage(signUpForm, binder.getBindingResult(), status);
+		return controller.submitSignUpPage(signUpForm, binder.getBindingResult(), status, request);
 	}
 
 	@Test

@@ -6,8 +6,8 @@
 		<h3 class="alt"><spring:message code="signupcompleted.subtitle" /></h3>
 		<br />
 		<h4>
-			<spring:message code="signupcompleted.canLogIn" /> 
-			<a href="<spring:url value="/login" htmlEscape="true" />"> <spring:message code="signupcompleted.link" /></a>.
+			<spring:message code="signupcompleted.canAccessDashboard" />
+			<a href="<spring:url value="/dashboard" htmlEscape="true" />"> <spring:message code="signupcompleted.link" /></a>.
 		</h4>
 	</div>
 </div>
