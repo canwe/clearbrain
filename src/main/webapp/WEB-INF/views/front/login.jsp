@@ -18,7 +18,7 @@
 	<form method="post" action="<c:url value='/j_spring_security_check'/>" class="inline">
 		<div class="prepend-5 span-19 last signup-line-height">
 			<div class="span-4">
-				<label for="email"><spring:message code="login.mainEmail" /></label>
+				<label for="j_username"><spring:message code="login.mainEmail" /></label>
 			</div>
 			<div class="span-15 last">
 				<input type="text" name="j_username" id="j_username" <c:if test="${!empty prevLogin}">value="<c:out value='${prevLogin}' escapeXml='false' />"</c:if> class="signup-input-size" />
@@ -27,7 +27,7 @@
 
 		<div class="prepend-5 span-19 last signup-line-height">
 			<div class="span-4">
-				<label for="password"><spring:message code="signup.password" /></label>
+				<label for="j_password"><spring:message code="signup.password" /></label>
 			</div>
 			<div class="span-15 last">
 				<input type="password" name="j_password" id="j_password" class="signup-input-size" />

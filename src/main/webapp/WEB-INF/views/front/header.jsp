@@ -41,14 +41,15 @@
 			<div id="login-container" class="hide">
 				<form method="post" action="<c:url value='/j_spring_security_check'/>">
 					<div>
-						<spring:message code="login.email" /><br />
-						<input type="text" name="j_username" class="text-login-modal full-width" />
+						<label for="j_username_t"><spring:message code="login.email" /></label><br />
+						<input id="j_username_t" type="text" name="j_username" class="text-login-modal full-width" />
 					</div>
 					<div>
-						<spring:message code="login.password" /><br />
-						<input type="password" name="j_password" class="text-login-modal full-width" />
+						<label for="j_password_t"><spring:message code="login.password" /></label><br />
+						<input type="password" id="j_password_t" name="j_password" class="text-login-modal full-width" />
 					</div>
-					<input id="rememberme" type="checkbox" name="_spring_security_remember_me" /> <spring:message code="login.rememberMe" />
+					<input id="rememberme_t" type="checkbox" name="_spring_security_remember_me" />
+					<label for="rememberme_t"><spring:message code="login.rememberMe" /></label>
 					<div>
 						<input type="submit" value="<spring:message code="login.logIn" />" class="full-width" />
 					</div>
