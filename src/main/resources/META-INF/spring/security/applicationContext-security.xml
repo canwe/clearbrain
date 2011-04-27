@@ -48,7 +48,7 @@
 		</beans:property>
 		<beans:property name="authenticationSuccessHandler">
 			<beans:bean class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
-		 		<beans:property name="defaultTargetUrl" value="/login" />
+				<beans:property name="defaultTargetUrl" value="/dashboard" />
 			</beans:bean>
 		</beans:property>
 	</beans:bean>

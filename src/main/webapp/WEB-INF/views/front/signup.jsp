@@ -58,4 +58,5 @@
 	</form:form>
 </div>
 
+<img src="images/front/loading-circle.gif" class="hide" />
 <%@include file="/WEB-INF/views/front/footer.jsp"%>

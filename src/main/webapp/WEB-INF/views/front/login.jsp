@@ -36,7 +36,7 @@
 
 		<div class="prepend-9 span-15 last signup-line-height">
 			<input id="rememberme" type="checkbox" name="_spring_security_remember_me" />
-			<label for="rememberme"><spring:message code="login.rememberMe" /></label>
+			<label for="rememberme"><spring:message code="login.rememberMeComputer" /></label>
 		</div>
 
 		<div class="prepend-10 span-14 last">

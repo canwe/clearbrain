@@ -1,10 +1,26 @@
 /* Multi */
 jQuery.fn.exists = function() {
 	return jQuery(this).length > 0;
-}
+};
 jQuery.fn.isBlank = function() {
 	return (!jQuery(this) || jQuery(this).val().trim() === "");
+};
+
+/* Header */
+//Display/Hide login modal pop up
+function toggleLogin() {
+	$("#login-container").toggle();
 }
+//Hide login modal pop up if visible and if a user clicks outside this pop up
+$(document).ready(function() {
+	$('html').click(function() {
+		if ($("#login-container").is(":visible"))
+			$("#login-container").hide();
+	});
+	$(".login, #login-container").click(function(event){
+	    event.stopPropagation();
+	});
+});
 
 /* Sign up */
 //Display error or success message in the right of the screen
@@ -39,7 +55,7 @@ function checkEmail() {
 	}
 
 	//Use Ajax to check if email is available
-	$("#email-check").html("<img alt=\"loading...\" src=\"images/front/loading-circle.gif\" />");
+	$("#email-check").html("<img src=\"images/front/loading-circle.gif\" />");
 	$.post("signup", {
 		emailToCheck : $("#email").val()
 	}, function(data) {
