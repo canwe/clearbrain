@@ -26,11 +26,11 @@ public class UserDetailsAdapterTest {
 	@Test
 	public void testConversionUserIntoUserDetails() {
 		UserDetailsAdapter userDetails = new UserDetailsAdapter(user);
-		assertEquals(userDetails.getId(), user.getId());
-		assertEquals(userDetails.getUsername(), user.getEmail());
-		assertEquals(userDetails.isEnabled(), user.isEnabled());
-		assertEquals(userDetails.getAuthorities().size(), user.getRights().size());
+		assertEquals(user.getId(), userDetails.getId());
+		assertEquals(user.getEmail(), userDetails.getUsername());
+		assertEquals(user.isEnabled(), userDetails.isEnabled());
+		assertEquals(user.getRights().size(), userDetails.getAuthorities().size());
 		Iterator<GrantedAuthority> i = userDetails.getAuthorities().iterator();
-		assertEquals(i.next().getAuthority(), user.getRights().get(0).getName());
+		assertEquals(user.getRights().get(0).getName(), i.next().getAuthority());
 	}
 }

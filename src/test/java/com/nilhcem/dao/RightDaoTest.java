@@ -18,20 +18,20 @@ public class RightDaoTest {
 	public void shouldGetUserRight() {
 		Right userRight = dao.findByName(RightDao.RIGHT_USER);
 		assertNotNull(userRight);
-		assertEquals(userRight.getName(), RightDao.RIGHT_USER);
+		assertEquals(RightDao.RIGHT_USER, userRight.getName());
 	}
 
 	@Test
 	public void shouldGetAdminRight() {
 		Right adminRight = dao.findByName(RightDao.RIGHT_ADMIN);
 		assertNotNull(adminRight);
-		assertEquals(adminRight.getName(), RightDao.RIGHT_ADMIN);
+		assertEquals(RightDao.RIGHT_ADMIN, adminRight.getName());
 	}
 
 	@Test
 	public void makeSureThatAdminAndUserAreNotEqual() {
 		Right user = dao.findByName(RightDao.RIGHT_USER);
 		Right admin = dao.findByName(RightDao.RIGHT_ADMIN);
-		assertNotSame(user.getId(), admin.getId());
+		assertNotSame(admin.getId(), user.getId());
 	}
 }

@@ -52,7 +52,7 @@ public class SignUpController {
 		if (result.hasErrors())
 			return new ModelAndView("front/signup");
 
-		userBo.signUpUser(signUpForm.getUser());
+		userBo.signUpUser(signUpForm.getUser(), RequestContextUtils.getLocale(request));
 		status.setComplete();
 		userBo.autoLoginAfterSignup(signUpForm.getUser().getEmail(), signUpForm.getPasswordConfirmation(), request);
 		return new ModelAndView("redirectWithoutModel:signup-completed");

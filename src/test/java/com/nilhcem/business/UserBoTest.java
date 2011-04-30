@@ -3,6 +3,7 @@ package com.nilhcem.business;
 import static org.junit.Assert.*;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import com.nilhcem.model.User;
 public class UserBoTest {
 	private final String EMAIL = "my.great@email.com";
 	private final String PASSWORD = "myPassword";
+	private final String LOCALE = "fr_FR";
 
 	@Autowired
 	@Qualifier(value = "userBo")
@@ -49,7 +51,7 @@ public class UserBoTest {
 		user.setPassword(PASSWORD);
 		user.setEnabled(true);
 		Date before = Calendar.getInstance().getTime();
-		usersHandler.signUpUser(user);
+		usersHandler.signUpUser(user, new Locale(LOCALE.split("_")[0], LOCALE.split("_")[1]));
 		Date after = Calendar.getInstance().getTime();
 		checkIfUserIsSavedInDB(before, after);
 	}
@@ -59,18 +61,19 @@ public class UserBoTest {
 		assertNull(userNull);
 		User user = usersHandler.findByEmail(EMAIL);
 		assertNotNull(user);
-		assertEquals(user.getEmail(), EMAIL);
+		assertEquals(EMAIL, user.getEmail());
+		assertEquals(LOCALE, user.getLanguage().getCode());
 
 		//Check password
-		assertEquals(user.getPassword(), passwordEncoder.encodePassword(PASSWORD, saltSource.getSalt(new UserDetailsAdapter(user))));
+		assertEquals(passwordEncoder.encodePassword(PASSWORD, saltSource.getSalt(new UserDetailsAdapter(user))), user.getPassword());
 		aUserWhoSignsUpShouldHaveUserRight(user);
 		testRegistrationDate(before, user.getRegistrationDate(), after);
 	}
 
 	private void aUserWhoSignsUpShouldHaveUserRight(User user) {
 		assertNotNull(user.getRights());
-		assertEquals(user.getRights().size(), 1);
-		assertEquals(user.getRights().get(0), rightDao.findByName(RightDao.RIGHT_USER));
+		assertEquals(1, user.getRights().size());
+		assertEquals(rightDao.findByName(RightDao.RIGHT_USER), user.getRights().get(0));
 	}
 
 	private void testRegistrationDate(Date before, Date registrationDate, Date after) {

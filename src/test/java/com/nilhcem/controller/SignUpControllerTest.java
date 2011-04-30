@@ -27,7 +27,7 @@ public class SignUpControllerTest {
 	@Test
 	public void signUpPageShouldBeCorrectlyInitialized() {
 		ModelMap model = new ModelMap();
-		assertEquals(controller.initSignUpPage(model), "front/signup");
+		assertEquals("front/signup", controller.initSignUpPage(model));
 		assertTrue(model.containsAttribute("signupform"));
 	}
 
@@ -48,21 +48,21 @@ public class SignUpControllerTest {
 	@Test
 	public void submitSignUpPageWithBadEmailShouldRedirectToInitialForm() {
 		ModelAndView modelAndView = getModelAndViewSignUpPage("", "myP#ssW0Rd", "myP#ssW0Rd");
-		assertEquals(modelAndView.getViewName(), "front/signup");
+		assertEquals("front/signup", modelAndView.getViewName());
 		assertNotNull(modelAndView.getModel());
 	}
 
 	@Test
 	public void submitSignUpPageWithEmptyPwdShouldRedirectToInitialForm() {
 		ModelAndView modelAndView = getModelAndViewSignUpPage("my.email@company.com", "", "");
-		assertEquals(modelAndView.getViewName(), "front/signup");
+		assertEquals("front/signup", modelAndView.getViewName());
 		assertNotNull(modelAndView.getModel());
 	}
 
 	@Test
 	public void submitSignUpPageWithBadPwdConfirmationShouldRedirectToInitialForm() {
 		ModelAndView modelAndView = getModelAndViewSignUpPage("my.email@company.com", "myP#ssW0Rd", "notTheSame");
-		assertEquals(modelAndView.getViewName(), "front/signup");
+		assertEquals("front/signup", modelAndView.getViewName());
 		assertNotNull(modelAndView.getModel());
 	}
 
@@ -72,14 +72,14 @@ public class SignUpControllerTest {
 	public void submitSignUpPageWithValidObjectShouldRedirectToCompletedView() {
 		String email = "my.email@company.com";
 		ModelAndView modelAndView = getModelAndViewSignUpPage(email, "myP#ssW0Rd", "myP#ssW0Rd");
-		assertEquals(modelAndView.getViewName(), "redirectWithoutModel:signup-completed");
+		assertEquals("redirectWithoutModel:signup-completed", modelAndView.getViewName());
 		assertNotNull(modelAndView.getModel());
 		checkEmailAvailabilityShouldReturnFalse(email);
 	}
 
 	@Test
 	public void shouldGetCompletedSignUpPage() {
-		assertEquals(controller.getSignUpCompletedPage(), "front/signupCompleted");
+		assertEquals("front/signupCompleted", controller.getSignUpCompletedPage());
 	}
 
 	@Test

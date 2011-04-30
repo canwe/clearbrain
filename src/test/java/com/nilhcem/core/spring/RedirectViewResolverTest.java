@@ -10,7 +10,7 @@ public class RedirectViewResolverTest {
 
 	@Test
 	public void redirectViewResolverOrderShouldBeTheFirstOne() {
-		assertEquals(resolver.getOrder(), Integer.MIN_VALUE);
+		assertEquals(Integer.MIN_VALUE, resolver.getOrder());
 	}
 
 	@Test
@@ -23,7 +23,7 @@ public class RedirectViewResolverTest {
 		String url = "my-view";
 		View myView = resolver.resolveViewName(RedirectViewResolver.REDIRECT_URL_PREFIX + url, null);
 		assertNotNull(myView);
-		assertEquals(myView.getClass(), RedirectView.class);
-		assertEquals(((RedirectView)myView).getUrl(), url);
+		assertEquals(RedirectView.class, myView.getClass());
+		assertEquals(url, ((RedirectView)myView).getUrl());
 	}
 }

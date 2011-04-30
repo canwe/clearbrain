@@ -1,6 +1,7 @@
 package com.nilhcem.business;
 
 import java.util.Calendar;
+import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import com.nilhcem.core.hibernate.WithTransaction;
 import com.nilhcem.core.spring.UserDetailsAdapter;
@@ -32,6 +33,8 @@ public class UserBo {
 	@Autowired
 	private RightDao rightDao;
 	@Autowired
+	private LanguageBo langBo;
+	@Autowired
 	private ShaPasswordEncoder passwordEncoder;
 	@Autowired
 	private SaltSource saltSource;
@@ -45,10 +48,11 @@ public class UserBo {
 	 * @param user the User we want to save
 	 */
 	@WithTransaction
-	public void signUpUser(User user) {
+	public void signUpUser(User user, Locale locale) {
 		user.setEnabled(true);
 		user.setRegistrationDate(Calendar.getInstance().getTime());
 		user.getRights().add(rightDao.findByName(RightDao.RIGHT_USER));
+		user.setLanguage(langBo.findByLocale(locale));
 		userDao.save(user);
 
 		//Hash password

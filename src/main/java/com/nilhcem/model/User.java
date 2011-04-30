@@ -5,12 +5,14 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -31,9 +33,8 @@ public class User {
 	private String password;
 	private Date registrationDate;
 	private boolean enabled;
+	private Language language;
 	private List<Right> rights = new ArrayList<Right>();
-
-	public User() {}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_user")
@@ -76,6 +77,15 @@ public class User {
 	}
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "language_id", nullable = false)
+	public Language getLanguage() {
+		return this.language;
+	}
+	public void setLanguage(Language language) {
+		this.language = language;
 	}
 
 	@ManyToMany
