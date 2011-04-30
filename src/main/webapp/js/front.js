@@ -17,72 +17,75 @@ $(document).ready(function() {
 		if ($("#login-container").is(":visible"))
 			$("#login-container").hide();
 	});
-	$(".login, #login-container").click(function(event){
+	$("#header .login, #login-container").click(function(event){
 	    event.stopPropagation();
 	});
 });
 
 /* Sign up */
 //Display error or success message in the right of the screen
-function displayRightMsg(id, msg, success) {
+function displayRightMsg(elem, msg, success) {
 	if (success) {
-		$(id).addClass("success");
-		$(id).addClass("successBlock");
+		elem.addClass("success");
+		elem.addClass("successBlock");
 	} else {
-		$(id).addClass("error");
-		$(id).addClass("errorBlock");
+		elem.addClass("error");
+		elem.addClass("errorBlock");
 	}
-	$(id).html(msg);
+	elem.html(msg);
 }
 //Clear page removing eventual previous errors
-function reinitErrors(springSpan, error) {
+function reinitErrors(springSpan, errorElem) {
 	if ($(springSpan).exists())
 		$(springSpan).remove();
-	$(error).removeClass();
-	$(error).show();
+	errorElem.removeClass();
+	errorElem.show();
 }
 //Check if email is valid
 function checkEmail() {
-	reinitErrors("#emailError", "#email-check");
+	var emailCheck = $("#email-check");
+	reinitErrors("#emailError", emailCheck);
 
 	//Check if email is valid (see RFC822)
 	//There is no 'advanced' email regex check there because it's most of the time not a good idea to use a regular expression to validate email.
 	//Instead we should better proceed using an 'email confirmation' check
 	var filter=/\S+@\S+/
 	if (!filter.test($("#email").val())) {
-		displayRightMsg("#email-check", i18n["err.mail"], false);
+		displayRightMsg(emailCheck, i18n["err.mail"], false);
 		return ;
 	}
 
 	//Use Ajax to check if email is available
-	$("#email-check").html("<img src=\"images/front/loading-circle.gif\" />");
+	emailCheck.html("<img src=\"images/front/loading-circle.gif\" />");
 	$.post("signup", {
 		emailToCheck : $("#email").val()
 	}, function(data) {
 		if (data == false) {
-			displayRightMsg("#email-check", i18n["err.mailRegist"], false);
+			displayRightMsg(emailCheck, i18n["err.mailRegist"], false);
 		} else {
-			displayRightMsg("#email-check", i18n["ok.mail"], true);
+			displayRightMsg(emailCheck, i18n["ok.mail"], true);
 		}
 	});
 }
 //Check if password is not empty
 function checkPassword() {
-	reinitErrors("#passwordError", "#password-check");
+	var passwordCheck = $("#password-check")
+	reinitErrors("#passwordError", passwordCheck);
 
 	if ($("#password").isBlank())
-		displayRightMsg("#password-check", i18n["err.pwd"], false);
+		displayRightMsg(passwordCheck, i18n["err.pwd"], false);
 	else
-		displayRightMsg("#password-check", i18n["ok.pwd"], true);
+		displayRightMsg(passwordCheck, i18n["ok.pwd"], true);
 	if ($("#password-confirm-check").is(":visible"))
 		checkPasswordConfirmation();
 }
 //Check password confirmation
 function checkPasswordConfirmation() {
-	reinitErrors("#passwordConfirmError", "#password-confirm-check");
+	var passwordConfirmCheck = $("#password-confirm-check");
+	reinitErrors("#passwordConfirmError", passwordConfirmCheck);
 
 	if ($("#passwordConfirmation").isBlank() || $("#password").val() != $("#passwordConfirmation").val())
-		displayRightMsg("#password-confirm-check", i18n["err.pwdConf"], false);
+		displayRightMsg(passwordConfirmCheck, i18n["err.pwdConf"], false);
 	else
-		displayRightMsg("#password-confirm-check", i18n["ok.pwdConf"], true);
+		displayRightMsg(passwordConfirmCheck, i18n["ok.pwdConf"], true);
 }
