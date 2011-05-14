@@ -22,7 +22,7 @@ public class CategoryBoTest {
 	private CategoryBo categoriesHandler;
 
 	@Test
-	public void testCategories() {
+	public void testCategories() throws Exception {
 		User user = testUtils.getTestUser();
 		addCategories(user);
 		List<Category> sortedCategories = checkIfCategoriesAreCorrectlyAddedAndSorted(user, categories);
@@ -52,7 +52,7 @@ public class CategoryBoTest {
 		return sortedCategories;
 	}
 
-	private void moveCategories(User user, List<Category> cats) {
+	private void moveCategories(User user, List<Category> cats) throws Exception {
 		categoriesHandler.updatePosition(user, cats.get(1).getId(), cats.get(0).getId(), true);
 		checkIfCategoriesAreCorrectlyAddedAndSorted(user, new String[] {"2", "1", "3", "4", "5"});
 		categoriesHandler.updatePosition(user, cats.get(1).getId(), cats.get(4).getId(), false);
