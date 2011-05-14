@@ -9,7 +9,7 @@ import org.springframework.security.web.authentication.rememberme.RememberMeAuth
 
 /**
  * Custom RememberMeAuthenticationFilter bean for SpringSecurity to log information once authentication is successful through remember me.
- * 
+ *
  * @author Nilhcem
  * @since 1.0
  */
@@ -18,10 +18,10 @@ public class LogRememberMeAuthenticationFilter extends RememberMeAuthenticationF
 
 	/**
 	 * Log after successful authentication through remember me.
-	 * 
-	 * @param request
-	 * @param response
-	 * @param authResult
+	 *
+	 * @param request HTTP request.
+	 * @param response HTTP response.
+	 * @param authResult The object returned from the attemptAuthentication method, which contains authentication data.
 	 */
 	@Override
 	protected void onSuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, Authentication authResult) {

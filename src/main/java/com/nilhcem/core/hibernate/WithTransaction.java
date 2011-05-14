@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Custom annotation, used in every Business object, to automatically rollback if an Exception object is caught.
- * 
+ *
  * @author Nilhcem
  * @since 1.0
  */

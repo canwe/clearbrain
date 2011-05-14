@@ -12,30 +12,12 @@ import com.nilhcem.model.User;
  * @since 1.0
  */
 @Repository("userDao")
-public class UserDao extends CustomHibernateDaoSupport {
-	/**
-	 * Save a user.
-	 *
-	 * @param user the User we need to save
-	 */
-	public void save(User user) {
-		getHibernateTemplate().save(user);
-	}
-
-	/**
-	 * Update a user.
-	 *
-	 * @param user the User we need to update
-	 */
-	public void update(User user) {
-		getHibernateTemplate().update(user);
-	}
-
+public class UserDao extends CustomHibernateDaoSupport<User> {
 	/**
 	 * Find a user from his email.
 	 *
-     * @param email email of the User we are searching for
-     * @return a User object, or null if not found
+     * @param email Email of the User we are searching for.
+     * @return User object, or null if not found.
 	 */
 	public User findByEmail(String email) {
 		Query query = getSession().createQuery("FROM User WHERE email= :email");
@@ -43,4 +25,8 @@ public class UserDao extends CustomHibernateDaoSupport {
 		query.setMaxResults(1);
 		return (User)query.uniqueResult();
 	}
+
+//	public User findLazyById(Long id) {
+//		return (User)getSession().load(User.class, id);
+//	}
 }

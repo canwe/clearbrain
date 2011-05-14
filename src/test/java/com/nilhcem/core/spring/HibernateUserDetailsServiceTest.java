@@ -8,7 +8,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:/META-INF/spring/applicationContext.xml", "classpath:/META-INF/spring/security/applicationContext-security.xml"})
+@ContextConfiguration(locations = {"classpath:/applicationContext-test.xml"})
 public class HibernateUserDetailsServiceTest {
 	@Autowired
 	private HibernateUserDetailsService service;

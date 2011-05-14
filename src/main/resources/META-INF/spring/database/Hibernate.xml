@@ -11,7 +11,9 @@
 		<property name="hibernateProperties">
 			<props>
 				<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
-				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.show_sql">false</prop>
+				<!-- remove the INFO 'Disabling contextual LOB creation as createClob() method threw error' on startup -->
+				<prop key="hibernate.temp.use_jdbc_metadata_defaults">false</prop>
 				<!-- database pooling information -->
 				<prop key="hibernate.c3p0.min_size">5</prop>
 				<prop key="hibernate.c3p0.max_size">20</prop>

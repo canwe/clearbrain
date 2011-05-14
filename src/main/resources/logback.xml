@@ -9,6 +9,7 @@
 	<logger name="com.nilhcem" level="DEBUG" />
 	<logger name="com.nilhcem.core.spring.LogAuthenticationFilter" level="INFO" />
 	<logger name="com.nilhcem.core.spring.LogRememberMeAuthenticationFilter" level="INFO" />
+	<logger name="org.hibernate.SQL" level="DEBUG" /> <!-- show SQL -->
 
 	<root level="INFO">
 		<appender-ref ref="STDOUT" />

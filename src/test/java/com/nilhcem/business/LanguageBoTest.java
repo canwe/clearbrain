@@ -10,7 +10,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.nilhcem.model.Language;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:/META-INF/spring/applicationContext.xml", "classpath:/META-INF/spring/security/applicationContext-security.xml"})
+@ContextConfiguration(locations = {"classpath:/applicationContext-test.xml"})
 public class LanguageBoTest {
 	@Autowired
 	private LanguageBo languagesBo;

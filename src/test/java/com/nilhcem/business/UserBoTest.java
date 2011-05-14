@@ -20,9 +20,9 @@ import com.nilhcem.dao.RightDao;
 import com.nilhcem.model.User;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:/META-INF/spring/applicationContext.xml", "classpath:/META-INF/spring/security/applicationContext-security.xml"})
+@ContextConfiguration(locations = {"classpath:/applicationContext-test.xml"})
 public class UserBoTest {
-	private final String EMAIL = "my.great@email.com";
+	private final String EMAIL = "###Test###@example.com";
 	private final String PASSWORD = "myPassword";
 	private final String LOCALE = "fr_FR";
 
@@ -49,7 +49,6 @@ public class UserBoTest {
 		User user = new User();
 		user.setEmail(EMAIL);
 		user.setPassword(PASSWORD);
-		user.setEnabled(true);
 		Date before = Calendar.getInstance().getTime();
 		usersHandler.signUpUser(user, new Locale(LOCALE.split("_")[0], LOCALE.split("_")[1]));
 		Date after = Calendar.getInstance().getTime();
@@ -77,7 +76,7 @@ public class UserBoTest {
 	}
 
 	private void testRegistrationDate(Date before, Date registrationDate, Date after) {
-		assertTrue(before.before(registrationDate));
-		assertTrue(after.after(registrationDate));
+		assertFalse(before.after(registrationDate));
+		assertFalse(after.before(registrationDate));
 	}
 }

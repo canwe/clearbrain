@@ -11,6 +11,7 @@ import com.nilhcem.form.SignUpForm;
 
 /**
  * Validate SignUp Form using Spring MVC Validator.
+ *
  * @author Nilhcem
  * @since 1.0
  */
@@ -20,7 +21,9 @@ public class SignUpValidator implements Validator {
 
 	/**
 	 * Only support SignUp class.
-	 * @param clazz The class which should be supported
+	 *
+	 * @param clazz The class which should be supported.
+	 * @return True if this validator supports clazz.
 	 */
 	@Override
 	public boolean supports(Class<?> clazz) {
@@ -29,8 +32,9 @@ public class SignUpValidator implements Validator {
 
 	/**
 	 * Validate data in SignUp object.
-	 * @param target The SignUp object
-	 * @param errors Validation errors
+	 *
+	 * @param target The SignUp object.
+	 * @param errors Validation errors.
 	 */
 	@Override
 	public void validate(Object target, Errors errors) {

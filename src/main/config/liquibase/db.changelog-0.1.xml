@@ -46,8 +46,7 @@
 			</column>
 			<column name="enabled" type="boolean" defaultValue="true" />
 			<column name="language_id" type="bigint">
-				<constraints primaryKey="true" nullable="false"
-					foreignKeyName="users_language_id_fk" references="languages(language_id)" />
+				<constraints primaryKey="true" nullable="false" foreignKeyName="users_language_id_fk" references="languages(language_id)" />
 			</column>
 		</createTable>
 		<createSequence sequenceName="users_user_id_seq" />
@@ -76,12 +75,10 @@
 		<comment>Create table "users_rights"</comment>
 		<createTable tableName="users_rights">
 			<column name="user_id" type="bigint">
-				<constraints primaryKey="true" nullable="false"
-					foreignKeyName="users_rights_user_id_fk" references="users(user_id)" />
+				<constraints primaryKey="true" nullable="false" foreignKeyName="users_rights_user_id_fk" references="users(user_id)" />
 			</column>
 			<column name="right_id" type="bigint">
-				<constraints primaryKey="true" nullable="false"
-					foreignKeyName="users_rights_right_id_fk" references="rights(right_id)" />
+				<constraints primaryKey="true" nullable="false" foreignKeyName="users_rights_right_id_fk" references="rights(right_id)" />
 			</column>
 		</createTable>
 	</changeSet>
@@ -102,5 +99,25 @@
 				<constraints nullable="false" />
 			</column>
 		</createTable>
+	</changeSet>
+
+	<changeSet id="0.1.8" author="nilhcem" runAlways="false">
+		<comment>Create table "categories"</comment>
+		<createTable tableName="categories">
+			<column name="category_id" type="bigint">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="name" type="varchar(64)">
+				<constraints nullable="false" />
+			</column>
+			<column name="is_displayed" type="boolean" defaultValue="true" />
+			<column name="next_category_id" type="bigint">
+				<constraints foreignKeyName="categories_next_category_id_fk" references="categories(category_id)" />
+			</column>
+			<column name="user_id" type="bigint">
+				<constraints foreignKeyName="categories_user_id_fk" references="users(user_id)" />
+			</column>
+		</createTable>
+		<createSequence sequenceName="categories_category_id_seq" />
 	</changeSet>
 </databaseChangeLog>

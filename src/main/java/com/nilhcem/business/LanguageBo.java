@@ -21,8 +21,8 @@ public class LanguageBo {
 	/**
 	 * Find a language from its locale.
 	 *
-     * @param code Code of the language we are searching for
-     * @return a Language object, or default language (en_US) if code was not found
+     * @param locale Locale (language we are searching for).
+     * @return A Language object, or default language (en_US) if code was not found.
 	 */
 	public Language findByLocale(Locale locale) {
 		Language lang = dao.findByCode(locale.getLanguage() + "_" + locale.getCountry());

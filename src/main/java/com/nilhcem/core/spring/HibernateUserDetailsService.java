@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * Custom userDetailsService bean for SpringSecurity to handle authentication using Hibernate.
- * 
+ *
  * @author Nilhcem
  * @since 1.0
  */
@@ -21,10 +21,10 @@ public class HibernateUserDetailsService implements UserDetailsService {
 
 	/**
 	 * Find in the database the user who wants to authenticate.
-	 * 
-	 * @param username the email of the user who authenticates.
-	 * @return a UserDetails object which contains the user's data (login/password/enabled/authorities)
-	 * @throws UsernameNotFoundException if we can't find the user from the database
+	 *
+	 * @param username Email of the user who authenticates.
+	 * @return UserDetails object which contains the user's data (login/password/enabled/authorities).
+	 * @throws UsernameNotFoundException if we can't find the user from the database.
 	 */
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException {
 		com.nilhcem.model.User user = userBo.findByEmail(username);

@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 /**
  * Hibernate mapped class for "languages" table.
- * 
+ *
  * @author Nilhcem
  * @since 1.0
  */

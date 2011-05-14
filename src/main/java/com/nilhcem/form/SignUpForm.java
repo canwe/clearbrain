@@ -4,6 +4,7 @@ import com.nilhcem.model.User;
 
 /**
  * Spring MVC SignUp form object model.
+ *
  * @author Nilhcem
  * @since 1.0
  */

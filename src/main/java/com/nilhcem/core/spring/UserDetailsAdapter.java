@@ -3,6 +3,7 @@ package com.nilhcem.core.spring;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import javax.persistence.Transient;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.GrantedAuthorityImpl;
 import com.nilhcem.model.Right;
@@ -15,19 +16,26 @@ import com.nilhcem.model.User;
  * @since 1.0
  */
 public class UserDetailsAdapter extends org.springframework.security.core.userdetails.User {
-	private static final long serialVersionUID = -4267541313252984476L;
-	private final Long id;
+	private static final long serialVersionUID = -6113218990905342649L;
+//	private final Long id;
+	private final User hibernateUser;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param user The user we need to convert into UserDetails.
+	 */
 	public UserDetailsAdapter(User user) {
 		super(user.getEmail(), user.getPassword(), user.isEnabled(), true, true, true, toAuthorities(user.getRights()));
-		this.id = user.getId();
+		this.hibernateUser = user;
+//		this.id = user.getId();
 	}
 
 	/**
-	 * Convert a List<Right> into a Collection<GrantedAutority>
+	 * Convert a List<Right> into a Collection<GrantedAutority>.
 	 *
-	 * @param rights
-	 * @return a Collection<GrantedAuthority> for Spring security
+	 * @param rights The list of rights we need to convert.
+	 * @return Collection<GrantedAuthority>, for Spring security.
 	 */
 	private static Collection<GrantedAuthority> toAuthorities(List<Right> rights) {
 		Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
@@ -37,11 +45,21 @@ public class UserDetailsAdapter extends org.springframework.security.core.userde
 	}
 
 	/**
-	 * getId method is used to salt password using id
+	 * Used to salt password using id
 	 *
-	 * @return id
+	 * @return User's id.
 	 */
 	public Long getId() {
-		return id;
+//		return id;
+		return this.hibernateUser.getId();
+	}
+
+	/**
+	 * Get the current Hibernate user bean.
+	 *
+	 * @return Hibernate User.
+	 */
+	public User getHibernateUser() {
+		return this.hibernateUser;
 	}
 }

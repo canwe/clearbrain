@@ -22,8 +22,8 @@ import com.nilhcem.form.SignUpForm;
 import com.nilhcem.validator.SignUpValidator;
 
 /**
- * Business class for registrations.
- * 
+ * Spring MVC Controller class for registration.
+ *
  * @author Nilhcem
  * @since 1.0
  */
@@ -40,11 +40,12 @@ public class SignUpController {
 
 	/**
 	 * Register a user who has just signed up.
-	 * @param signUpForm
-	 * @param result
-	 * @param status
-	 * @param request
-	 * @return a new view (SignUpCompleted)
+	 *
+	 * @param signUpForm The signup form.
+	 * @param result Binding result.
+	 * @param status Session status.
+	 * @param request HTTP request.
+	 * @return A new view (front/signupCompleted).
 	 */
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
 	public ModelAndView submitSignUpPage(@ModelAttribute("signupform") SignUpForm signUpForm, BindingResult result, SessionStatus status, HttpServletRequest request) {
@@ -60,8 +61,9 @@ public class SignUpController {
 
 	/**
 	 * Initialize sign up form, giving it the SignUp model.
-	 * @param model
-	 * @return the SignUp view
+	 *
+	 * @param model Model map.
+	 * @return the SignUp view.
 	 */
 	@RequestMapping(value = "/signup", method = RequestMethod.GET)
 	public String initSignUpPage(ModelMap model) {
@@ -72,7 +74,8 @@ public class SignUpController {
 
 	/**
 	 * Return a confirmation page after signing up (Post/Redirect/Get pattern).
-	 * @return the SignUpCompleted view
+	 *
+	 * @return the front/signupCompleted view.
 	 */
 	@RequestMapping(value = "/signup-completed", method = RequestMethod.GET)
 	public String getSignUpCompletedPage() {
@@ -81,19 +84,21 @@ public class SignUpController {
 
 	/**
 	 * Check if email is available.
-	 * @param email
-	 * @return true if available, false is not available
+	 *
+	 * @param email The email we need to check.
+	 * @return true if available, false is not available.
 	 */
 	@RequestMapping(value = "/signup", method = RequestMethod.POST, params = { "emailToCheck" })
-	public @ResponseBody Boolean checkEmailAvailability(@RequestParam(value = "emailToCheck", required = true) String email) {
+	public @ResponseBody boolean checkEmailAvailability(@RequestParam(value = "emailToCheck", required = true) String email) {
 		return (userBo.findByEmail(email) == null);
 	}
 
 	/**
 	 * Inject localized strings into Javascript.
-	 * @param request
-	 * @return a map of i18n string for Javascript.
-	 * @throws Exception
+	 *
+	 * @param request HTTP request.
+	 * @return A map of i18n string for Javascript.
+	 * @throws Exception.
 	 */
 	@ModelAttribute("i18nJS")
 	public Map<String, String> i18nJs(HttpServletRequest request) throws Exception {

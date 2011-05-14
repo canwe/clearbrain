@@ -11,7 +11,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 /**
  * Custom UsernamePasswordAuthenticationFilter bean for SpringSecurity to log information once authentication is successful.
- * 
+ *
  * @author Nilhcem
  * @since 1.0
  */
@@ -20,10 +20,10 @@ public class LogAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
 	/**
 	 * Log after successful authentication.
-	 * 
-	 * @param request
-	 * @param response
-	 * @param authResult
+	 *
+	 * @param request HTTP request.
+	 * @param response HTTP response.
+	 * @param authResult The object returned from the attemptAuthentication method, which contains authentication data.
 	 */
 	@Override
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, Authentication authResult)

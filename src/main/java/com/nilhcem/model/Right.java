@@ -1,5 +1,6 @@
 package com.nilhcem.model;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,14 +11,15 @@ import javax.persistence.Table;
 
 /**
  * Hibernate mapped class for "rights" table.
- * 
+ *
  * @author Nilhcem
  * @since 1.0
  */
 @Entity
 @Table(name = "rights")
 @SequenceGenerator(name = "seq_right", sequenceName = "rights_right_id_seq", allocationSize = 1)
-public class Right {
+public class Right implements Serializable {
+	private static final long serialVersionUID = 2171721794634296671L;
 	private Long id;
 	private String name;
 

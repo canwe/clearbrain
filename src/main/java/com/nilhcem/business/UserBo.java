@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * Business class for accessing User data.
- * 
+ *
  * @author Nilhcem
  * @since 1.0
  */
@@ -44,8 +44,9 @@ public class UserBo {
 
 	/**
 	 * Save a user in database and hash his password in SHA-256.
-	 * 
-	 * @param user the User we want to save
+	 *
+	 * @param user User we want to save.
+	 * @param locale User's locale.
 	 */
 	@WithTransaction
 	public void signUpUser(User user, Locale locale) {
@@ -64,20 +65,21 @@ public class UserBo {
 
 	/**
 	 * Find a user from his email.
-	 * 
-     * @param email email of the User we are searching for
-     * @return a User object, or null if not found
+	 *
+     * @param email Email of the User we are searching for.
+     * @return User object, or null if not found.
 	 */
 	public User findByEmail(String email) {
 		return userDao.findByEmail(email);
 	}
 
 	/**
-	 * Auto log the user in, after he signs up
-	 * Must be called from request filtered by Spring Security, otherwise SecurityContextHolder is not updated
-	 * @param username
-	 * @param password
-	 * @param request
+	 * Auto log the user in, after he signs up.
+	 * Must be called from a request filtered by Spring Security, otherwise SecurityContextHolder would not be updated.
+	 *
+	 * @param username Email of the user who will be automatically logged-in.
+	 * @param password User's password.
+	 * @param request HTTP request.
 	 */
 	public void autoLoginAfterSignup(String username, String password, HttpServletRequest request) {
 	    try {

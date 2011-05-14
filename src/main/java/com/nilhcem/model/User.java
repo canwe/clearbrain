@@ -1,5 +1,6 @@
 package com.nilhcem.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,14 +21,15 @@ import javax.persistence.TemporalType;
 
 /**
  * Hibernate mapped class for "users" table.
- * 
+ *
  * @author Nilhcem
  * @since 1.0
  */
 @Entity
 @Table(name = "users")
 @SequenceGenerator(name = "seq_user", sequenceName = "users_user_id_seq", allocationSize = 1)
-public class User {
+public class User implements Serializable {
+	private static final long serialVersionUID = 6699360757037780548L;
 	private Long id;
 	private String email;
 	private String password;
@@ -73,7 +75,7 @@ public class User {
 
 	@Column(name = "enabled")
 	public boolean isEnabled() {
-		return enabled;
+		return this.enabled;
 	}
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
