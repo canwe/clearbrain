@@ -3,7 +3,6 @@ package com.nilhcem.core.spring;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import javax.persistence.Transient;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.GrantedAuthorityImpl;
 import com.nilhcem.model.Right;
@@ -16,8 +15,8 @@ import com.nilhcem.model.User;
  * @since 1.0
  */
 public class UserDetailsAdapter extends org.springframework.security.core.userdetails.User {
-	private static final long serialVersionUID = -6113218990905342649L;
-//	private final Long id;
+	private static final long serialVersionUID = 2770692691492399454L;
+	private final Long id;
 	private final User hibernateUser;
 
 	/**
@@ -28,7 +27,7 @@ public class UserDetailsAdapter extends org.springframework.security.core.userde
 	public UserDetailsAdapter(User user) {
 		super(user.getEmail(), user.getPassword(), user.isEnabled(), true, true, true, toAuthorities(user.getRights()));
 		this.hibernateUser = user;
-//		this.id = user.getId();
+		this.id = user.getId();
 	}
 
 	/**
@@ -50,8 +49,7 @@ public class UserDetailsAdapter extends org.springframework.security.core.userde
 	 * @return User's id.
 	 */
 	public Long getId() {
-//		return id;
-		return this.hibernateUser.getId();
+		return id;
 	}
 
 	/**

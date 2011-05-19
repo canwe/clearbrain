@@ -13,14 +13,16 @@ import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 import com.nilhcem.business.UserBo;
-import com.nilhcem.core.hibernate.WithTransaction;
+import com.nilhcem.core.hibernate.TransactionalReadWrite;
 import com.nilhcem.core.spring.UserDetailsAdapter;
 import com.nilhcem.dao.RightDao;
 import com.nilhcem.model.User;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:/applicationContext-test.xml"})
+@Transactional
 public class UserBoTest {
 	private final String EMAIL = "###Test###@example.com";
 	private final String PASSWORD = "myPassword";
@@ -39,11 +41,8 @@ public class UserBoTest {
 	@Autowired
 	private SaltSource saltSource;
 
-	//Sequence won't be rolled-back: 
-	//As explained in postgreSQL documentation:
-	//To avoid blocking of concurrent transactions that obtain numbers from the same sequence, a nextval operation is never rolled back; that is, once a value has been fetched it is considered used, even if the transaction that did the nextval later aborts. This means that aborted transactions might leave unused "holes" in the sequence of assigned values. setval operations are never rolled back, either.
 	@Test
-	@WithTransaction
+	@TransactionalReadWrite
 	@Rollback(true)
 	public void aUserCanSignUp() {
 		User user = new User();

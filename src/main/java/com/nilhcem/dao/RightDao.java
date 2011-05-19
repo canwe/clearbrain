@@ -1,7 +1,10 @@
 package com.nilhcem.dao;
 
+import org.hibernate.Query;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import com.nilhcem.core.hibernate.CustomHibernateDaoSupport;
+import com.nilhcem.core.hibernate.AbstractHibernateDao;
 import com.nilhcem.model.Right;
 
 /**
@@ -10,10 +13,15 @@ import com.nilhcem.model.Right;
  * @author Nilhcem
  * @since 1.0
  */
-@Repository("rightDao")
-public class RightDao extends CustomHibernateDaoSupport<Right> {
+@Repository
+public class RightDao extends AbstractHibernateDao<Right> {
 	public static final String RIGHT_USER = "RIGHT_USER";
 	public static final String RIGHT_ADMIN = "RIGHT_ADMIN";
+
+	@Autowired
+	public RightDao(SessionFactory sessionFactory) {
+		super(Right.class, sessionFactory);
+	}
 
 	/**
 	 * Find a right from its name.
@@ -22,6 +30,9 @@ public class RightDao extends CustomHibernateDaoSupport<Right> {
 	 * @return Right object, or null if not found.
 	 */
 	public Right findByName(String name) {
-		return (Right)getHibernateTemplate().find("from Right where name=?", name).get(0);
+		Query query = query("FROM Right WHERE name=:name")
+			.setParameter("name", name)
+			.setMaxResults(1);
+		return uniqueResult(query);
 	}
 }

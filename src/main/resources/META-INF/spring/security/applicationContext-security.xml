@@ -1,105 +1,107 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans:beans xmlns="http://www.springframework.org/schema/security"
-	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-    		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd">
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:sec="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd">
 
 	<!-- Custom UserDetailsService for authenticating using Hibernate -->
-	<beans:bean id="hibernateUserDetailsService" class="com.nilhcem.core.spring.HibernateUserDetailsService" />
+	<bean id="hibernateUserDetailsService" class="com.nilhcem.core.spring.HibernateUserDetailsService" />
 
 	<!--  RememberMeAuthenticationProvider for authenticating using a remember-me token -->
-	<beans:bean id="rememberMeAuthenticationProvider" class="org.springframework.security.authentication.RememberMeAuthenticationProvider">
-		<beans:property name="key" value="${rememberme.key}" />
-	</beans:bean>
+	<bean id="rememberMeAuthenticationProvider" class="org.springframework.security.authentication.RememberMeAuthenticationProvider">
+		<property name="key" value="${rememberme.key}" />
+	</bean>
 
 	<!-- Hash passwords using SHA-256 -->
-	<beans:bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder">
-		<beans:constructor-arg value="256" />
-	</beans:bean>
+	<bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder">
+		<constructor-arg value="256" />
+	</bean>
 
 	<!-- Add some salt -->
-	<beans:bean id="saltSource" class="org.springframework.security.authentication.dao.ReflectionSaltSource">
-		<beans:property name="userPropertyToUse" value="id" />
-	</beans:bean>
+	<bean id="saltSource" class="org.springframework.security.authentication.dao.ReflectionSaltSource">
+		<property name="userPropertyToUse" value="id" />
+	</bean>
 
 	<!-- Configure authentication mechanism -->
-	<authentication-manager alias="authenticationManager">
-		<authentication-provider ref="rememberMeAuthenticationProvider" />
-		<authentication-provider user-service-ref="hibernateUserDetailsService">
-			<password-encoder ref="passwordEncoder">
-				<salt-source ref="saltSource" />
-			</password-encoder>
-		</authentication-provider>
-	</authentication-manager>
+	<sec:authentication-manager alias="authenticationManager">
+		<sec:authentication-provider ref="rememberMeAuthenticationProvider" />
+		<sec:authentication-provider user-service-ref="hibernateUserDetailsService">
+			<sec:password-encoder ref="passwordEncoder">
+				<sec:salt-source ref="saltSource" />
+			</sec:password-encoder>
+		</sec:authentication-provider>
+	</sec:authentication-manager>
 
 	<!-- Login page -->
-	<beans:bean id="loginUrlEntryPoint" class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
-		<beans:property name="loginFormUrl" value="/login" />
-	</beans:bean>
+	<bean id="loginUrlEntryPoint" class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+		<property name="loginFormUrl" value="/login" />
+	</bean>
 
 	<!-- Custom UsernamePasswordAuthenticationFilter for logging after successful authentication -->
-	<beans:bean id="loginFilter" class="com.nilhcem.core.spring.LogAuthenticationFilter">
-		<beans:property name="rememberMeServices" ref="rememberMeServices" />
-		<beans:property name="authenticationManager" ref="authenticationManager" />
-		<beans:property name="authenticationFailureHandler">
-			<beans:bean class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
-				<beans:property name="defaultFailureUrl" value="/login?error" />
-			</beans:bean>
-		</beans:property>
-		<beans:property name="authenticationSuccessHandler">
-			<beans:bean class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
-				<beans:property name="defaultTargetUrl" value="/dashboard" />
-			</beans:bean>
-		</beans:property>
-	</beans:bean>
+	<bean id="loginFilter" class="com.nilhcem.core.spring.LogAuthenticationFilter">
+		<property name="rememberMeServices" ref="rememberMeServices" />
+		<property name="authenticationManager" ref="authenticationManager" />
+		<property name="authenticationFailureHandler">
+			<bean class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
+				<property name="defaultFailureUrl" value="/login?error" />
+			</bean>
+		</property>
+		<property name="authenticationSuccessHandler">
+			<bean class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
+				<property name="defaultTargetUrl" value="/dashboard" />
+			</bean>
+		</property>
+	</bean>
 
 	<!-- Logout filter-->
-	<beans:bean id="logoutFilter" class="org.springframework.security.web.authentication.logout.LogoutFilter">
-		<beans:constructor-arg value="/" />
-		<beans:constructor-arg>
-			<beans:list>
-				<beans:ref bean="rememberMeServices" />
-				<beans:bean class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler" />
-			</beans:list>
-		</beans:constructor-arg>
-	</beans:bean>
+	<bean id="logoutFilter" class="org.springframework.security.web.authentication.logout.LogoutFilter">
+		<constructor-arg value="/" />
+		<constructor-arg>
+			<list>
+				<ref bean="rememberMeServices" />
+				<bean class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler" />
+			</list>
+		</constructor-arg>
+	</bean>
 
 	<!-- Custom RememberMeAuthenticationFilter for logging after successful authentication through 'remember me' -->
-	<beans:bean id="rememberMeFilter" class="com.nilhcem.core.spring.LogRememberMeAuthenticationFilter">
-		<beans:property name="rememberMeServices" ref="rememberMeServices" />
-		<beans:property name="authenticationManager" ref="authenticationManager" />
-	</beans:bean>
+	<bean id="rememberMeFilter" class="com.nilhcem.core.spring.LogRememberMeAuthenticationFilter">
+		<property name="rememberMeServices" ref="rememberMeServices" />
+		<property name="authenticationManager" ref="authenticationManager" />
+	</bean>
 
 	<!-- Use a database to store 'remember-me' tokens -->
-	<beans:bean id="rememberMeServices" class="org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices">
-	    <beans:property name="alwaysRemember" value="false" />
-	    <beans:property name="tokenRepository">
-			<beans:bean class="org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl">
-			    <beans:property name="createTableOnStartup" value="false" />
-			    <beans:property name="dataSource" ref="dataSource" />
-			</beans:bean>
-	    </beans:property>
-		<beans:property name="userDetailsService" ref="hibernateUserDetailsService" />
-		<beans:property name="key" value="${rememberme.key}" />
-	</beans:bean>
+	<bean id="rememberMeServices" class="org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices">
+	    <property name="alwaysRemember" value="false" />
+	    <property name="tokenRepository">
+			<bean class="org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl">
+			    <property name="createTableOnStartup" value="false" />
+			    <property name="dataSource" ref="dataSource" />
+			</bean>
+	    </property>
+		<property name="userDetailsService" ref="hibernateUserDetailsService" />
+		<property name="key" value="${rememberme.key}" />
+	</bean>
 
 	<!-- HTTP security configuration -->
-	<http auto-config="false" access-denied-page="/access-denied" use-expressions="true" entry-point-ref="loginUrlEntryPoint">
-		<custom-filter position="FORM_LOGIN_FILTER" ref="loginFilter" />
-		<custom-filter position="REMEMBER_ME_FILTER" ref="rememberMeFilter" />
-		<custom-filter position="LOGOUT_FILTER" ref="logoutFilter" />
+	<sec:http auto-config="false" access-denied-page="/access-denied" use-expressions="true" entry-point-ref="loginUrlEntryPoint">
+		<sec:custom-filter position="FORM_LOGIN_FILTER" ref="loginFilter" />
+		<sec:custom-filter position="REMEMBER_ME_FILTER" ref="rememberMeFilter" />
+		<sec:custom-filter position="LOGOUT_FILTER" ref="logoutFilter" />
 
-		<intercept-url pattern="/css/**" filters="none" />
-		<intercept-url pattern="/images/**" filters="none" />
-		<intercept-url pattern="/js/**" filters="none" />
+		<sec:intercept-url pattern="/css/**" filters="none" />
+		<sec:intercept-url pattern="/images/**" filters="none" />
+		<sec:intercept-url pattern="/js/**" filters="none" />
 
-		<intercept-url pattern="/" access="permitAll()" />
-		<intercept-url pattern="/signup" access="permitAll()" />
-		<intercept-url pattern="/signup-completed" access="permitAll()" />
-		<intercept-url pattern="/access-denied" access="permitAll()" />
-		<intercept-url pattern="/login" access="permitAll()" />
+		<sec:intercept-url pattern="/" access="permitAll()" />
+		<sec:intercept-url pattern="/signup" access="permitAll()" />
+		<sec:intercept-url pattern="/signup-completed" access="permitAll()" />
+		<sec:intercept-url pattern="/access-denied" access="permitAll()" />
+		<sec:intercept-url pattern="/login" access="permitAll()" />
 
- 		<intercept-url pattern="/**" access="isAuthenticated()" />
-		<session-management session-fixation-protection="newSession" />
-	</http>
-</beans:beans>
+		<sec:intercept-url pattern="/**" access="isAuthenticated()" />
+		<sec:session-management session-fixation-protection="newSession" />
+	</sec:http>
+</beans>

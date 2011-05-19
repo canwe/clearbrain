@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,6 +21,7 @@ import com.nilhcem.model.User;
  * @author Nilhcem
  * @since 1.0
  */
+@Controller
 @PreAuthorize("hasRole('RIGHT_USER')")
 @RequestMapping("/dashboard")
 public class DashboardController {
@@ -32,8 +34,6 @@ public class DashboardController {
 	 * @return Current user.
 	 */
 	private User getCurrentUser() {
-		//Long userId = ((UserDetailsAdapter)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
-		//User user = userDao.findLazyById(userId);
 		return ((UserDetailsAdapter)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getHibernateUser();
 	}
 

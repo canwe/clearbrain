@@ -9,13 +9,13 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Custom annotation, used in every Business object, to automatically rollback if an Exception object is caught.
+ * Custom read-only annotation, used in every Business object.
  *
  * @author Nilhcem
  * @since 1.0
  */
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Transactional(rollbackFor=Exception.class, propagation=Propagation.REQUIRED)
-public @interface WithTransaction {
+@Transactional(readOnly=true, propagation=Propagation.REQUIRED)
+public @interface TransactionalReadOnly {
 }

@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Custom userDetailsService bean for SpringSecurity to handle authentication using Hibernate.
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
  * @since 1.0
  */
 @Service("userDetailsService")
+@Transactional(readOnly=true)
 public class HibernateUserDetailsService implements UserDetailsService {
 	@Autowired
 	private UserBo userBo;

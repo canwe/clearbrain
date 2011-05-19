@@ -3,7 +3,8 @@ package com.nilhcem.business;
 import java.util.Calendar;
 import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
-import com.nilhcem.core.hibernate.WithTransaction;
+import com.nilhcem.core.hibernate.TransactionalReadOnly;
+import com.nilhcem.core.hibernate.TransactionalReadWrite;
 import com.nilhcem.core.spring.UserDetailsAdapter;
 import com.nilhcem.dao.RightDao;
 import com.nilhcem.dao.UserDao;
@@ -27,6 +28,7 @@ import org.springframework.stereotype.Service;
  * @since 1.0
  */
 @Service
+@TransactionalReadOnly
 public class UserBo {
 	@Autowired
 	private UserDao userDao;
@@ -40,6 +42,7 @@ public class UserBo {
 	private SaltSource saltSource;
 	@Autowired
 	private AuthenticationManager authenticationManager;
+
 	private Logger logger = LoggerFactory.getLogger(UserBo.class);
 
 	/**
@@ -48,7 +51,7 @@ public class UserBo {
 	 * @param user User we want to save.
 	 * @param locale User's locale.
 	 */
-	@WithTransaction
+	@TransactionalReadWrite
 	public void signUpUser(User user, Locale locale) {
 		user.setEnabled(true);
 		user.setRegistrationDate(Calendar.getInstance().getTime());
@@ -57,6 +60,7 @@ public class UserBo {
 		userDao.save(user);
 
 		//Hash password
+		user = userDao.findByEmail(user.getEmail());
 		UserDetailsAdapter userDetails = new UserDetailsAdapter(user);
 		Object salt = saltSource.getSalt(userDetails);
 		user.setPassword(passwordEncoder.encodePassword(userDetails.getPassword(), salt));

@@ -10,12 +10,12 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.bind.support.SimpleSessionStatus;
 import org.springframework.web.servlet.ModelAndView;
+import com.nilhcem.core.hibernate.TransactionalReadWrite;
 import com.nilhcem.form.SignUpForm;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -67,7 +67,7 @@ public class SignUpControllerTest {
 	}
 
 	@Test
-	@Transactional
+	@TransactionalReadWrite
 	@Rollback(true)
 	public void submitSignUpPageWithValidObjectShouldRedirectToCompletedView() {
 		String email = "my.email@company.com";

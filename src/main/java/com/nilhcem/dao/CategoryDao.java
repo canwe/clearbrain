@@ -1,8 +1,11 @@
 package com.nilhcem.dao;
 
 import java.util.List;
+import org.hibernate.Query;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import com.nilhcem.core.hibernate.CustomHibernateDaoSupport;
+import com.nilhcem.core.hibernate.AbstractHibernateDao;
 import com.nilhcem.model.Category;
 import com.nilhcem.model.User;
 
@@ -12,8 +15,13 @@ import com.nilhcem.model.User;
  * @author Nilhcem
  * @since 1.0
  */
-@Repository("categoryDao")
-public class CategoryDao extends CustomHibernateDaoSupport<Category> {
+@Repository
+public class CategoryDao extends AbstractHibernateDao<Category> {
+	@Autowired
+	public CategoryDao(SessionFactory sessionFactory) {
+		super(Category.class, sessionFactory);
+	}
+
 	/**
 	 * Find a category from its id.
 	 *
@@ -21,37 +29,37 @@ public class CategoryDao extends CustomHibernateDaoSupport<Category> {
 	 * @param id Category's id.
 	 * @return Category.
 	 */
-	@SuppressWarnings("unchecked")
 	public Category getById(User user, Long id) {
-		List<Category> categories = getHibernateTemplate().find("FROM Category WHERE user=? AND id=?", user, id);
-		if (categories.isEmpty())
-			return null;
-		return categories.get(0);
+		Query query = query("FROM Category WHERE user=:user AND id=:id")
+			.setParameter("user", user)
+			.setParameter("id", id)
+			.setMaxResults(1);
+		return uniqueResult(query);
 	}
 
 	/**
-	 * Find all the categories owned by user
+	 * Find all the categories owned by user.
 	 *
 	 * @param user Owner of the categories we are searching for.
 	 * @return List of categories.
 	 */
-	@SuppressWarnings("unchecked")
 	public List<Category> getCategories(User user) {
-		return getHibernateTemplate().find("FROM Category WHERE user=?", user);
+		Query query = query("FROM Category WHERE user=:user")
+			.setParameter("user", user);
+		return list(query);
 	}
 
 	/**
 	 * Return last category for user u.
 	 *
-	 * @param user User of the category
-	 * @return Last category owned by user, or null if not found
+	 * @param user User of the category.
+	 * @return Last category owned by user, or null if not found.
 	 */
-	@SuppressWarnings("unchecked")
 	public Category getLastCategory(User user) {
-		List<Category> categories = getHibernateTemplate().find("FROM Category WHERE user=? AND next is null", user);
-		if (categories.isEmpty())
-			return null;
-		return categories.get(0);
+		Query query = query("FROM Category WHERE user=:user AND next is null")
+			.setParameter("user", user)
+			.setMaxResults(1);
+		return uniqueResult(query);
 	}
 
 	/**
@@ -61,18 +69,23 @@ public class CategoryDao extends CustomHibernateDaoSupport<Category> {
 	 * @param category The category which is after the one we are searching for.
 	 * @return The previous category of the one specified in parameters, or null if not found.
 	 */
-	@SuppressWarnings("unchecked")
 	public Category getPreviousCategoryOf(User user, Category category) {
-		List<Category> categories = getHibernateTemplate().find("FROM Category WHERE user=? AND next=?", user, category);
-		if (categories.isEmpty())
-			return null;
-		return categories.get(0);
+		Query query = query("FROM Category WHERE user=:user AND next=:next")
+			.setParameter("user", user)
+			.setParameter("next", category)
+			.setMaxResults(1);
+		return uniqueResult(query);
 	}
 
-////	@SuppressWarnings("unchecked")
-//	public void checkIfCategoriesAreCorrectlyOrdered(User user) throws Exception {
-////		List<Category> categories = getHibernateTemplate().find("FROM Category c1 WHERE c1.user=? AND c1.nextCategoryId IN (Select c2.nextCategoryId FROM Category c2 WHERE c2.user=? AND c2.id != c1.id)", user, user);
-////		if (!categories.isEmpty())
-//			throw new Exception("An error occured while updating categories positions");
-//	}
+	/**
+	 * Simple check to verify categories were properly inserted.
+	 * @param user User of the categories.
+	 * @throws Exception If two categories have the same 'next' value, which means something was wrong. Exception will be used to do a rollback.
+	 */
+	public void checkIfCategoriesAreProperlyOrdered(User user) throws Exception {
+		Query query = query("FROM Category c1 WHERE c1.user=:user AND c1.nextCategoryId IN (Select c2.nextCategoryId FROM Category c2 WHERE c2.user=:user AND c2.id != c1.id)")
+			.setParameter("user", user);
+		if (!list(query).isEmpty())
+			throw new Exception("An error occured while updating categories positions");
+	}
 }

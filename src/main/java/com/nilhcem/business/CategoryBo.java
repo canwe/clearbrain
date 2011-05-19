@@ -10,7 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.nilhcem.core.hibernate.WithTransaction;
+import com.nilhcem.core.hibernate.TransactionalReadOnly;
+import com.nilhcem.core.hibernate.TransactionalReadWrite;
 import com.nilhcem.dao.CategoryDao;
 import com.nilhcem.model.Category;
 import com.nilhcem.model.User;
@@ -22,10 +23,10 @@ import com.nilhcem.model.User;
  * @since 1.0
  */
 @Service
+@TransactionalReadOnly
 public class CategoryBo {
 	@Autowired
 	private CategoryDao dao;
-
 	private Logger logger = LoggerFactory.getLogger(CategoryBo.class);
 
 	/**
@@ -79,7 +80,7 @@ public class CategoryBo {
 	 * @param categoryName The name of the category we want to add.
 	 * @return The new added category.
 	 */
-	@WithTransaction
+	@TransactionalReadWrite
 	public Category addCategory(User user, String categoryName) {
 		logger.debug("Add category {}", categoryName);
 
@@ -106,7 +107,7 @@ public class CategoryBo {
 	 * @param user Owner of the category.
 	 * @param categoryId The category we want to remove.
 	 */
-	@WithTransaction
+	@TransactionalReadWrite
 	public void removeCategory(User user, Long categoryId) {
 		logger.debug("Remove category {}", categoryId);
 		Category toRemove = dao.getById(user, categoryId);
@@ -128,7 +129,7 @@ public class CategoryBo {
 	 * @param oldId The previous category (the new one will be before or after this one).
 	 * @param before The category will be before (== true) or after (== false) prevId.
 	 */
-	@WithTransaction
+	@TransactionalReadWrite
 	public void updatePosition(User user, Long catId, Long oldId, boolean before) throws Exception {
 		if (logger.isDebugEnabled())
 			logger.debug("Update position: Category {} will be {} {}", new Object[] {catId, (before ? "before" : "after"), oldId});
@@ -157,8 +158,8 @@ public class CategoryBo {
 		}
 		dao.update(curCat);
 
-//		//Check if new order has a sense...
-//		dao.checkIfCategoriesAreCorrectlyOrdered(user);
+		//Check if new order has a sense...
+		dao.checkIfCategoriesAreProperlyOrdered(user);
 	}
 
 	/**
@@ -168,7 +169,7 @@ public class CategoryBo {
 	 * @param categoryId The category we want to change the display value.
 	 * @param displayed The new display value.
 	 */
-	@WithTransaction
+	@TransactionalReadWrite
 	public void showHideCategory(User user, Long categoryId, boolean displayed) {
 		Category category = dao.getById(user, categoryId);
 		category.setDisplayed(displayed);

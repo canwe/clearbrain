@@ -1,6 +1,7 @@
 package com.nilhcem.business;
 
 import java.util.Locale;
+import com.nilhcem.core.hibernate.TransactionalReadOnly;
 import com.nilhcem.dao.LanguageDao;
 import com.nilhcem.model.Language;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
  * @since 1.0
  */
 @Service
+@TransactionalReadOnly
 public class LanguageBo {
 	private static final String DEFAULT_LANG = "en_US";
 	@Autowired

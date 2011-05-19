@@ -1,39 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns:context="http://www.springframework.org/schema/context"
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans  http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
-	http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<!-- Auto scan the components: Load @Controllers only -->
+	<context:component-scan base-package="com.nilhcem" use-default-filters="false">
+	    <context:include-filter expression="org.springframework.stereotype.Controller" type="annotation"/>
+	</context:component-scan>
+
+	<!-- Declares explicit support for annotation-driver MVC controllers (i.e. @RequestMapping, @Controller, etc). Useful for JSON support via Jackson -->
+	<mvc:annotation-driven />
 
 	<!-- Resolves view names to protected .jsp resources within the /WEB-INF/views directory -->
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/views/" />
 		<property name="suffix" value=".jsp" />
 	</bean>
-
-	<!-- Enables auto-scan and components filtering -->
-	<context:component-scan base-package="com.nilhcem">
-		<context:include-filter type="regex" expression="com.nilhcem.controller.*" />
-		<context:include-filter type="regex" expression="com.nilhcem.validator.*" />
-		<context:include-filter type="regex" expression="com.nilhcem.core.spring.RedirectViewResolver" />
-	</context:component-scan>
-
-	<!-- Configures the @Controller programming model -->
-	<mvc:annotation-driven />
-
-	<!-- Forwards requests to some views -->
-	<mvc:view-controller path="/" view-name="front/welcome" />
-	<mvc:view-controller path="/login" view-name="front/login" />
-	<!-- TODO
-	<mvc:view-controller path="/access-denied" view-name="AccessDenied" />
-	 -->
-
-	<!-- Exclude folders from being mapped by Spring MVC -->
-	<mvc:resources mapping="/css/**" location="/css/" />
-	<mvc:resources mapping="/images/**" location="/images/" />
-	<mvc:resources mapping="/js/**" location="/js/" />
 
 	<!-- i18n -->
 	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
@@ -54,4 +41,15 @@
 	    </bean>
 	</mvc:interceptors>
 
+	<!-- Exclude folders from being mapped by Spring MVC -->
+	<mvc:resources mapping="/css/**" location="/css/" />
+	<mvc:resources mapping="/images/**" location="/images/" />
+	<mvc:resources mapping="/js/**" location="/js/" />
+
+	<!-- Forwards requests to some views -->
+	<mvc:view-controller path="/" view-name="front/welcome" />
+	<mvc:view-controller path="/login" view-name="front/login" />
+	<!-- TODO
+	<mvc:view-controller path="/access-denied" view-name="AccessDenied" />
+	 -->
 </beans>
