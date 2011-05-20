@@ -104,6 +104,8 @@ function editCategory() {
 
 	editContainer.toggle();
 	$('#cat-unclassified').toggle();
+	if (editContainer.is(':visible'))
+		$('#cat-name').focus();
 }
 
 //Get category id by removing 'cat-' before
