@@ -1,9 +1,11 @@
 package com.nilhcem.controller;
 
 import static org.junit.Assert.*;
+import java.util.Map;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -16,5 +18,17 @@ public class DashboardControllerTest {
 	@Test
 	public void shouldGetDashboardPage() {
 		assertEquals("logged/dashboard", controller.getDashboardView());
+	}
+
+	@Test
+	public void testJavascriptLocales() throws Exception {
+		String[] keys = {"cat.rm", "cat.edit", "cat.finEdit", "cat.trash", "cat.rm", "cat.confRm", "cat.confRmQ", "cat.rmOk", "cat.updErr"};
+
+		MockHttpServletRequest request = new MockHttpServletRequest("get", "/logged/dashboard");
+		Map<String, String> map = controller.i18nJs(request);
+		assertNotNull(map);
+
+		for (String key : keys)
+			assertNotNull(map.get(key));
 	}
 }
