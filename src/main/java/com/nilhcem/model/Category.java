@@ -1,5 +1,6 @@
 package com.nilhcem.model;
 
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
@@ -25,6 +28,7 @@ public class Category {
 	private Long id;
 	private String name;
 	private boolean displayed;
+	private Date creationDate;
 	private Category next;
 	private Long nextCategoryId;
 	private User user;
@@ -45,6 +49,16 @@ public class Category {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@JsonIgnore
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "creation_date", nullable = false)
+	public Date getCreationDate() {
+		return this.creationDate;
+	}
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
 	}
 
 	@Column(name = "is_displayed")

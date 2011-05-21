@@ -1,6 +1,7 @@
 package com.nilhcem.business;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -92,6 +93,7 @@ public class CategoryBo {
 		category.setName(categoryName);
 		category.setDisplayed(true);
 		category.setUser(user);
+		category.setCreationDate(Calendar.getInstance().getTime());
 		dao.save(category);
 
 		if (last != null) {

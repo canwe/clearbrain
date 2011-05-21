@@ -15,7 +15,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import com.nilhcem.business.UserBo;
-import com.nilhcem.core.hibernate.TransactionalReadWrite;
 import com.nilhcem.core.spring.UserDetailsAdapter;
 import com.nilhcem.dao.RightDao;
 import com.nilhcem.model.User;
@@ -42,15 +41,18 @@ public class UserBoTest {
 	private SaltSource saltSource;
 
 	@Test
-	@TransactionalReadWrite
 	@Rollback(true)
-	public void aUserCanSignUp() {
+	public void aUserCanSignUp() throws Exception{
 		User user = new User();
 		user.setEmail(EMAIL);
 		user.setPassword(PASSWORD);
-		Date before = Calendar.getInstance().getTime();
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.SECOND, -1);
+		Date before = cal.getTime();
 		usersHandler.signUpUser(user, new Locale(LOCALE.split("_")[0], LOCALE.split("_")[1]));
-		Date after = Calendar.getInstance().getTime();
+		cal = Calendar.getInstance();
+		cal.add(Calendar.SECOND, 1);
+		Date after = cal.getTime();
 		checkIfUserIsSavedInDB(before, after);
 	}
 

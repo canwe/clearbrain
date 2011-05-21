@@ -28,10 +28,14 @@ public class NoteBoTest {
 		testAddNote(user);
 	}
 
-	private void testAddNote(User user) {
-		Date before = Calendar.getInstance().getTime();
+	private void testAddNote(User user) throws Exception {
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.SECOND, -1);
+		Date before = cal.getTime();
 		Note note = noteService.addNote(user, NOTE_NAME);
-		Date after = Calendar.getInstance().getTime();
+		cal = Calendar.getInstance();
+		cal.add(Calendar.SECOND, 1);
+		Date after = cal.getTime();
 		assertNull(note.getCategory());
 		assertNull(note.getResolvedDate());
 		assertEquals(NOTE_NAME, note.getName());

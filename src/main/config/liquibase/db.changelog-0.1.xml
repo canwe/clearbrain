@@ -111,6 +111,9 @@
 				<constraints nullable="false" />
 			</column>
 			<column name="is_displayed" type="boolean" defaultValue="true" />
+			<column name="creation_date" type="timestamp">
+				<constraints nullable="false" />
+			</column>
 			<column name="next_category_id" type="bigint">
 				<constraints foreignKeyName="categories_next_category_id_fk" references="categories(category_id)" />
 			</column>

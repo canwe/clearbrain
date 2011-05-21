@@ -1,6 +1,8 @@
 package com.nilhcem.business;
 
 import static org.junit.Assert.*;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,8 +26,15 @@ public class CategoryBoTest {
 	@Test
 	public void testCategories() throws Exception {
 		User user = testUtils.getTestUser();
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.SECOND, -1);
+		Date before = cal.getTime();
 		addCategories(user);
+		cal = Calendar.getInstance();
+		cal.add(Calendar.SECOND, 1);
+		Date after = cal.getTime();
 		List<Category> sortedCategories = checkIfCategoriesAreCorrectlyAddedAndSorted(user, categories);
+		checkCreationDate(before, after, sortedCategories.get(0));
 		testShowHideCategories(user, sortedCategories);
 		moveCategories(user, sortedCategories);
 		removeCategories(user, sortedCategories);
@@ -50,6 +59,12 @@ public class CategoryBoTest {
 				assertNull(category.getNext());
 		}
 		return sortedCategories;
+	}
+
+	private void checkCreationDate(Date before, Date after, Category category) {
+		assertNotNull(category.getCreationDate());
+		assertFalse(before.after(category.getCreationDate()));
+		assertFalse(after.before(category.getCreationDate()));
 	}
 
 	private void moveCategories(User user, List<Category> cats) throws Exception {
