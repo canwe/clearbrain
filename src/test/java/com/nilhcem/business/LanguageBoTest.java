@@ -13,10 +13,10 @@ import com.nilhcem.model.Language;
 @ContextConfiguration(locations = {"classpath:/applicationContext-test.xml"})
 public class LanguageBoTest {
 	@Autowired
-	private LanguageBo languagesBo;
+	private LanguageBo service;
 
 	private Language getLanguageByCode(String code) {
-		return languagesBo.findByLocale(new Locale(code.split("_")[0], code.split("_")[1]));
+		return service.findByLocale(new Locale(code.split("_")[0], code.split("_")[1]));
 	}
 
 	@Test

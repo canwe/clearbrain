@@ -20,7 +20,7 @@ public class NoteBoTest {
 	@Autowired
 	private TestUtils testUtils;
 	@Autowired
-	private NoteBo noteService;
+	private NoteBo service;
 
 	@Test
 	public void testNote() throws Exception {
@@ -32,7 +32,7 @@ public class NoteBoTest {
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.SECOND, -1);
 		Date before = cal.getTime();
-		Note note = noteService.addNote(user, NOTE_NAME);
+		Note note = service.addNote(user, NOTE_NAME);
 		cal = Calendar.getInstance();
 		cal.add(Calendar.SECOND, 1);
 		Date after = cal.getTime();

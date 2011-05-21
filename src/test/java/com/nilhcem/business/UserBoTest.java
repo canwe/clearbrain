@@ -29,7 +29,7 @@ public class UserBoTest {
 
 	@Autowired
 	@Qualifier(value = "userBo")
-	private UserBo usersHandler;
+	private UserBo service;
 
 	@Autowired
 	private RightDao rightDao;
@@ -49,7 +49,7 @@ public class UserBoTest {
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.SECOND, -1);
 		Date before = cal.getTime();
-		usersHandler.signUpUser(user, new Locale(LOCALE.split("_")[0], LOCALE.split("_")[1]));
+		service.signUpUser(user, new Locale(LOCALE.split("_")[0], LOCALE.split("_")[1]));
 		cal = Calendar.getInstance();
 		cal.add(Calendar.SECOND, 1);
 		Date after = cal.getTime();
@@ -57,9 +57,9 @@ public class UserBoTest {
 	}
 
 	private void checkIfUserIsSavedInDB(Date before, Date after) {
-		User userNull = usersHandler.findByEmail("");
+		User userNull = service.findByEmail("");
 		assertNull(userNull);
-		User user = usersHandler.findByEmail(EMAIL);
+		User user = service.findByEmail(EMAIL);
 		assertNotNull(user);
 		assertEquals(EMAIL, user.getEmail());
 		assertEquals(LOCALE, user.getLanguage().getCode());

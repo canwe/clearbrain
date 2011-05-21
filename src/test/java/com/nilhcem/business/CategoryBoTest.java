@@ -21,7 +21,7 @@ public class CategoryBoTest {
 	@Autowired
 	private TestUtils testUtils;
 	@Autowired
-	private CategoryBo categoriesHandler;
+	private CategoryBo service;
 
 	@Test
 	public void testCategories() throws Exception {
@@ -42,11 +42,11 @@ public class CategoryBoTest {
 
 	private void addCategories(User user) {
 		for (String category : categories)
-			categoriesHandler.addCategory(user, category);
+			service.addCategory(user, category);
 	}
 
 	private List<Category> checkIfCategoriesAreCorrectlyAddedAndSorted(User user, String[] expectedOrder) {
-		List<Category> sortedCategories = categoriesHandler.getSortedCategories(user);
+		List<Category> sortedCategories = service.getSortedCategories(user);
 		assertEquals(expectedOrder.length, sortedCategories.size());
 		
 		int idx = 0;
@@ -68,41 +68,41 @@ public class CategoryBoTest {
 	}
 
 	private void moveCategories(User user, List<Category> cats) throws Exception {
-		categoriesHandler.updatePosition(user, cats.get(1).getId(), cats.get(0).getId(), true);
+		service.updatePosition(user, cats.get(1).getId(), cats.get(0).getId(), true);
 		checkIfCategoriesAreCorrectlyAddedAndSorted(user, new String[] {"2", "1", "3", "4", "5"});
-		categoriesHandler.updatePosition(user, cats.get(1).getId(), cats.get(4).getId(), false);
+		service.updatePosition(user, cats.get(1).getId(), cats.get(4).getId(), false);
 		checkIfCategoriesAreCorrectlyAddedAndSorted(user, new String[] {"1", "3", "4", "5", "2"});
-		categoriesHandler.updatePosition(user, cats.get(4).getId(), cats.get(2).getId(), true);
+		service.updatePosition(user, cats.get(4).getId(), cats.get(2).getId(), true);
 		checkIfCategoriesAreCorrectlyAddedAndSorted(user, new String[] {"1", "5", "3", "4", "2"});
-		categoriesHandler.updatePosition(user, cats.get(4).getId(), cats.get(2).getId(), false);
+		service.updatePosition(user, cats.get(4).getId(), cats.get(2).getId(), false);
 		checkIfCategoriesAreCorrectlyAddedAndSorted(user, new String[] {"1", "3", "5", "4", "2"});
-		categoriesHandler.updatePosition(user, cats.get(3).getId(), cats.get(4).getId(), true);
+		service.updatePosition(user, cats.get(3).getId(), cats.get(4).getId(), true);
 		checkIfCategoriesAreCorrectlyAddedAndSorted(user, new String[] {"1", "3", "4", "5", "2"});
-		categoriesHandler.updatePosition(user, cats.get(1).getId(), cats.get(2).getId(), true);
+		service.updatePosition(user, cats.get(1).getId(), cats.get(2).getId(), true);
 		checkIfCategoriesAreCorrectlyAddedAndSorted(user, new String[] {"1", "2", "3", "4", "5"});
 	}
 
 	private void removeCategories(User user, List<Category> cats) {
-		categoriesHandler.removeCategory(user, cats.get(3).getId());
+		service.removeCategory(user, cats.get(3).getId());
 		checkIfCategoriesAreCorrectlyAddedAndSorted(user, new String[] {"1", "2", "3", "5"});
-		categoriesHandler.removeCategory(user, cats.get(1).getId());
+		service.removeCategory(user, cats.get(1).getId());
 		checkIfCategoriesAreCorrectlyAddedAndSorted(user, new String[] {"1", "3", "5"});
-		categoriesHandler.removeCategory(user, cats.get(4).getId());
+		service.removeCategory(user, cats.get(4).getId());
 		checkIfCategoriesAreCorrectlyAddedAndSorted(user, new String[] {"1", "3"});
-		categoriesHandler.removeCategory(user, cats.get(0).getId());
+		service.removeCategory(user, cats.get(0).getId());
 		checkIfCategoriesAreCorrectlyAddedAndSorted(user, new String[] {"3"});
-		categoriesHandler.removeCategory(user, cats.get(2).getId());
+		service.removeCategory(user, cats.get(2).getId());
 		checkIfCategoriesAreCorrectlyAddedAndSorted(user, new String[] {});
 	}
 
 	private void testShowHideCategories(User user, List<Category> cats) {
 		Category curCat = cats.get(0);
 		assertTrue(curCat.isDisplayed());
-		categoriesHandler.showHideCategory(user, curCat.getId(), false);
-		curCat = categoriesHandler.getSortedCategories(user).get(0);
+		service.showHideCategory(user, curCat.getId(), false);
+		curCat = service.getSortedCategories(user).get(0);
 		assertFalse(curCat.isDisplayed());
-		categoriesHandler.showHideCategory(user, curCat.getId(), true);
-		curCat = categoriesHandler.getSortedCategories(user).get(0);
+		service.showHideCategory(user, curCat.getId(), true);
+		curCat = service.getSortedCategories(user).get(0);
 		assertTrue(curCat.isDisplayed());
 	}
 }

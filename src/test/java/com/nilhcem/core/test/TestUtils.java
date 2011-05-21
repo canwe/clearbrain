@@ -14,16 +14,16 @@ public class TestUtils {
 	@Autowired
 	private UserDao dao;
 	@Autowired
-	private UserBo usersHandler;
+	private UserBo service;
 
 	@TransactionalReadWrite
 	public synchronized User getTestUser() {
-		User user = usersHandler.findByEmail(TEST_USER_EMAIL);
+		User user = service.findByEmail(TEST_USER_EMAIL);
 		if (user == null) {
 			user = new User();
 			user.setEmail(TEST_USER_EMAIL);
 			user.setPassword(TEST_USER_PASSWD);
-			usersHandler.signUpUser(user, new Locale("en", "US"));
+			service.signUpUser(user, new Locale("en", "US"));
 			user.setEnabled(false); //test account
 			dao.update(user);
 		}
