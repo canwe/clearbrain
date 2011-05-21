@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="<spring:url value="/css/logged.css" />" type="text/css" media="screen, projection" />
 	<script type="text/javascript" src="<spring:url value="/js/jquery-1.5.1.min.js" />"></script>
     <script type="text/javascript" src="<spring:url value="/js/jquery-ui-1.8.11.custom.min.js" />"></script>
+	<script type="text/javascript" src="<spring:url value="/js/jquery-clearfield.min.js" />"></script>
 	<c:if test="${i18nJS != null && not empty i18nJS}">
 		<script type="text/javascript">
 			var i18n = new Array();
@@ -30,6 +31,6 @@
 
 <body>
 	<div class="header">
-		S2NDBRN - All - Today - Tomorrow - This week - This month - [+] Add task - Account
+		S2NDBRN - All - Today - Tomorrow - This week - This month - <span id="header-addtask" class="pointer">[+] Add task</span> - Account
 	</div>
     <div class="container">

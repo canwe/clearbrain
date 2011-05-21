@@ -3,13 +3,17 @@ var catPositions, //used to know the categories positions
 	rmLock = false; //avoid updating category while removing one
 
 jQuery(function($) { //same as $(document).ready(function()
+	/***** Categories *****/
 	var catName = $('#cat-name'),
-		trash = $('#categories-container').find('.trash');
+		trash = $('#categories-container').find('.trash'),
+		categories = $('#categories'),
+		quickAdd = $('#quick-add-task'),
+		quickAddContainer = $('#quick-add-task-container');
 
 	fillCatPositionsArray();
 
 	//Make categories sortable
-	$('#categories').sortable({
+	categories.sortable({
 		axis: 'y',
 		containment: '#categories-container',
 		distance: 10,
@@ -18,7 +22,7 @@ jQuery(function($) { //same as $(document).ready(function()
 			updateCategoryPosition(event, ui);
 		}
 	});
-	$('#categories').disableSelection();
+	categories.disableSelection();
 
 	//When we click on "Add / Edit categories"
 	$('#cat-edit').click(function() {
@@ -27,10 +31,10 @@ jQuery(function($) { //same as $(document).ready(function()
 
 	//Add category when pressing 'Enter key'
 	catName.live('keyup', function(e) {
-	    if (e.keyCode == 13 && catName.val() != '') {
-	    	catName.attr('disabled', true);
-	    	addCategory(catName);
-	    }
+		if (e.keyCode == 13 && catName.val() != '') {
+			catName.attr('disabled', true);
+			addCategory(catName);
+		}
 	    return false;
 	});
 
@@ -50,8 +54,32 @@ jQuery(function($) { //same as $(document).ready(function()
 	});
 
 	//When we click on the checkbox of a category
-	$('#categories').delegate('li input', 'click', function(event) {
-		showHideCategory(getCategoryId($(this).parent().attr("id")), $(this).attr("checked"));
+	categories.delegate('li input', 'click', function(event) {
+		showHideCategory(getCategoryId($(this).parent().attr('id')), $(this).attr('checked'));
+	});
+
+
+	/***** Notes *****/
+	//When we click on "[+] Add task" button
+	$('#header-addtask').click(function() {
+		quickAddContainer.slideDown('slow');
+	});
+
+	//When we click on "Close" quick add task
+	$('#hide-quick-add-task').click(function() {
+		quickAddContainer.slideUp('slow');
+	});
+
+	//Enable clearField plugin on quick-add-task field
+	quickAdd.clearField();
+
+	//Add a note when pressing 'Enter key'
+	quickAdd.live('keyup', function(e) {
+		if (e.keyCode == 13 && quickAdd.val() != '') {
+			quickAdd.attr('disabled', true);
+			addNote(quickAdd);
+	    }
+	    return false;
 	});
 });
 
@@ -148,7 +176,7 @@ function updateCategoryPosition(event, ui) {
 			before : (ui.position.top < ui.originalPosition.top) //before or after
 		}, function(data) {
 			if (data == false) {//an error occured... refresh page
-				alert("An error occured. Page will be refreshed...")
+				alert('An error occured. Page will be refreshed...')
 				window.location.reload();
 			}
 			else
@@ -162,5 +190,20 @@ function showHideCategory(id, display) {
 	$.post('#', {
 		id : id, //category's id
 		display : display //display (true / false)
+	});
+}
+
+
+/* Notes */
+
+//Add a note
+function addNote(noteName) {
+	$.post('#', {
+		addNote : noteName.val()
+	}, function(data) {
+		//TODO: A lot of things (create a templateNote, clone it...)
+		noteName.val('');
+		$('#quick-add-task').clearField()
+		noteName.attr('disabled', false);
 	});
 }

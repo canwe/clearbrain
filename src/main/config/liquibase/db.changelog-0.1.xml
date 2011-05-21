@@ -120,4 +120,27 @@
 		</createTable>
 		<createSequence sequenceName="categories_category_id_seq" />
 	</changeSet>
+
+	<changeSet id="0.1.9" author="nilhcem" runAlways="false">
+		<comment>Create table "notes"</comment>
+		<createTable tableName="notes">
+			<column name="note_id" type="bigint">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="name" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="creation_date" type="timestamp">
+				<constraints nullable="false" />
+			</column>
+			<column name="resolved_date" type="timestamp" />
+			<column name="category_id" type="bigint">
+				<constraints foreignKeyName="notes_category_id_fk" references="categories(category_id)" />
+			</column>
+			<column name="user_id" type="bigint">
+				<constraints foreignKeyName="notes_user_id_fk" references="users(user_id)" nullable="false" />
+			</column>
+		</createTable>
+		<createSequence sequenceName="notes_note_id_seq" />
+	</changeSet>
 </databaseChangeLog>

@@ -1,3 +1,12 @@
+/* Clearfield plugin */
+.clearFieldBlurred {
+	color: #666;
+	font-style: italic;
+}
+.clearFieldActive {
+	color: #000;
+}
+
 /* header */
 body {
 	background-color: #eee;
@@ -11,23 +20,37 @@ body {
 	width: 100%;
 }
 
-
-/* Dashboard */
-.left-container {
-	background-color: #fff;
-	border: 1px solid grey;
-	min-height: 600px;
-	padding: 4px 10px;
+.pointer {
+	cursor: pointer;
 }
 
-.right-container {
+.container {
 	background-color: #fff;
 	border: 1px solid grey;
+	border-top: 0;
+	min-height: 590px;
 }
+
 
 /* Dashboard - Categories */
+.top-grey-box {
+	background-color: #eee;
+	border: 1px solid grey;
+	border-radius: 0 0 6px 6px;
+	border-top: 0;
+}
+
+.date-container {
+	margin: 0 18px;
+	padding: 4px 0;
+	text-align: center;
+}
+
+.categories-main-container {
+	padding: 31px 16px 0;
+}
+
 #categories {
-	cursor: pointer;
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
@@ -40,12 +63,28 @@ body {
 	height: 18px;
 	margin: 0 3px 3px 3px;
 	padding: 5px;
+	width: 230px;
 }
 
 #categories li.highlight {
 	background-color: #f2f2f2;
 	border: 1px dashed #d3d3d3;
 	height: 18px;
+}
+
+#cat-edit-container {
+	padding: 5px;
+}
+
+#quick-add-task-container {
+	width: 640px;
+}
+
+#quick-add-task {
+	height: 25px;
+	margin: 8px 0 8px 14px;
+	padding: 0 6px;
+	width: 592px;
 }
 
 #view-example {
@@ -56,20 +95,15 @@ body {
 	margin-left: 10px;
 }
 
-#cat-edit {
-	cursor: pointer;	
-}
-
 #cat-name {
-	width: 226px;
+	width: 238px;
 }
 
 .trash {
 	background-color: #F2D0D0;
 	border-color: red;
-	cursor: pointer;
 	display: none;
-	width: 212px;
+	width: 230px;
 }
 
 .trashover {

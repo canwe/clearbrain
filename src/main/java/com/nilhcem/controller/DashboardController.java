@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.nilhcem.business.CategoryBo;
+import com.nilhcem.business.NoteBo;
 import com.nilhcem.core.spring.UserDetailsAdapter;
 import com.nilhcem.model.Category;
+import com.nilhcem.model.Note;
 import com.nilhcem.model.User;
 
 /**
@@ -27,6 +29,8 @@ import com.nilhcem.model.User;
 public class DashboardController {
 	@Autowired
 	private CategoryBo categoryBo;
+	@Autowired
+	private NoteBo noteBo;
 
 	/**
 	 * Get current user from session.
@@ -107,5 +111,16 @@ public class DashboardController {
 	public @ResponseBody void showHideCategory(@RequestParam(value = "id", required = true) Long catId, 
 		@RequestParam(value = "display", required = true) boolean displayed) {
 		categoryBo.showHideCategory(getCurrentUser(), catId, displayed);
+	}
+
+	/**
+	 * Add a quick note.
+	 *
+	 * @param name Note's name.
+	 * @return The added note.
+	 */
+	@RequestMapping(method = RequestMethod.POST, params = { "addNote" })
+	public @ResponseBody Note addNote(@RequestParam(value = "addNote", required = true) String name) {
+		return noteBo.addNote(getCurrentUser(), name);
 	}
 }
