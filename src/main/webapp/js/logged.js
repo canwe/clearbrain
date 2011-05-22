@@ -8,7 +8,8 @@ jQuery(function($) { //same as $(document).ready(function()
 		trash = $('#categories-container').find('.trash'),
 		categories = $('#categories'),
 		quickAdd = $('#quick-add-task'),
-		quickAddContainer = $('#quick-add-task-container');
+		quickAddContainer = $('#quick-add-task-container'),
+		notes = $('#notes');
 
 	fillCatPositionsArray();
 
@@ -40,15 +41,15 @@ jQuery(function($) { //same as $(document).ready(function()
 
 	//Remove element when putting it in trash
 	trash.droppable({
-		over: function(event, ui){
+		over: function(event, ui) {
 			ui.draggable.hide();
 			$(this).addClass('trashover');
 			$(this).text(i18n['cat.rm'] + ' ' + ui.draggable.text());
 		},
-		out: function(event, ui){
+		out: function(event, ui) {
 			trashOut(trash, event, ui);
 		},
-		drop: function(event, ui){
+		drop: function(event, ui) {
 			removeCategory(trash, event, ui);
 		}
 	});
@@ -60,6 +61,16 @@ jQuery(function($) { //same as $(document).ready(function()
 
 
 	/***** Notes *****/
+	//Make notes sortable
+	notes.sortable({
+		containment: '.container',
+		distance: 10,
+		placeholder: 'highlight',
+		update: function(event, ui) {
+		}
+	});
+	notes.disableSelection();
+
 	//When we click on "[+] Add task" button
 	$('#header-addtask').click(function() {
 		quickAddContainer.slideDown('slow');

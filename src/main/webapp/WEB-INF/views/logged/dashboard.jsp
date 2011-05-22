@@ -46,6 +46,12 @@
 		<input id="quick-add-task" class="clearField" type="text" value="<spring:message code="dashboard.note.quickInsert" />" />
 	</div>
 	<br />
-	Right side... Should have a lot of crazy stuff later...
+
+	<ul id="notes" class="pointer">
+		<c:forEach items="${notesList}" var="cur">
+			<li id="note-<c:out value="${cur.id}" />"> <input type="checkbox" /> <c:out value="${cur.name}" /></li>
+		</c:forEach>
+	</ul>
+
 </div>
 <%@include file="/WEB-INF/views/logged/footer.jsp"%>

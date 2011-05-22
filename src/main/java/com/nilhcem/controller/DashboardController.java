@@ -122,6 +122,16 @@ public class DashboardController {
 	}
 
 	/**
+	 * Populate notes list.
+	 *
+	 * @return Users' notes.
+	 */
+	@ModelAttribute(value="notesList")
+	public List<Note> populateNotesList() {
+		return noteBo.getNotes(getCurrentUser());
+	}
+
+	/**
 	 * Add a quick note.
 	 *
 	 * @param name Note's name.

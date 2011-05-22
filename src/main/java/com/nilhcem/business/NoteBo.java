@@ -1,6 +1,7 @@
 package com.nilhcem.business;
 
 import java.util.Calendar;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,5 +44,15 @@ public class NoteBo {
 		dao.save(note);
 
 		return note;
+	}
+
+	/**
+	 * Find all the notes owned by user.
+	 *
+	 * @param user Owner of the notes we are searching for.
+	 * @return List of notes.
+	 */
+	public List<Note> getNotes(User user) {
+		return dao.getNotes(user);
 	}
 }
