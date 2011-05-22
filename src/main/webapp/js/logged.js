@@ -43,7 +43,7 @@ jQuery(function($) { //same as $(document).ready(function()
 		over: function(event, ui){
 			ui.draggable.hide();
 			$(this).addClass('trashover');
-			$(this).text('Remove ' + ui.draggable.text());
+			$(this).text(i18n['cat.rm'] + ' ' + ui.draggable.text());
 		},
 		out: function(event, ui){
 			trashOut(trash, event, ui);
@@ -96,7 +96,7 @@ function fillCatPositionsArray() {
 function trashOut(trash, event, ui) {
 	ui.draggable.show();
 	trash.removeClass('trashover');
-	trash.text('Trash');
+	trash.text(i18n['cat.trash']);
 }
 
 //Add a category
@@ -122,12 +122,12 @@ function editCategory() {
 
 	if (editContainer.is(':visible')) {
 		trash.hide();
-		$('#cat-edit').html('Edit / Add');
+		$('#cat-edit').html(i18n['cat.edit']);
 	}
 	else {
 		if (catPositions.length > 0) //display trash only if we have at least one category
 			trash.show();
-		$('#cat-edit').html('Finish editing');
+		$('#cat-edit').html(i18n['cat.finEdit']);
 	}
 
 	editContainer.toggle();
@@ -145,7 +145,7 @@ function getCategoryId(id) {
 function removeCategory(trash, event, ui) {
 	rmLock = true;
 	trash.removeClass('trashover');
-	if (confirm('Do you really want to remove' + ui.draggable.text() + '?')) {
+	if (confirm(i18n['cat.confRm'] + ui.draggable.text() + i18n['cat.confRmQ'])) {
 		if (catPositions.length == 1) //hide trash if we don't have a category anymore
 			trash.hide();
 
@@ -154,10 +154,11 @@ function removeCategory(trash, event, ui) {
 		}, function() {
 			//TODO: Lots of things...
 			trash.addClass('trashdeleted');
-			trash.text(ui.draggable.text() + ' removed!');
+			trash.text(ui.draggable.text() + ' ' + i18n['cat.rmOk']);
 			ui.draggable.remove();
 			setTimeout(function() {
-				trash.removeClass('trashdeleted'); trash.text('Trash');
+				trash.removeClass('trashdeleted');
+				trash.text(i18n['cat.trash']);
 			}, 1500);
 			fillCatPositionsArray();
 			rmLock = false;
@@ -176,7 +177,7 @@ function updateCategoryPosition(event, ui) {
 			before : (ui.position.top < ui.originalPosition.top) //before or after
 		}, function(data) {
 			if (data == false) {//an error occured... refresh page
-				alert('An error occured. Page will be refreshed...')
+				alert(i18n['cat.updErr']);
 				window.location.reload();
 			}
 			else

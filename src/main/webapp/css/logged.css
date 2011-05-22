@@ -47,13 +47,13 @@ body {
 }
 
 .categories-main-container {
-	padding: 31px 16px 0;
+	padding: 31px 12px 0;
 }
 
 #categories {
 	list-style-type: none;
 	margin: 0;
-	padding: 0;
+	padding: 10px 0 0;
 	width: 230px;
 }
 

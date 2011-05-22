@@ -31,6 +31,7 @@
 
 <body>
 	<div class="header">
+		<%-- TODO: Change menu --%>
 		S2NDBRN - All - Today - Tomorrow - This week - This month - <span id="header-addtask" class="pointer">[+] Add task</span> - Account
 	</div>
     <div class="container">

@@ -31,10 +31,8 @@ import com.nilhcem.validator.SignUpValidator;
 public class SignUpController {
 	@Autowired
 	private SignUpValidator signUpValidator;
-
 	@Autowired
 	private UserBo userBo;
-
 	@Autowired
 	private MessageSource message;
 
@@ -102,7 +100,8 @@ public class SignUpController {
 	 */
 	@ModelAttribute("i18nJS")
 	public Map<String, String> i18nJs(HttpServletRequest request) throws Exception {
-		String[] msgs = {"signup.err.pwd", "signup.err.pwdConf", "signup.err.mailRegist", "signup.err.mail", "signup.ok.mail", "signup.ok.pwd", "signup.ok.pwdConf"};
+		String[] msgs = {"signup.err.pwd", "signup.err.pwdConf", "signup.err.mailRegist", "signup.err.mail", "signup.ok.mail",
+			"signup.ok.pwd", "signup.ok.pwdConf"};
 
 		Map<String, String> i18n = new LinkedHashMap<String, String>();
 		Locale locale = RequestContextUtils.getLocale(request);

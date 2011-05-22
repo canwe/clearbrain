@@ -10,10 +10,14 @@
 
 	<div class="categories-main-container">
 		<%-- Categories --%>
-		<%-- TODO: Change design, view/hide is not clear / ugly --%>
-		<b>Categories</b>:
-		<input id="view-example" type="checkbox" checked="checked" disabled="disabled" /> View
-		<input id="hide-example" type="checkbox" disabled="disabled" /> Hide
+		<%-- TODO: Change design, shown/hidden is not clear / ugly --%>
+		<div class="left">
+			<b><spring:message code="dashboard.cat.title" /></b>:
+		</div>
+		<div class="right">
+			<input id="view-example" type="checkbox" checked="checked" disabled="disabled" /> <spring:message code="dashboard.cat.subtitle.shown" />
+			<input id="hide-example" type="checkbox" disabled="disabled" /> <spring:message code="dashboard.cat.subtitle.hidden" />
+		</div>
 		<div id="categories-container">
 			<br />
 			<ul id="categories" class="pointer">
@@ -21,16 +25,16 @@
 					<li id="cat-<c:out value="${cur.id}" />"> <input type="checkbox" <c:if test="${cur.displayed == true}">checked="checked"</c:if> /> <c:out value="${cur.name}" /></li>
 				</c:forEach>
 			</ul>
-			<div id="cat-unclassified"> <input type="checkbox" /> Unclassified</div>
-			<div class='trash pointer'>Trash</div>
+			<div id="cat-unclassified"> <input type="checkbox" /> <spring:message code="dashboard.cat.unclassified" /></div>
+			<div class='trash pointer'><spring:message code="dashboard.cat.trash" /></div>
 		</div>
-		<div class="right"><a id="cat-edit" class="pointer">Edit / Add</a></div>
+		<div class="right"><a id="cat-edit" class="pointer"><spring:message code="dashboard.cat.edit" /></a></div>
 
 		<%-- Categories editing --%>
 		<div id="cat-edit-container" class="hide">
-		    <b>Insert:</b><br />
+		    <b><spring:message code="dashboard.cat.insert" /></b><br />
 			<input id="cat-name" type="text" />
-			<i>(press 'Enter' key to insert category)</i>
+			<i><spring:message code="dashboard.cat.insert.help" /></i>
 		</div>
 	</div>
 </div>
@@ -39,7 +43,7 @@
 	<%-- Add a quick task --%>
 	<div id="quick-add-task-container" class="top-grey-box">
 		<div id="hide-quick-add-task" class="right pointer">X&nbsp;&nbsp;</div>
-		<input id="quick-add-task" class="clearField" type="text" value="What do you need to do? Press 'Enter' to validate." />
+		<input id="quick-add-task" class="clearField" type="text" value="<spring:message code="dashboard.note.quickInsert" />" />
 	</div>
 	<br />
 	Right side... Should have a lot of crazy stuff later...

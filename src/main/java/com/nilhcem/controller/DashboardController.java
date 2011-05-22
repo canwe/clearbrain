@@ -1,7 +1,12 @@
 package com.nilhcem.controller;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -10,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.support.RequestContextUtils;
 import com.nilhcem.business.CategoryBo;
 import com.nilhcem.business.NoteBo;
 import com.nilhcem.core.spring.UserDetailsAdapter;
@@ -31,6 +37,8 @@ public class DashboardController {
 	private CategoryBo categoryBo;
 	@Autowired
 	private NoteBo noteBo;
+	@Autowired
+	private MessageSource message;
 
 	/**
 	 * Get current user from session.
@@ -122,5 +130,24 @@ public class DashboardController {
 	@RequestMapping(method = RequestMethod.POST, params = { "addNote" })
 	public @ResponseBody Note addNote(@RequestParam(value = "addNote", required = true) String name) {
 		return noteBo.addNote(getCurrentUser(), name);
+	}
+
+	/**
+	 * Inject localized strings into Javascript.
+	 *
+	 * @param request HTTP request.
+	 * @return A map of i18n string for Javascript.
+	 * @throws Exception.
+	 */
+	@ModelAttribute("i18nJS")
+	public Map<String, String> i18nJs(HttpServletRequest request) throws Exception {
+		String[] msgs = {"dashboard.cat.rm", "dashboard.cat.edit", "dashboard.cat.finEdit", "dashboard.cat.trash", "dashboard.cat.rm",
+			"dashboard.cat.confRm", "dashboard.cat.confRmQ", "dashboard.cat.rmOk", "dashboard.cat.updErr"};
+
+		Map<String, String> i18n = new LinkedHashMap<String, String>();
+		Locale locale = RequestContextUtils.getLocale(request);
+		for (String msg : msgs)
+			i18n.put(msg.replaceFirst("^dashboard\\.", ""), message.getMessage(msg, null, locale));
+		return i18n;
 	}
 }
