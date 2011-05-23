@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.nilhcem.core.test.TestUtils;
+import com.nilhcem.model.Category;
 import com.nilhcem.model.Note;
 import com.nilhcem.model.User;
 
@@ -21,14 +22,18 @@ public class NoteBoTest {
 	private TestUtils testUtils;
 	@Autowired
 	private NoteBo service;
+	@Autowired
+	private CategoryBo categoryService;
 
 	@Test
 	public void testNote() throws Exception {
 		User user = testUtils.getTestUser();
-		testAddNote(user);
+		Long noteId = testAddNote(user);
+		Long categoryId = testCategories(user, noteId);
+		testDeleteNote(user, noteId, categoryId);
 	}
 
-	private void testAddNote(User user) throws Exception {
+	private Long testAddNote(User user) throws Exception {
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.SECOND, -1);
 		Date before = cal.getTime();
@@ -42,5 +47,21 @@ public class NoteBoTest {
 		assertEquals(user, note.getUser());
 		assertFalse(before.after(note.getCreationDate()));
 		assertFalse(after.before(note.getCreationDate()));
+		return note.getId();
+	}
+
+	private Long testCategories(User user, Long noteId) throws Exception {
+		Category category = categoryService.addCategory(user, "My Category");
+		service.assignCategoryToNote(user, category.getId(), noteId);
+		Note note = service.getNotes(user).get(0);
+		assertEquals(category.getId(), note.getCategory().getId());
+		return category.getId();
+	}
+
+	private void testDeleteNote(User user, Long noteId, Long categoryId) throws Exception {
+		assertFalse(service.getNotes(user).isEmpty());
+		service.deleteNoteById(user, noteId);
+		assertTrue(service.getNotes(user).isEmpty());
+		categoryService.removeCategory(user, categoryId);
 	}
 }

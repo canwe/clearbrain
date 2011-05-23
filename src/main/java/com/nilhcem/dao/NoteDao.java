@@ -33,4 +33,19 @@ public class NoteDao extends AbstractHibernateDao<Note> {
 			.setParameter("user", user);
 		return list(query);
 	}
+
+	/**
+	 * Find a note from its id.
+	 *
+	 * @param user Owner of the note we are searching for.
+	 * @param id Id of the note we are searching for.
+	 * @return Note.
+	 */
+	public Note getById(User user, Long id) {
+		Query query = query("FROM Note WHERE user=:user AND id=:id")
+			.setParameter("user", user)
+			.setParameter("id", id)
+			.setMaxResults(1);
+		return uniqueResult(query);
+	}
 }

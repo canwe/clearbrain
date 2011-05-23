@@ -56,6 +56,7 @@ public class DashboardController {
 	 */
 	@ModelAttribute(value="categoriesList")
 	public List<Category> populateCategoriesList() {
+		//TODO: this is called even in Ajax queries, this is bad
 		return categoryBo.getSortedCategories(getCurrentUser());
 	}
 
@@ -128,6 +129,7 @@ public class DashboardController {
 	 */
 	@ModelAttribute(value="notesList")
 	public List<Note> populateNotesList() {
+		//TODO: this is called even in Ajax queries, this is bad
 		return noteBo.getNotes(getCurrentUser());
 	}
 
@@ -140,6 +142,18 @@ public class DashboardController {
 	@RequestMapping(method = RequestMethod.POST, params = { "addNote" })
 	public @ResponseBody Note addNote(@RequestParam(value = "addNote", required = true) String name) {
 		return noteBo.addNote(getCurrentUser(), name);
+	}
+
+	/**
+	 * Assign a category to a note.
+	 *
+	 * @param catId The category's id we need to display or hide.
+	 * @param display True if we need to display the category, otherwise false.
+	 */
+	@RequestMapping(method = RequestMethod.POST, params = { "assignCat" })
+	public @ResponseBody void assignCatToNote(@RequestParam(value = "assignCat", required = true) Long catId,
+		@RequestParam(value = "noteId", required = true) Long noteId) {
+		noteBo.assignCategoryToNote(getCurrentUser(), catId, noteId);
 	}
 
 	/**
