@@ -85,10 +85,12 @@ public class DashboardController {
 	 * Remove a category.
 	 *
 	 * @param catId Category's id.
+	 * @return true.
 	 */
 	@RequestMapping(method = RequestMethod.POST, params = { "rmCat" })
-	public @ResponseBody void removeCategory(@RequestParam(value = "rmCat", required = true) Long catId) {
+	public @ResponseBody boolean removeCategory(@RequestParam(value = "rmCat", required = true) Long catId) {
 		categoryBo.removeCategory(getCurrentUser(), catId);
+		return true;
 	}
 
 	/**
@@ -115,11 +117,13 @@ public class DashboardController {
 	 *
 	 * @param catId The category's id we need to display or hide.
 	 * @param display True if we need to display the category, otherwise false.
+	 * @return true.
 	 */
 	@RequestMapping(method = RequestMethod.POST, params = { "display" })
-	public @ResponseBody void showHideCategory(@RequestParam(value = "id", required = true) Long catId, 
+	public @ResponseBody boolean showHideCategory(@RequestParam(value = "id", required = true) Long catId, 
 		@RequestParam(value = "display", required = true) boolean displayed) {
 		categoryBo.showHideCategory(getCurrentUser(), catId, displayed);
+		return true;
 	}
 
 	/**
@@ -137,11 +141,13 @@ public class DashboardController {
 	 * Add a quick note.
 	 *
 	 * @param name Note's name.
+	 * @param catId Category's id (or 0 if null).
 	 * @return The added note.
 	 */
 	@RequestMapping(method = RequestMethod.POST, params = { "addNote" })
-	public @ResponseBody Note addNote(@RequestParam(value = "addNote", required = true) String name) {
-		return noteBo.addNote(getCurrentUser(), name);
+	public @ResponseBody Note addNote(@RequestParam(value = "addNote", required = true) String name,
+		@RequestParam(value = "catId", required = true) Long catId) {
+		return noteBo.addNote(getCurrentUser(), name, catId);
 	}
 
 	/**
@@ -149,11 +155,13 @@ public class DashboardController {
 	 *
 	 * @param catId The category's id we need to display or hide.
 	 * @param display True if we need to display the category, otherwise false.
+	 * @return true.
 	 */
 	@RequestMapping(method = RequestMethod.POST, params = { "assignCat" })
-	public @ResponseBody void assignCatToNote(@RequestParam(value = "assignCat", required = true) Long catId,
+	public @ResponseBody boolean assignCatToNote(@RequestParam(value = "assignCat", required = true) Long catId,
 		@RequestParam(value = "noteId", required = true) Long noteId) {
 		noteBo.assignCategoryToNote(getCurrentUser(), catId, noteId);
+		return true;
 	}
 
 	/**

@@ -30,19 +30,23 @@ public class NoteBo {
 	private Logger logger = LoggerFactory.getLogger(NoteBo.class);
 
 	/**
-	 * Add a category in database and update last user's category to modify 'next' field.
+	 * Add a Note in database/
 	 *
-	 * @param user Owner of the category.
-	 * @param categoryName The name of the category we want to add.
-	 * @return The new added category.
+	 * @param user Owner of the note.
+	 * @param noteName The name of the note we wanted to add.
+	 * @param catId The category id of the note we wanted to add, 0 if null.
+	 * @return The new added note.
 	 */
 	@TransactionalReadWrite
-	public Note addNote(User user, String noteName) {
-		logger.debug("Add note {}", noteName);
+	public Note addNote(User user, String noteName, Long catId) {
+		logger.debug("Add note {} in category {}", noteName, catId);
 
+		Category cat = null;
+		if (catId != 0)
+			cat = catDao.getById(user, catId);
 		Note note = new Note();
 		note.setName(noteName);
-		note.setCategory(null); //TODO: Change this later
+		note.setCategory(cat);
 		note.setCreationDate(Calendar.getInstance().getTime());
 		note.setUser(user);
 		dao.save(note);

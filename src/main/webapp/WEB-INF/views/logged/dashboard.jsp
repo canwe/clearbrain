@@ -22,10 +22,10 @@
 			<br />
 			<ul id="categories" class="pointer">
 				<c:forEach items="${categoriesList}" var="cur">
-					<li id="cat-<c:out value="${cur.id}" />"> <input type="checkbox" <c:if test="${cur.displayed == true}">checked="checked"</c:if> /> <c:out value="${cur.name}" /></li>
+					<li id="cat-<c:out value="${cur.id}" />">&nbsp;&nbsp;<input type="checkbox" <c:if test="${cur.displayed == true}">checked="checked"</c:if> /> <c:out value="${cur.name}" /></li>
 				</c:forEach>
 			</ul>
-			<div id="cat-unclassified"> <input type="checkbox" /> <spring:message code="dashboard.cat.unclassified" /></div>
+			<div id="cat-unclassified" class="pointer selected-category">&nbsp;&nbsp;<input type="checkbox" /> <spring:message code="dashboard.cat.unclassified" /></div>
 			<div class='trash pointer'><spring:message code="dashboard.cat.trash" /></div>
 		</div>
 		<div class="right"><a id="cat-edit" class="pointer"><spring:message code="dashboard.cat.edit" /></a></div>

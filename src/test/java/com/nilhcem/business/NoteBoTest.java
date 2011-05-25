@@ -29,7 +29,8 @@ public class NoteBoTest {
 	public void testNote() throws Exception {
 		User user = testUtils.getTestUser();
 		Long noteId = testAddNote(user);
-		Long categoryId = testCategories(user, noteId);
+		Long categoryId = testAssignACategoryToANote(user, noteId);
+		testAddNoteWithACategoryDirectly(user, categoryId);
 		testDeleteNote(user, noteId, categoryId);
 	}
 
@@ -37,7 +38,7 @@ public class NoteBoTest {
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.SECOND, -1);
 		Date before = cal.getTime();
-		Note note = service.addNote(user, NOTE_NAME);
+		Note note = service.addNote(user, NOTE_NAME, 0L);
 		cal = Calendar.getInstance();
 		cal.add(Calendar.SECOND, 1);
 		Date after = cal.getTime();
@@ -50,12 +51,18 @@ public class NoteBoTest {
 		return note.getId();
 	}
 
-	private Long testCategories(User user, Long noteId) throws Exception {
+	private Long testAssignACategoryToANote(User user, Long noteId) throws Exception {
 		Category category = categoryService.addCategory(user, "My Category");
 		service.assignCategoryToNote(user, category.getId(), noteId);
 		Note note = service.getNotes(user).get(0);
 		assertEquals(category.getId(), note.getCategory().getId());
 		return category.getId();
+	}
+
+	private void testAddNoteWithACategoryDirectly(User user, Long categoryId) throws Exception {
+		Note note = service.addNote(user, NOTE_NAME + "2", categoryId);
+		assertEquals(categoryId, note.getCategory().getId());
+		service.deleteNoteById(user, note.getId());
 	}
 
 	private void testDeleteNote(User user, Long noteId, Long categoryId) throws Exception {

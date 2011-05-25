@@ -60,6 +60,14 @@ jQuery(function($) { //same as $(document).ready(function()
 		showHideCategory(getCategoryId($(this).parent().attr('id')), $(this).attr('checked'));
 	});
 
+	//Detect when a category is chosen
+	categories.find('li').click(function() {
+		selectCategory($(this));
+	});
+	$('#cat-unclassified').click(function() {
+		selectCategory($(this));
+	});
+	$('#cat-unclassified').disableSelection();
 
 	/***** Notes *****/
 	//Make notes sortable
@@ -148,13 +156,28 @@ function addCategory(catName) {
 		//TODO: Clone 'unclassified' element and modify it instead of another HTML code in js
 		//TODO: Insert element before unclassified
 		//TODO: make it droppable
-		$('#categories').append('<li id="cat-' + data.id + '"> <input type="checkbox" checked="checked" /> ' + data.name + '</li>');
+		$('#categories').append('<li id="cat-' + data.id + '">&nbsp;&nbsp;<input type="checkbox" checked="checked" /> ' + data.name + '</li>');
 		catName.val('');
 		//Update catPositions
 		catPositions[catPositions.length] = data.id;
 		$('#categories-container').find('.trash').show(); //show trash
     	catName.attr('disabled', false);
 	});
+}
+
+//Select a category (display a green arrow)
+function selectCategory(category) {
+	//TODO: [if possible] Do not select category if checkbox was clicked
+	$('#categories-container').find('.selected-category').removeClass('selected-category');
+	category.addClass('selected-category');
+}
+
+//Get the current selected category
+function getSelectedCategoryId() {
+	var selectedCat = $('#categories').find('.selected-category');
+	if (selectedCat.length == 0)
+		return 0;
+	return getCategoryId(selectedCat.attr('id'));
 }
 
 //Show category editor
@@ -194,10 +217,15 @@ function removeCategory(trash, event, ui) {
 		$.post('#', {
 			rmCat : getCategoryId(ui.draggable.attr('id'))
 		}, function() {
+			//Check if this category was selected, if yes, select the default category
+			if ($('#categories').find('.selected-category').attr('id') == ui.draggable.attr('id'))
+				selectCategory($('#cat-unclassified'));
+
 			//TODO: Lots of things...
 			trash.addClass('trashdeleted');
 			trash.text(ui.draggable.text() + ' ' + i18n['cat.rmOk']);
 			ui.draggable.remove();
+
 			setTimeout(function() {
 				trash.removeClass('trashdeleted');
 				trash.text(i18n['cat.trash']);
@@ -247,7 +275,8 @@ function getNoteId(id) {
 //Add a note
 function addNote(noteName) {
 	$.post('#', {
-		addNote : noteName.val()
+		addNote : noteName.val(),
+		catId : getSelectedCategoryId()
 	}, function(data) {
 		//TODO: A lot of things (create a templateNote, clone it...)
 		noteName.val('');
