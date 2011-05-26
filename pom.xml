@@ -220,8 +220,8 @@
 			<!-- Liquibase: Database change management -->
 			<plugin>
 				<groupId>org.liquibase</groupId>
-				<artifactId>liquibase-plugin</artifactId>
-				<version>1.9.5.0</version>
+				<artifactId>liquibase-maven-plugin</artifactId>
+				<version>2.0.1</version>
 				<executions>
 					<execution>
 						<phase>process-resources</phase>

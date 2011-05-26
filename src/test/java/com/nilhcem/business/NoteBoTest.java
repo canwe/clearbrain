@@ -66,9 +66,9 @@ public class NoteBoTest {
 	}
 
 	private void testDeleteNote(User user, Long noteId, Long categoryId) throws Exception {
-		assertFalse(service.getNotes(user).isEmpty());
+		categoryService.removeCategory(user, categoryId);
+		assertNull(service.getNotes(user).get(0).getCategory());
 		service.deleteNoteById(user, noteId);
 		assertTrue(service.getNotes(user).isEmpty());
-		categoryService.removeCategory(user, categoryId);
 	}
 }
