@@ -10,7 +10,7 @@
 
 	<changeSet id="0.1.1" author="nilhcem" runAlways="false">
 		<comment>Create table "languages"</comment>
-		<createTable tableName="languages">
+		<createTable tableName="languages" remarks="Users languages">
 			<column name="language_id" type="bigint">
 				<constraints primaryKey="true" nullable="false" />
 			</column>
@@ -32,7 +32,7 @@
 
 	<changeSet id="0.1.3" author="nilhcem" runAlways="false">
 		<comment>Create table "users"</comment>
-		<createTable tableName="users">
+		<createTable tableName="users" remarks="Contains system users">
 			<column name="user_id" type="bigint">
 				<constraints primaryKey="true" nullable="false" unique="true" />
 			</column>
@@ -55,7 +55,7 @@
 
 	<changeSet id="0.1.4" author="nilhcem" runAlways="false">
 		<comment>Create table "rights"</comment>
-		<createTable tableName="rights">
+		<createTable tableName="rights" remarks="Users rights">
 			<column name="right_id" type="bigint">
 				<constraints primaryKey="true" nullable="false" />
 			</column>
@@ -74,7 +74,7 @@
 
 	<changeSet id="0.1.6" author="nilhcem" runAlways="false">
 		<comment>Create table "users_rights"</comment>
-		<createTable tableName="users_rights">
+		<createTable tableName="users_rights" remarks="Link between Users and Rights">
 			<column name="user_id" type="bigint">
 				<constraints nullable="false" />
 			</column>
@@ -87,12 +87,12 @@
 	</changeSet>
 
 	<changeSet id="0.1.7" author="nilhcem" runAlways="false">
-		<comment>Create table "persistent_logins" for spring security "rememberme"</comment>
-		<createTable tableName="persistent_logins">
+		<comment>Create table "persistent_logins"</comment>
+		<createTable tableName="persistent_logins" remarks="Used by Spring Security 'rememberme'">
 			<column name="series" type="varchar(64)">
 				<constraints primaryKey="true" nullable="false" />
 			</column>
-			<column name="username" type="varchar(254)">
+			<column name="username" type="varchar(254)" remarks="User's email">
 				<constraints nullable="false" />
 			</column>
 			<column name="token" type="varchar(64)">
@@ -107,18 +107,18 @@
 
 	<changeSet id="0.1.8" author="nilhcem" runAlways="false">
 		<comment>Create table "categories"</comment>
-		<createTable tableName="categories">
+		<createTable tableName="categories" remarks="Contains notes">
 			<column name="category_id" type="bigint">
 				<constraints primaryKey="true" nullable="false" />
 			</column>
 			<column name="name" type="varchar(64)">
 				<constraints nullable="false" />
 			</column>
-			<column name="is_displayed" type="boolean" defaultValue="true" />
+			<column name="is_displayed" type="boolean" defaultValue="true" remarks="Users can choose to display or hide all the notes which belong to the specified category"/>
 			<column name="creation_date" type="timestamp">
 				<constraints nullable="false" />
 			</column>
-			<column name="next_category_id" type="bigint" />
+			<column name="next_category_id" type="bigint" remarks="Categories are ordered. See this as a linked list." />
 			<column name="user_id" type="bigint">
 				<constraints nullable="false" />
 			</column>
@@ -130,7 +130,7 @@
 
 	<changeSet id="0.1.9" author="nilhcem" runAlways="false">
 		<comment>Create table "notes"</comment>
-		<createTable tableName="notes">
+		<createTable tableName="notes" remarks="Notes written by users">
 			<column name="note_id" type="bigint">
 				<constraints primaryKey="true" nullable="false" />
 			</column>
@@ -140,7 +140,7 @@
 			<column name="creation_date" type="timestamp">
 				<constraints nullable="false" />
 			</column>
-			<column name="resolved_date" type="timestamp" />
+			<column name="resolved_date" type="timestamp" remarks="When the note was ticked as 'Done'"/>
 			<column name="category_id" type="bigint" />
 			<column name="user_id" type="bigint">
 				<constraints nullable="false" />
