@@ -112,19 +112,19 @@ public class DashboardController {
 		return true;
 	}
 
-	/**
-	 * Display or hide a category.
-	 *
-	 * @param catId The category's id we need to display or hide.
-	 * @param display True if we need to display the category, otherwise false.
-	 * @return true.
-	 */
-	@RequestMapping(method = RequestMethod.POST, params = { "display" })
-	public @ResponseBody boolean showHideCategory(@RequestParam(value = "id", required = true) Long catId, 
-		@RequestParam(value = "display", required = true) boolean displayed) {
-		categoryBo.showHideCategory(getCurrentUser(), catId, displayed);
-		return true;
-	}
+//	/**
+//	 * Display or hide a category.
+//	 *
+//	 * @param catId The category's id we need to display or hide.
+//	 * @param display True if we need to display the category, otherwise false.
+//	 * @return true.
+//	 */
+//	@RequestMapping(method = RequestMethod.POST, params = { "display" })
+//	public @ResponseBody boolean showHideCategory(@RequestParam(value = "id", required = true) Long catId,
+//		@RequestParam(value = "display", required = true) boolean displayed) {
+//		categoryBo.showHideCategory(getCurrentUser(), catId, displayed);
+//		return true;
+//	}
 
 	/**
 	 * Populate notes list.
@@ -173,8 +173,7 @@ public class DashboardController {
 	 */
 	@ModelAttribute("i18nJS")
 	public Map<String, String> i18nJs(HttpServletRequest request) throws Exception {
-		String[] msgs = {"dashboard.cat.rm", "dashboard.cat.edit", "dashboard.cat.finEdit", "dashboard.cat.trash", "dashboard.cat.rm",
-			"dashboard.cat.confRm", "dashboard.cat.confRmQ", "dashboard.cat.rmOk", "dashboard.cat.updErr"};
+		String[] msgs = {"dashboard.cat.confRm", "dashboard.cat.confRmQ", "dashboard.cat.updErr"};
 
 		Map<String, String> i18n = new LinkedHashMap<String, String>();
 		Locale locale = RequestContextUtils.getLocale(request);

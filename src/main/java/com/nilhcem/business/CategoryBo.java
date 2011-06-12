@@ -164,17 +164,17 @@ public class CategoryBo {
 		dao.checkIfCategoriesAreProperlyOrdered(user);
 	}
 
-	/**
-	 * Update the display value of a category to indicate if it should be shown or note.
-	 *
-	 * @param user Owner of the category.
-	 * @param categoryId The category we want to change the display value.
-	 * @param displayed The new display value.
-	 */
-	@TransactionalReadWrite
-	public void showHideCategory(User user, Long categoryId, boolean displayed) {
-		Category category = dao.getById(user, categoryId);
-		category.setDisplayed(displayed);
-		dao.update(category);
-	}
+//	/**
+//	 * Update the display value of a category to indicate if it should be shown or note.
+//	 *
+//	 * @param user Owner of the category.
+//	 * @param categoryId The category we want to change the display value.
+//	 * @param displayed The new display value.
+//	 */
+//	@TransactionalReadWrite
+//	public void showHideCategory(User user, Long categoryId, boolean displayed) {
+//		Category category = dao.getById(user, categoryId);
+//		category.setDisplayed(displayed);
+//		dao.update(category);
+//	}
 }

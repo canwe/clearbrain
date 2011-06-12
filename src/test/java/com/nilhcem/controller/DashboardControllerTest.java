@@ -22,7 +22,7 @@ public class DashboardControllerTest {
 
 	@Test
 	public void testJavascriptLocales() throws Exception {
-		String[] keys = {"cat.rm", "cat.edit", "cat.finEdit", "cat.trash", "cat.rm", "cat.confRm", "cat.confRmQ", "cat.rmOk", "cat.updErr"};
+		String[] keys = {"cat.confRm", "cat.confRmQ", "cat.updErr"};
 
 		MockHttpServletRequest request = new MockHttpServletRequest("get", "/logged/dashboard");
 		Map<String, String> map = controller.i18nJs(request);

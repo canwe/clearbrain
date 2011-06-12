@@ -1,150 +1,388 @@
-/* Clearfield plugin */
-.clearFieldBlurred {
-	color: #666;
-	font-style: italic;
-}
-.clearFieldActive {
-	color: #000;
+/*** General ***/
+html, body, #main {
+	height: 100%;
 }
 
-/* header */
 body {
-	background-color: #eee;
+	background-attachment: fixed;
+	background-color: #EEF2F4;
+	background-image: url("../images/logged/bg.gif");
+	background-repeat: no-repeat;
+	position: relative;
 }
 
-.header {
-	background-color: #080223;
-	color: #fff;
-	height: 32px;
+
+/*** Menus ***/
+#menu {
+	background: url("../images/logged/bg-header.png") repeat-x scroll center top transparent;
+	position: fixed;
+	width: 100%;
+	z-index: 999;
+}
+
+#menu, #blank {
+	height: 41px;
+}
+
+#logo a {
+	background: url("../images/logged/clearbrain-logo.png") no-repeat scroll 0 0 transparent;
+	color: #FFF;
+	display: block;
+	float: left;
+	height: 38px;
+	margin-left: 15px;
+	padding-right: 15px;
+	text-indent: -9999px;
+	width: 188px;
+}
+
+#logo a, .m-datebox, .m-dropdown { /* Right border / Separator */
+	border-right: 1px solid #B6B6B6;
+}
+
+.m-datebox, .m-dropdown { /* Top menus */
+	font-weight: bold;
+	cursor: pointer;
+	display: block;
+}
+
+.m-datebox:hover, .m-dropdown:hover {
+	background-color: #EEF2F4;
+	color: #333B75;
+}
+
+.m-datebox {
+	color: #727AA3;
+	float: left;
+	padding: 10px 27px 10px 20px;
+	text-decoration: none;
+}
+
+.m-datebox span {
+	background: none repeat scroll 0 0 #DD4600;
+	border-radius: 9px;
+	color: #FFF;
+	display: block;
+	font-size: 9px;
+	font-weight: bold;
+	padding: 2px 6px;
+	position: absolute;
+	top: 2px;
+}
+
+#m-today span {
+	background-color: #DD4600;
+	margin-left: 33px;
+}
+
+#m-tomorrow span {
+	background-color: #4E39AD;
+	margin-left: 57px;
+}
+
+#m-week span {
+	background-color: #9D9EB2;
+	margin-left: 57px;
+}
+
+.m-dropdown {
+	float: right;
+	width: 108px;
+}
+
+.m-dropdown img {
+	vertical-align: top;
+}
+
+#m-notes-container {
+	border-left: 1px solid #B6B6B6;
+}
+
+#m-notes, #m-profile, #m-add, #m-memo, #m-search, #m-settings, #m-stats, #m-help, #m-logout { /* css sprite */
+	background: url('../images/logged/menus.png') no-repeat scroll 0 0 transparent;
+	padding-left: 30px;
+}
+
+#m-notes, #m-profile {
+	color: #727AA3;
+	display: block;
+	height: 28px;
+	padding: 11px 0 0 32px;
+	text-decoration: none;
+}
+
+#m-notes {
+	background-position: 8px -103px;
+}
+
+#m-profile {
+	background-position: 8px -132px;
+}
+
+#m-add {
+	background-position: 8px 11px;
+}
+
+#m-memo {
+	background-position: 8px -73px;
+}
+
+#m-search {
+	background-position: 8px -160px;
+}
+
+#m-settings {
+	background-position: 8px -190px;
+}
+
+#m-stats {
+	background-position: 8px -219px;
+}
+
+#m-help {
+	background-position: 8px -18px;
+}
+
+#m-logout {
+	background-position: 8px -46px;
+}
+
+.dropdown {
+	background: #FFF;
+	display: none;
+	margin-left: -1px;
+	position: absolute;
+	white-space: nowrap;
+	width: 110px;
+	z-index: 999;
+}
+
+.dropdown ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+.dropdown li {
+	background-color: #F3F5F7;
+	border-bottom: 1px solid #B6B6B6;
+	border-left: 1px solid #B6B6B6;
+	border-right: 1px solid #B6B6B6;
+}
+
+.dropdown li:hover {
+	background-color: #E3EBEF;
+}
+
+.dropdown a {
+	color: #727AA3;
+	display: block;
+	height: 18px;
+	padding: 10px;
+	text-decoration: none;
+}
+
+.dropdown a:hover {
+	color: #333B75;
+}
+
+.dropdown-li-top {
+	border-top: 1px solid #B6B6B6;
+}
+
+
+/*** Main container ***/
+#content {
+	background-color: #FFF;
+	border-left: 1px solid #727AA3;
+	border-right: 1px solid #727AA3;
+	margin: auto;
+	min-height: 100%;
+	padding: 0 10px;
+}
+
+
+/*** Top frames ***/
+.top-frames {
+	background: url("../images/logged/top-frame-bg.png");
+	border-color: #B6B6B6;
+	border-radius: 0 0 6px 6px;
+	border-style: none solid solid;
+	border-width: 0 1px 1px;
+}
+
+.date-container {
+	height: 23px; /* height + padding-top should be equal to #insert-note-container::height */
+	margin: 0 18px;
+	padding-top: 6px;
+	text-align: center;
+}
+
+#insert-note-container {
+	height: 29px;
+	padding-right: 4px;
+}
+
+#quick-add-task {
+	background: url("../images/logged/top-frame-bg.png");
+	border: none;
+	height: 25px;
+	margin: 1px 2px;
 	text-align: center;
 	width: 100%;
 }
 
-.pointer {
-	cursor: pointer;
+#insert-note-container:hover, #quick-add-task:hover {
+	background-color: #D8DBFF;
 }
 
-.container {
-	background-color: #fff;
-	border: 1px solid grey;
-	border-top: 0;
-	min-height: 590px;
+.title {
+	border-bottom: 1px solid #B6B6B6;
+	color: #353A60;
+	font-weight: bold;
+	height: 22px;
+	margin-right: 24px;
 }
 
 
-/* Dashboard - Categories */
-.top-grey-box {
-	background-color: #eee;
-	border: 1px solid grey;
-	border-radius: 0 0 6px 6px;
-	border-top: 0;
-}
-
-.date-container {
-	margin: 0 18px;
-	padding: 4px 0;
-	text-align: center;
-}
-
-.categories-main-container {
-	padding: 31px 12px 0;
-}
-
+/*** Categories ***/
 #categories {
 	list-style-type: none;
 	margin: 0;
-	padding: 10px 0 0;
-	width: 230px;
+	padding: 0;
 }
 
-#categories li, #cat-unclassified, .trash {
-	background-color: #f0f0f0;
-	border: 1px solid #d3d3d3;
+.category {
+	border: 1px solid #B6B6B6;
+	cursor: pointer;
+}
+
+#categories li.highlight { /*used by jquery when sorting categories*/
+	border: 1px dashed #d3d3d3;
+}
+
+.category, #categories li.highlight {
+	background-image: url("../images/logged/cat-bg.png");
+	border-radius: 5px;
 	height: 18px;
 	margin: 0 3px 8px;
 	padding: 5px;
 	width: 230px;
 }
 
-#categories li.highlight {
-	background-color: #f2f2f2;
-	border: 1px dashed #d3d3d3;
-	height: 18px;
+.category-selected {
+	background-image: url("../images/logged/cat-bg-selected.png");
+	border-color: #898FB2;
 }
 
-#cat-edit-container {
-	padding: 5px;
+.category-count {
+	color: #353A60;
+	float: right;
+	font-weight: bold;
+	min-width: 18px;
+	text-align: center;
 }
 
-#quick-add-task-container {
-	width: 640px;
-}
-
-#quick-add-task {
-	height: 25px;
-	margin: 8px 0 8px 14px;
-	padding: 0 6px;
-	width: 592px;
-}
-
-#view-example {
-	margin-left: 50px;
-}
-
-#hide-example {
-	margin-left: 10px;
-}
-
-#cat-name {
-	width: 238px;
-}
-
-.trash {
-	background-color: #F2D0D0;
-	border-color: red;
+.category-menus {
 	display: none;
-	width: 230px;
+	float: right;
 }
 
-.trashover {
-	background-color: #cd6a76;
-	color: #fff;
-	filter: alpha(opacity=70);
-	-moz-opacity: 0.7;
-	opacity: 0.7;
+.category-menus img {
+	vertical-align: top;
 }
 
-.trashdeleted {
-	background-color: #70cc57;
-	color: #fff;
-	filter: alpha(opacity=70);
-	-moz-opacity: 0.7;
-	opacity: 0.7;
+#categories-edit-link, #categories-edit-container {
+	border-top: 1px solid #B6B6B6;
+	margin-right: 24px;
+	margin-top: 15px;
+	padding-top: 5px;
 }
 
-.selected-category {
-	background-image: url('../images/logged/green_arrow_category.gif');
-    background-position: left center;
-    background-repeat: no-repeat;
+#categories-edit, #categories-endedit {
+	color: #777777;
+	cursor: pointer;
+	display: block;
+	font-weight: bold;
+	text-align: right;
+	text-decoration: none;
 }
 
-/* Dashboard - Notes */
-#notes {
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
-	width: 630px;
+#categories-edit:hover, #categories-endedit:hover {
+	color: #525252;
 }
 
-#notes li {
-	background-color: #f8f8f8;
-	border: 1px solid #888;
+#categories-edit img {
+	vertical-align: top;
+}
+
+#categories-edit-container {
+	border-bottom: 1px solid #B6B6B6;
+	color: #353A60;
+	padding: 10px 0 0 3px;
+}
+
+#categories-endedit {
+	padding: 6px 0 2px;
+}
+
+#catadd-name {
+	cursor: text;
+	margin-bottom: 2px;
+    padding: 4px 5px;
+}
+
+#cat-unclassified {
+	cursor: default;
+}
+
+.category-to-note {
+	background-image: url("../images/logged/cat-bg-to-note.png");
+	border: 1px solid #888 !important;
+}
+
+
+/*** Notes ***/
+.note {
+	background-image: url("../images/logged/cat-bg.png");
+	border: 1px solid #B6B6B6;
+	border-radius: 5px;
+	cursor: pointer;
 	height: 18px;
 	margin: 0 3px 10px;
 	padding: 5px;
 	width: 630px;
 }
 
-.border-selected-category {
-	border: 1px solid #494977 !important;
+.notes-edit {
+	display: none;
+	float: right;
+	margin-right: -27px;
+	opacity: 0.7;
+	padding-left: 10px;
+	vertical-align: middle;
+}
+
+.note-category {
+	background-color: #F9F9F9;
+	border: 1px solid #B6B6B6;
+	border-radius: 0 5px 0 5px;
+	display: block;
+	float: right;
+	font-size: 9px;
+	margin: 0;
+	padding: 0 6px;
+	position: relative;
+	right: -6px;
+	top: -6px;
+}
+
+
+/*** Clearfield plugin ***/
+.clearFieldBlurred {
+	color: #353A60;
+	font-style: italic;
+}
+.clearFieldActive {
+	color: #000;
 }
