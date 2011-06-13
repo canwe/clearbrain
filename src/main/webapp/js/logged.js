@@ -94,7 +94,7 @@ function getSelectedCategoryId() {
 
 //Update category position
 function updateCategoryPosition(event, ui) {
-	$.post('#', {
+	$.post('dashboard-js', {
 		updPos : getCategoryId(ui.item.attr('id')), //category's id
 		prev : catPositions[ui.item.index()], //previous category's id in that position before update
 		before : (ui.position.top < ui.originalPosition.top) //before or after
@@ -131,7 +131,7 @@ $('#categories-endedit').live('click', function() {
 $('#catadd-name').live('keyup', function(e) {
 	if (e.keyCode == 13 && $(this).val() != '') {
 //		$(this).attr('disabled', true);
-		$.post('#', {
+		$.post('dashboard-js', {
 			addCat : $(this).val()
 		}, function(data) {
 //			//TODO: Clone element and modify it
@@ -151,7 +151,7 @@ $('#categories').find('a[id^=catrmv-]').live('click', function(e) {
 	var catId = $(this).attr('id').replace(/^catrmv-/, '');
 
 	if (confirm(i18n['cat.confRm'] + ' ' + $('#catname-' + catId).text() + i18n['cat.confRmQ'])) {
-		$.post('#', {
+		$.post('dashboard-js', {
 			rmCat : catId
 		}, function() {
 			//Check if this category was selected, if yes, select the default category
@@ -229,7 +229,7 @@ function assignCatToNoteDrop(categories, ui) {
 	catNoteStack = new Array();
 
 	//Send request to server
-	$.post('#', {
+	$.post('dashboard-js', {
 		assignCat : catId,
 		noteId : noteId
 	}, function(data) {
@@ -243,7 +243,7 @@ function assignCatToNoteDrop(categories, ui) {
 $('#quick-add-task').live('keyup', function(e) {
 	if (e.keyCode == 13 && $(this).val() != '') {
 //		$(this).attr('disabled', true);
-		$.post('#', {
+		$.post('dashboard-js', {
 			addNote : $(this).val(),
 			catId : getSelectedCategoryId()
 		}, function(data) {
@@ -272,7 +272,7 @@ $('#quick-add-task').live('keyup', function(e) {
 //
 ////Display or hide category
 //function showHideCategory(id, display) {
-//	$.post('#', {
+//	$.post('dashboard-js', {
 //		id : id, //category's id
 //		display : display //display (true / false)
 //	});

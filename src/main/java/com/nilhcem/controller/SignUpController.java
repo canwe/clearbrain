@@ -1,11 +1,7 @@
 package com.nilhcem.controller;
 
-import java.util.LinkedHashMap;
-import java.util.Locale;
-import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -28,13 +24,20 @@ import com.nilhcem.validator.SignUpValidator;
  * @since 1.0
  */
 @Controller
-public class SignUpController {
+public class SignUpController extends AbstractController {
 	@Autowired
 	private SignUpValidator signUpValidator;
 	@Autowired
 	private UserBo userBo;
-	@Autowired
-	private MessageSource message;
+
+	/**
+	 * Define JS i18n keys.
+	 */
+	public SignUpController() {
+		String[] i18nJs = {"signup.err.pwd", "signup.err.pwdConf", "signup.err.mailRegist", "signup.err.mail", "signup.ok.mail",
+			"signup.ok.pwd", "signup.ok.pwdConf"};
+		super.setI18nJsValues(i18nJs, "^signup\\.");
+	}
 
 	/**
 	 * Register a user who has just signed up.
@@ -89,24 +92,5 @@ public class SignUpController {
 	@RequestMapping(value = "/signup", method = RequestMethod.POST, params = { "emailToCheck" })
 	public @ResponseBody boolean checkEmailAvailability(@RequestParam(value = "emailToCheck", required = true) String email) {
 		return (userBo.findByEmail(email) == null);
-	}
-
-	/**
-	 * Inject localized strings into Javascript.
-	 *
-	 * @param request HTTP request.
-	 * @return A map of i18n string for Javascript.
-	 * @throws Exception.
-	 */
-	@ModelAttribute("i18nJS")
-	public Map<String, String> i18nJs(HttpServletRequest request) throws Exception {
-		String[] msgs = {"signup.err.pwd", "signup.err.pwdConf", "signup.err.mailRegist", "signup.err.mail", "signup.ok.mail",
-			"signup.ok.pwd", "signup.ok.pwdConf"};
-
-		Map<String, String> i18n = new LinkedHashMap<String, String>();
-		Locale locale = RequestContextUtils.getLocale(request);
-		for (String msg : msgs)
-			i18n.put(msg.replaceFirst("^signup\\.", ""), message.getMessage(msg, null, locale));
-		return i18n;
 	}
 }
