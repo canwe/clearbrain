@@ -10,7 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
- * Custom UsernamePasswordAuthenticationFilter bean for SpringSecurity to log information once authentication is successful.
+ * Custom {@code UsernamePasswordAuthenticationFilter} bean for SpringSecurity to log information once authentication is successful.
  *
  * @author Nilhcem
  * @since 1.0

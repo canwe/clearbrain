@@ -15,7 +15,7 @@ import com.nilhcem.model.Note;
 import com.nilhcem.model.User;
 
 /**
- * Business class for accessing Note data.
+ * Business class for accessing {@code Note} data.
  *
  * @author Nilhcem
  * @since 1.0
@@ -30,7 +30,7 @@ public class NoteBo {
 	private Logger logger = LoggerFactory.getLogger(NoteBo.class);
 
 	/**
-	 * Add a Note in database/
+	 * Add a {@code Note} in database.
 	 *
 	 * @param user Owner of the note.
 	 * @param noteName The name of the note we wanted to add.

@@ -1,5 +1,6 @@
 package com.nilhcem.model;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,7 +10,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
- * Hibernate mapped class for "languages" table.
+ * Hibernate mapped class for {@code "languages"} table.
  *
  * @author Nilhcem
  * @since 1.0
@@ -17,7 +18,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "languages")
 @SequenceGenerator(name = "seq_lang", sequenceName = "languages_language_id_seq", allocationSize = 1)
-public class Language {
+public class Language implements Serializable {
+	private static final long serialVersionUID = 8719955341181530947L;
 	private Long id;
 	private String code;
 	private String name;

@@ -8,6 +8,9 @@ target/*
 # Ignore specs folder
 specs/*
 
+# Ignore webapp's META-INF folder
+src/main/webapp/META-INF/*
+
 # Ignore eclipse files
 .classpath
 .project

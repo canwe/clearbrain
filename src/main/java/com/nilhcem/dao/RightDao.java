@@ -8,7 +8,7 @@ import com.nilhcem.core.hibernate.AbstractHibernateDao;
 import com.nilhcem.model.Right;
 
 /**
- * DAO class for accessing Right data.
+ * DAO class for accessing {@code Right} data.
  *
  * @author Nilhcem
  * @since 1.0
@@ -24,7 +24,7 @@ public class RightDao extends AbstractHibernateDao<Right> {
 	}
 
 	/**
-	 * Find a right from its name.
+	 * Find a right from its {@code name}.
 	 *
 	 * @param name Name of the Right we are searching for.
 	 * @return Right object, or null if not found.

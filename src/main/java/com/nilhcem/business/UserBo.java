@@ -22,7 +22,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Service;
 
 /**
- * Business class for accessing User data.
+ * Business class for accessing {@code User} data.
  *
  * @author Nilhcem
  * @since 1.0
@@ -79,7 +79,7 @@ public class UserBo {
 
 	/**
 	 * Auto log the user in, after he signs up.
-	 * Must be called from a request filtered by Spring Security, otherwise SecurityContextHolder would not be updated.
+	 * Must be called from a request filtered by Spring Security, otherwise {@code SecurityContextHolder} would not be updated.
 	 *
 	 * @param username Email of the user who will be automatically logged-in.
 	 * @param password User's password.

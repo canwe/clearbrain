@@ -28,7 +28,7 @@ public abstract class AbstractHibernateDao<E> {
 	}
 
 	/**
-	 * Create a criteria using the current session.
+	 * Create a {@code Criteria} using the current session.
 	 * @return Created criteria.
 	 */
 	protected Criteria criteria() {
@@ -36,7 +36,7 @@ public abstract class AbstractHibernateDao<E> {
 	}
 
 	/**
-	 * Create a Query object using the current session.
+	 * Create a {@code Query} object using the current session.
 	 * @param hql HQL for the Query.
 	 * @return Created query.
 	 */
@@ -45,7 +45,7 @@ public abstract class AbstractHibernateDao<E> {
 	}
 
 	/**
-	 * Return the current Hibernate session.
+	 * Return the current Hibernate {@code Session}.
 	 * @return Current Hibernate session.
 	 */
 	protected Session currentSession() {
@@ -61,7 +61,7 @@ public abstract class AbstractHibernateDao<E> {
 	}
 
 	/**
-	 * Return the entity class.
+	 * Return the {@code Entity} class.
 	 * @return Entity class.
 	 */
 	public Class<E> getEntityClass() {
@@ -69,7 +69,7 @@ public abstract class AbstractHibernateDao<E> {
 	}
 
 	/**
-	 * List all element from a Criteria.
+	 * List all element from a {@code Criteria}.
 	 * Generic suppression wrapper to avoid putting SuppressWarning annotations on DAO.
 	 * @param criteria Criteria we need to list elements from.
 	 * @return List of elements.
@@ -80,7 +80,7 @@ public abstract class AbstractHibernateDao<E> {
 	}
 
 	/**
-	 * List all element from a Query.
+	 * List all element from a {@code Query}.
 	 * Generic suppression wrapper to avoid putting SuppressWarning annotations on DAO.
 	 * @param query Query we need to list elements from.
 	 * @return List of elements.
@@ -91,7 +91,7 @@ public abstract class AbstractHibernateDao<E> {
     }
 
 	/**
-	 * Return a unique result from a Criteria.
+	 * Return a unique result from a {@code Criteria}.
 	 * Generic suppression wrapper to avoid putting SuppressWarning annotations on DAO.
 	 * @param criteria Criteria we need to get the element from.
 	 * @return Unique element.
@@ -102,7 +102,7 @@ public abstract class AbstractHibernateDao<E> {
     }
 
 	/**
-	 * Return a unique result from a Query.
+	 * Return a unique result from a {@code Query}.
 	 * Generic suppression wrapper to avoid putting SuppressWarning annotations on DAO.
 	 * @param query Query we need to get the element from.
 	 * @return Unique element.
@@ -113,7 +113,7 @@ public abstract class AbstractHibernateDao<E> {
     }
 
 	/**
-	 * Return an element from its id.
+	 * Return an element from its {@code id}.
 	 * Generic suppression wrapper to avoid putting SuppressWarning annotations on DAO.
 	 * @param id Id of the element we are searching for.
 	 * @return Unique element.

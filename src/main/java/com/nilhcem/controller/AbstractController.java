@@ -38,7 +38,7 @@ public abstract class AbstractController {
 	/**
 	 * Set i18n keys to display in Javascript automatically.
 	 *
-	 * @see i18nJs()
+	 * @see #i18nJs(HttpServletRequest) i18nJs
 	 * @param i18nJs Array of keys for the Javascript.
 	 * @param i18nJsRemoveStr Regex substring to remove from the keys (to transfer less data)
 	 */

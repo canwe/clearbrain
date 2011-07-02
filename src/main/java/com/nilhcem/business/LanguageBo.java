@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * Business class for accessing Language data.
+ * Business class for accessing {@code Language} data.
  * 
  * @author Nilhcem
  * @since 1.0

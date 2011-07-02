@@ -10,7 +10,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
- * Hibernate mapped class for "rights" table.
+ * Hibernate mapped class for {@code "rights"} table.
  *
  * @author Nilhcem
  * @since 1.0

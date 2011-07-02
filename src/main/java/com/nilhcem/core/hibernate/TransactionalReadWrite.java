@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Custom annotation with read-only = false, used in every Business object. Automatically rollback if an Exception object is caught.
+ * Custom annotation with read-only = false, used in every Business object. Automatically rolled back if an {@code Exception} object is caught.
  *
  * @author Nilhcem
  * @since 1.0

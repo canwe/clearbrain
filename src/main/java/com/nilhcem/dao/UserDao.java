@@ -8,7 +8,7 @@ import com.nilhcem.core.hibernate.AbstractHibernateDao;
 import com.nilhcem.model.User;
 
 /**
- * DAO class for accessing User data.
+ * DAO class for accessing {@code User} data.
  *
  * @author Nilhcem
  * @since 1.0
@@ -21,7 +21,7 @@ public class UserDao extends AbstractHibernateDao<User> {
 	}
 
     /**
-	 * Find a user from his email.
+	 * Find a user from his {@code email}.
 	 *
      * @param email Email of the User we are searching for.
      * @return User object, or null if not found.

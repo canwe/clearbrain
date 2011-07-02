@@ -8,7 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter;
 
 /**
- * Custom RememberMeAuthenticationFilter bean for SpringSecurity to log information once authentication is successful through remember me.
+ * Custom {@code RememberMeAuthenticationFilter} bean for SpringSecurity to log information once authentication is successful through remember me.
  *
  * @author Nilhcem
  * @since 1.0

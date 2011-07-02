@@ -60,4 +60,30 @@ public class UserDetailsAdapter extends org.springframework.security.core.userde
 	public User getHibernateUser() {
 		return this.hibernateUser;
 	}
+
+    /**
+     * Return {@code true} if the supplied object is a {@code UserDetailsAdapter} instance with the
+     * same {@code id} value.
+     * <p>
+     * In other words, the objects are equal if they have the same id, representing the same principal.
+     */
+	@Override
+	public boolean equals(Object rhs) {
+		if (this == rhs) {
+			if (rhs instanceof UserDetailsAdapter) {
+				UserDetailsAdapter otherRhs = (UserDetailsAdapter)rhs;
+				return (id == null ? otherRhs == null : id.equals(otherRhs.getId()));
+			}
+			return super.equals(rhs);
+		}
+		return false;
+	}
+
+	/**
+	 * Returns the hashcode of the {@code id}.
+	 */
+	@Override
+	public int hashCode() {
+		return id.hashCode();
+	}
 }

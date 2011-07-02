@@ -16,7 +16,7 @@ import javax.persistence.TemporalType;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
- * Hibernate mapped class for "categories" table.
+ * Hibernate mapped class for {@code "categories"} table.
  *
  * @author Nilhcem
  * @since 1.0

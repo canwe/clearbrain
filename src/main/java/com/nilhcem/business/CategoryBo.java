@@ -18,7 +18,7 @@ import com.nilhcem.model.Category;
 import com.nilhcem.model.User;
 
 /**
- * Business class for accessing Category data.
+ * Business class for accessing {@code Category} data.
  *
  * @author Nilhcem
  * @since 1.0

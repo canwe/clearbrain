@@ -10,7 +10,7 @@ import com.nilhcem.model.Note;
 import com.nilhcem.model.User;
 
 /**
- * DAO class for accessing Note data.
+ * DAO class for accessing {@code Note} data.
  *
  * @author Nilhcem
  * @since 1.0
@@ -23,7 +23,7 @@ public class NoteDao extends AbstractHibernateDao<Note> {
 	}
 
 	/**
-	 * Find all the notes owned by user.
+	 * Find all the notes owned by {@code user}.
 	 *
 	 * @param user Owner of the notes we are searching for.
 	 * @return List of notes.
@@ -35,7 +35,7 @@ public class NoteDao extends AbstractHibernateDao<Note> {
 	}
 
 	/**
-	 * Find a note from its id.
+	 * Find a note from its {@code id}.
 	 *
 	 * @param user Owner of the note we are searching for.
 	 * @param id Id of the note we are searching for.

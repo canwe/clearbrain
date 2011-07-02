@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Custom userDetailsService bean for SpringSecurity to handle authentication using Hibernate.
+ * Custom {@code UserDetailsService} bean for SpringSecurity to handle authentication using Hibernate.
  *
  * @author Nilhcem
  * @since 1.0

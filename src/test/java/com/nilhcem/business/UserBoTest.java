@@ -23,9 +23,9 @@ import com.nilhcem.model.User;
 @ContextConfiguration(locations = {"classpath:/applicationContext-test.xml"})
 @Transactional
 public class UserBoTest {
-	private final String EMAIL = "###Test###@example.com";
-	private final String PASSWORD = "myPassword";
-	private final String LOCALE = "fr_FR";
+	private static final String EMAIL = "###Test###@example.com";
+	private static final String PASSWORD = "myPassword";
+	private static final String LOCALE = "fr_FR";
 
 	@Autowired
 	@Qualifier(value = "userBo")
@@ -44,12 +44,13 @@ public class UserBoTest {
 	@Rollback(true)
 	public void aUserCanSignUp() throws Exception{
 		User user = new User();
-		user.setEmail(EMAIL);
-		user.setPassword(PASSWORD);
+		user.setEmail(UserBoTest.EMAIL);
+		user.setPassword(UserBoTest.PASSWORD);
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.SECOND, -1);
 		Date before = cal.getTime();
-		service.signUpUser(user, new Locale(LOCALE.split("_")[0], LOCALE.split("_")[1]));
+		String[] localSplitted = UserBoTest.LOCALE.split("_");
+		service.signUpUser(user, new Locale(localSplitted[0], localSplitted[1]));
 		cal = Calendar.getInstance();
 		cal.add(Calendar.SECOND, 1);
 		Date after = cal.getTime();
@@ -59,13 +60,13 @@ public class UserBoTest {
 	private void checkIfUserIsSavedInDB(Date before, Date after) {
 		User userNull = service.findByEmail("");
 		assertNull(userNull);
-		User user = service.findByEmail(EMAIL);
+		User user = service.findByEmail(UserBoTest.EMAIL);
 		assertNotNull(user);
-		assertEquals(EMAIL, user.getEmail());
-		assertEquals(LOCALE, user.getLanguage().getCode());
+		assertEquals(UserBoTest.EMAIL, user.getEmail());
+		assertEquals(UserBoTest.LOCALE, user.getLanguage().getCode());
 
 		//Check password
-		assertEquals(passwordEncoder.encodePassword(PASSWORD, saltSource.getSalt(new UserDetailsAdapter(user))), user.getPassword());
+		assertEquals(passwordEncoder.encodePassword(UserBoTest.PASSWORD, saltSource.getSalt(new UserDetailsAdapter(user))), user.getPassword());
 		aUserWhoSignsUpShouldHaveUserRight(user);
 		testRegistrationDate(before, user.getRegistrationDate(), after);
 	}

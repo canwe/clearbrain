@@ -10,7 +10,7 @@ import com.nilhcem.model.Category;
 import com.nilhcem.model.User;
 
 /**
- * DAO class for accessing Category data.
+ * DAO class for accessing {@code Category} data.
  *
  * @author Nilhcem
  * @since 1.0
@@ -23,7 +23,7 @@ public class CategoryDao extends AbstractHibernateDao<Category> {
 	}
 
 	/**
-	 * Find a category from its id.
+	 * Find a category from its {@code id}.
 	 *
 	 * @param user User of the category.
 	 * @param id Category's id.
@@ -50,7 +50,7 @@ public class CategoryDao extends AbstractHibernateDao<Category> {
 	}
 
 	/**
-	 * Return last category for user u.
+	 * Return last category for User {@code user}.
 	 *
 	 * @param user User of the category.
 	 * @return Last category owned by user, or null if not found.

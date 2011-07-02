@@ -100,7 +100,7 @@ public class DashboardControllerAjax extends AbstractController {
 	 * Assign a category to a note.
 	 *
 	 * @param catId The category's id we need to display or hide.
-	 * @param display True if we need to display the category, otherwise false.
+	 * @param noteId The note's id which will contain the category.
 	 * @return true.
 	 */
 	@RequestMapping(method = RequestMethod.POST, params = { "assignCat" })

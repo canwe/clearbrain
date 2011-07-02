@@ -20,7 +20,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 /**
- * Hibernate mapped class for "users" table.
+ * Hibernate mapped class for {@code "users"} table.
  *
  * @author Nilhcem
  * @since 1.0

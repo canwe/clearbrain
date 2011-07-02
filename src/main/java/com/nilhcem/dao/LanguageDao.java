@@ -8,7 +8,7 @@ import com.nilhcem.core.hibernate.AbstractHibernateDao;
 import com.nilhcem.model.Language;
 
 /**
- * DAO class for accessing Language data.
+ * DAO class for accessing {@code Language} data.
  *
  * @author Nilhcem
  * @since 1.0
@@ -21,7 +21,7 @@ public class LanguageDao extends AbstractHibernateDao<Language> {
 	}
 
 	/**
-	 * Find a language from its code.
+	 * Find a language from its {@code code}.
 	 *
      * @param code Code of the language we are searching for.
      * @return Language object, or null if not found.
