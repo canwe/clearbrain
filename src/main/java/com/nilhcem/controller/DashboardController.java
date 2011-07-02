@@ -42,7 +42,6 @@ public class DashboardController extends AbstractController {
 	 */
 	@ModelAttribute(value="categoriesList")
 	public List<Category> populateCategoriesList() {
-		//TODO: this is called even in Ajax queries, this is bad
 		return categoryBo.getSortedCategories(getCurrentUser());
 	}
 
@@ -63,7 +62,6 @@ public class DashboardController extends AbstractController {
 	 */
 	@ModelAttribute(value="notesList")
 	public List<Note> populateNotesList() {
-		//TODO: this is called even in Ajax queries, this is bad
 		return noteBo.getNotes(getCurrentUser());
 	}
 }

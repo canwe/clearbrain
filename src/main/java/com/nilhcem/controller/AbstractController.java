@@ -57,9 +57,11 @@ public abstract class AbstractController {
 	@ModelAttribute("i18nJS")
 	public Map<String, String> i18nJs(HttpServletRequest request) throws Exception {
 		Map<String, String> i18n = new LinkedHashMap<String, String>();
-		Locale locale = RequestContextUtils.getLocale(request);
-		for (String msg : i18nJs)
-			i18n.put(msg.replaceFirst(i18nJsRemoveStr, ""), message.getMessage(msg, null, locale));
+		if (i18nJs != null && i18nJsRemoveStr != null) {
+			Locale locale = RequestContextUtils.getLocale(request);
+			for (String msg : i18nJs)
+				i18n.put(msg.replaceFirst(i18nJsRemoveStr, ""), message.getMessage(msg, null, locale));
+		}
 		return i18n;
 	}
 }
