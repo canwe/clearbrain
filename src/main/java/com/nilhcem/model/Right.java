@@ -18,8 +18,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "rights")
 @SequenceGenerator(name = "seq_right", sequenceName = "rights_right_id_seq", allocationSize = 1)
-public class Right implements Serializable {
-	private static final long serialVersionUID = 2171721794634296671L;
+public final class Right implements Serializable {
+	private static final long serialVersionUID = 5597993934433887876L;
 	private Long id;
 	private String name;
 

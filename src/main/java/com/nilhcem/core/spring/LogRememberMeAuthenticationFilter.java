@@ -13,8 +13,8 @@ import org.springframework.security.web.authentication.rememberme.RememberMeAuth
  * @author Nilhcem
  * @since 1.0
  */
-public class LogRememberMeAuthenticationFilter extends RememberMeAuthenticationFilter {
-	private Logger logger = LoggerFactory.getLogger(LogRememberMeAuthenticationFilter.class);
+public final class LogRememberMeAuthenticationFilter extends RememberMeAuthenticationFilter {
+	private final Logger logger = LoggerFactory.getLogger(LogRememberMeAuthenticationFilter.class);
 
 	/**
 	 * Log after successful authentication through remember me.

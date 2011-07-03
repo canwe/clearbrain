@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.nilhcem.core.exception.CategoriesOrderException;
 import com.nilhcem.core.hibernate.TransactionalReadOnly;
 import com.nilhcem.core.hibernate.TransactionalReadWrite;
 import com.nilhcem.dao.CategoryDao;
@@ -28,7 +29,7 @@ import com.nilhcem.model.User;
 public class CategoryBo {
 	@Autowired
 	private CategoryDao dao;
-	private Logger logger = LoggerFactory.getLogger(CategoryBo.class);
+	private final Logger logger = LoggerFactory.getLogger(CategoryBo.class);
 
 	/**
 	 * Return the first category from the list.
@@ -39,14 +40,16 @@ public class CategoryBo {
 	private Category getFirstCategory(List<Category> categories) {
 		//Store 'Next category id' column
 		Set<Long> next = new HashSet<Long>();
-		for (Category c : categories)
+		for (Category c : categories) {
 			next.add(c.getNextCategoryId());
+		}
 
 		//Find element which is not in the next column (which means the first one)
-		for (Category c : categories)
-			if (!next.contains(c.getId()))
+		for (Category c : categories) {
+			if (!next.contains(c.getId())) {
 				return c;
-
+			}
+		}
 		return null;
 	}
 
@@ -60,15 +63,16 @@ public class CategoryBo {
 		//Get all categories in a HashMap
 		List<Category> allCategories = dao.getCategories(user);
 		Map<Long, Category> mapCategories = new HashMap<Long, Category>();
-		for (Category cat : allCategories)
+		for (Category cat : allCategories) {
 			mapCategories.put(cat.getId(), cat);
+		}
 
 		//Sort categories
 		List<Category> sortedCategories = new ArrayList<Category>();
-		Category c = getFirstCategory(allCategories);
-		while (c != null) {
-			sortedCategories.add(c);
-			c = mapCategories.get(c.getNextCategoryId());
+		Category category = getFirstCategory(allCategories);
+		while (category != null) {
+			sortedCategories.add(category);
+			category = mapCategories.get(category.getNextCategoryId());
 		}
 
 		return sortedCategories;
@@ -132,9 +136,10 @@ public class CategoryBo {
 	 * @param before The category will be before (== true) or after (== false) prevId.
 	 */
 	@TransactionalReadWrite
-	public void updatePosition(User user, Long catId, Long oldId, boolean before) throws Exception {
-		if (logger.isDebugEnabled())
+	public void updatePosition(User user, Long catId, Long oldId, boolean before) throws CategoriesOrderException {
+		if (logger.isDebugEnabled()) {
 			logger.debug("Update position: Category {} will be {} {}", new Object[] {catId, (before ? "before" : "after"), oldId});
+		}
 
 		Category curCat = dao.getById(user, catId);
 		Category prevOfCurCat = dao.getPreviousCategoryOf(user, curCat);

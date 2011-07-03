@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import com.nilhcem.core.exception.CategoriesOrderException;
 import com.nilhcem.core.test.TestUtils;
 import com.nilhcem.model.Category;
 import com.nilhcem.model.User;
@@ -16,7 +17,7 @@ import com.nilhcem.model.User;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:/applicationContext-test.xml"})
 public class CategoryBoTest {
-	private static final String[] categories = new String[] {"1", "2", "3", "4", "5"};
+	private static final String[] CATEGORIES = new String[] {"1", "2", "3", "4", "5"};
 
 	@Autowired
 	private TestUtils testUtils;
@@ -24,7 +25,7 @@ public class CategoryBoTest {
 	private CategoryBo service;
 
 	@Test
-	public void testCategories() throws Exception {
+	public void testCategories() throws CategoriesOrderException {
 		User user = testUtils.getTestUser();
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.SECOND, -1);
@@ -33,7 +34,7 @@ public class CategoryBoTest {
 		cal = Calendar.getInstance();
 		cal.add(Calendar.SECOND, 1);
 		Date after = cal.getTime();
-		List<Category> sortedCategories = checkIfCategoriesAreCorrectlyAddedAndSorted(user, categories);
+		List<Category> sortedCategories = checkIfCategoriesAreCorrectlyAddedAndSorted(user, CATEGORIES);
 		checkCreationDate(before, after, sortedCategories.get(0));
 //		testShowHideCategories(user, sortedCategories);
 		moveCategories(user, sortedCategories);
@@ -41,8 +42,9 @@ public class CategoryBoTest {
 	}
 
 	private void addCategories(User user) {
-		for (String category : categories)
+		for (String category : CATEGORIES) {
 			service.addCategory(user, category);
+		}
 	}
 
 	private List<Category> checkIfCategoriesAreCorrectlyAddedAndSorted(User user, String[] expectedOrder) {
@@ -53,10 +55,12 @@ public class CategoryBoTest {
 		for (Category category : sortedCategories) {
 			assertEquals(category.getName(), expectedOrder[idx++]);
 			assertTrue(category.isDisplayed());
-			if (idx != expectedOrder.length)
-				assertNotNull(category.getNext());
-			else
+			if (idx == expectedOrder.length) {
 				assertNull(category.getNext());
+			}
+			else {
+				assertNotNull(category.getNext());
+			}
 		}
 		return sortedCategories;
 	}
@@ -67,7 +71,7 @@ public class CategoryBoTest {
 		assertFalse(after.before(category.getCreationDate()));
 	}
 
-	private void moveCategories(User user, List<Category> cats) throws Exception {
+	private void moveCategories(User user, List<Category> cats) throws CategoriesOrderException {
 		service.updatePosition(user, cats.get(1).getId(), cats.get(0).getId(), true);
 		checkIfCategoriesAreCorrectlyAddedAndSorted(user, new String[] {"2", "1", "3", "4", "5"});
 		service.updatePosition(user, cats.get(1).getId(), cats.get(4).getId(), false);

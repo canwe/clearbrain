@@ -23,19 +23,21 @@ import com.nilhcem.form.SignUpForm;
 public class SignUpControllerTest {
 	@Autowired
 	private SignUpController controller;
+	private final static String SIGNUP_PAGE = "front/signup";
+	private final static String PASSWORD = "myP#ssW0Rd";
 
 	@Test
 	public void signUpPageShouldBeCorrectlyInitialized() {
 		ModelMap model = new ModelMap();
-		assertEquals("front/signup", controller.initSignUpPage(model));
+		assertEquals(SIGNUP_PAGE, controller.initSignUpPage(model));
 		assertTrue(model.containsAttribute("signupform"));
 	}
 
-	private ModelAndView getModelAndViewSignUpPage(String email, String password, String passwordConfirmation) {
+	private ModelAndView getModelAndViewSignUpPage(String email, String password, String pwdConfirm) {
 		MockHttpServletRequest request = new MockHttpServletRequest("post", "/signup");
 		request.setParameter("user.email", email);
 		request.setParameter("user.password", password);
-		request.setParameter("passwordConfirmation", passwordConfirmation);
+		request.setParameter("passwordConfirmation", pwdConfirm);
 
 		SignUpForm signUpForm = new SignUpForm();
 		WebDataBinder binder = new WebDataBinder(signUpForm, "signupform");
@@ -47,22 +49,22 @@ public class SignUpControllerTest {
 
 	@Test
 	public void submitSignUpPageWithBadEmailShouldRedirectToInitialForm() {
-		ModelAndView modelAndView = getModelAndViewSignUpPage("", "myP#ssW0Rd", "myP#ssW0Rd");
-		assertEquals("front/signup", modelAndView.getViewName());
+		ModelAndView modelAndView = getModelAndViewSignUpPage("", PASSWORD, PASSWORD);
+		assertEquals(SIGNUP_PAGE, modelAndView.getViewName());
 		assertNotNull(modelAndView.getModel());
 	}
 
 	@Test
 	public void submitSignUpPageWithEmptyPwdShouldRedirectToInitialForm() {
 		ModelAndView modelAndView = getModelAndViewSignUpPage("my.email@company.com", "", "");
-		assertEquals("front/signup", modelAndView.getViewName());
+		assertEquals(SIGNUP_PAGE, modelAndView.getViewName());
 		assertNotNull(modelAndView.getModel());
 	}
 
 	@Test
 	public void submitSignUpPageWithBadPwdConfirmationShouldRedirectToInitialForm() {
-		ModelAndView modelAndView = getModelAndViewSignUpPage("my.email@company.com", "myP#ssW0Rd", "notTheSame");
-		assertEquals("front/signup", modelAndView.getViewName());
+		ModelAndView modelAndView = getModelAndViewSignUpPage("my.email@company.com", PASSWORD, "notTheSame");
+		assertEquals(SIGNUP_PAGE, modelAndView.getViewName());
 		assertNotNull(modelAndView.getModel());
 	}
 
@@ -71,7 +73,7 @@ public class SignUpControllerTest {
 	@Rollback(true)
 	public void submitSignUpPageWithValidObjectShouldRedirectToCompletedView() {
 		String email = "my.email@company.com";
-		ModelAndView modelAndView = getModelAndViewSignUpPage(email, "myP#ssW0Rd", "myP#ssW0Rd");
+		ModelAndView modelAndView = getModelAndViewSignUpPage(email, PASSWORD, PASSWORD);
 		assertEquals("redirectWithoutModel:signup-completed", modelAndView.getViewName());
 		assertNotNull(modelAndView.getModel());
 		checkEmailAvailabilityShouldReturnFalse(email);
@@ -84,7 +86,7 @@ public class SignUpControllerTest {
 
 	@Test
 	public void checkEmailAvailabilityShouldReturnTrue() {
-		assertTrue(controller.checkEmailAvailability("###@###.###")); //this email should not be taken by anybody
+		assertTrue(controller.checkEmailAvailability("###@###.###")); // this email should not be taken by anybody
 	}
 
 	public void checkEmailAvailabilityShouldReturnFalse(String email) {
@@ -92,14 +94,15 @@ public class SignUpControllerTest {
 	}
 
 	@Test
-	public void testJavascriptLocales() throws Exception {
-		String[] keys = {"err.pwd", "err.pwdConf", "err.mailRegist", "err.mail", "ok.mail", "ok.pwd", "ok.pwdConf"};
+	public void testJavascriptLocales() {
+		final String[] keys = {"err.pwd", "err.pwdConf", "err.mailRegist", "err.mail", "ok.mail", "ok.pwd", "ok.pwdConf"};
 
 		MockHttpServletRequest request = new MockHttpServletRequest("get", "/signup");
-		Map<String, String> map = controller.i18nJs(request);
+		Map<String, String> map = controller.sendI18nToJavascript(request);
 		assertNotNull(map);
 
-		for (String key : keys)
+		for (String key : keys) {
 			assertNotNull(map.get(key));
+		}
 	}
 }

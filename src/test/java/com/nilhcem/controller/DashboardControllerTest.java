@@ -21,14 +21,15 @@ public class DashboardControllerTest {
 	}
 
 	@Test
-	public void testJavascriptLocales() throws Exception {
-		String[] keys = {"cat.confRm", "cat.confRmQ", "cat.updErr"};
+	public void testJavascriptLocales() {
+		final String[] keys = {"cat.confRm", "cat.confRmQ", "cat.updErr"};
 
 		MockHttpServletRequest request = new MockHttpServletRequest("get", "/logged/dashboard");
-		Map<String, String> map = controller.i18nJs(request);
+		Map<String, String> map = controller.sendI18nToJavascript(request);
 		assertNotNull(map);
 
-		for (String key : keys)
+		for (String key : keys) {
 			assertNotNull(map.get(key));
+		}
 	}
 }

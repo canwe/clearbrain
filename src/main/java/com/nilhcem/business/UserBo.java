@@ -43,7 +43,7 @@ public class UserBo {
 	@Autowired
 	private AuthenticationManager authenticationManager;
 
-	private Logger logger = LoggerFactory.getLogger(UserBo.class);
+	private final Logger logger = LoggerFactory.getLogger(UserBo.class);
 
 	/**
 	 * Save a user in database and hash his password in SHA-256.
@@ -60,11 +60,11 @@ public class UserBo {
 		userDao.save(user);
 
 		//Hash password
-		user = userDao.findByEmail(user.getEmail());
-		UserDetailsAdapter userDetails = new UserDetailsAdapter(user);
+		User myUser = userDao.findByEmail(user.getEmail());
+		UserDetailsAdapter userDetails = new UserDetailsAdapter(myUser);
 		Object salt = saltSource.getSalt(userDetails);
-		user.setPassword(passwordEncoder.encodePassword(userDetails.getPassword(), salt));
-		userDao.update(user);
+		myUser.setPassword(passwordEncoder.encodePassword(userDetails.getPassword(), salt));
+		userDao.update(myUser);
 	}
 
 	/**

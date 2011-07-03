@@ -15,7 +15,7 @@ import com.nilhcem.form.SignUpForm;
  * @author Nilhcem
  * @since 1.0
  */
-public class SignUpValidator implements Validator {
+public final class SignUpValidator implements Validator {
 	@Autowired
 	private UserBo userBo;
 
@@ -42,18 +42,21 @@ public class SignUpValidator implements Validator {
 
 		//Check password confirmation
 		SignUpForm signUpForm = (SignUpForm)target;
-		if (!signUpForm.getUser().getPassword().equals(signUpForm.getPasswordConfirmation()))
+		if (!signUpForm.getUser().getPassword().equals(signUpForm.getPasswordConfirmation())) {
 			errors.rejectValue("passwordConfirmation", "signup.err.pwdConf");
+		}
 
 		//Check if email is valid
-		Pattern pattern = Pattern.compile("\\S+@\\S+");
+		final Pattern pattern = Pattern.compile("\\S+@\\S+");
 		Matcher matcher = pattern.matcher(signUpForm.getUser().getEmail());
-		if (!matcher.find())
-			errors.rejectValue("user.email", "signup.err.mail");
-		else {
+		if (matcher.find()) {
 			//Check email already registered
-			if (userBo.findByEmail(signUpForm.getUser().getEmail()) != null)
+			if (userBo.findByEmail(signUpForm.getUser().getEmail()) != null) {
 				errors.rejectValue("user.email", "signup.err.mailRegist");
+			}
+		}
+		else {
+			errors.rejectValue("user.email", "signup.err.mail");
 		}
 	}
 }

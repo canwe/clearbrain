@@ -10,7 +10,6 @@ import com.nilhcem.core.hibernate.TransactionalReadOnly;
 import com.nilhcem.core.hibernate.TransactionalReadWrite;
 import com.nilhcem.dao.CategoryDao;
 import com.nilhcem.dao.NoteDao;
-import com.nilhcem.model.Category;
 import com.nilhcem.model.Note;
 import com.nilhcem.model.User;
 
@@ -27,7 +26,7 @@ public class NoteBo {
 	private NoteDao dao;
 	@Autowired
 	private CategoryDao catDao;
-	private Logger logger = LoggerFactory.getLogger(NoteBo.class);
+	private final Logger logger = LoggerFactory.getLogger(NoteBo.class);
 
 	/**
 	 * Add a {@code Note} in database.
@@ -41,12 +40,9 @@ public class NoteBo {
 	public Note addNote(User user, String noteName, Long catId) {
 		logger.debug("Add note {} in category {}", noteName, catId);
 
-		Category cat = null;
-		if (catId != 0)
-			cat = catDao.getById(user, catId);
 		Note note = new Note();
 		note.setName(noteName);
-		note.setCategory(cat);
+		note.setCategory((catId.equals(Long.valueOf(0l))) ? null : catDao.getById(user, catId));
 		note.setCreationDate(Calendar.getInstance().getTime());
 		note.setUser(user);
 		dao.save(note);
@@ -64,11 +60,8 @@ public class NoteBo {
 	public void assignCategoryToNote(User user, Long categoryId, Long noteId) {
 		logger.debug("Assign category {} to note {}", categoryId, noteId);
 
-		Category category = null;
-		if (categoryId != 0)
-			category = catDao.getById(user, categoryId);
 		Note note = dao.getById(user, noteId);
-		note.setCategory(category);
+		note.setCategory((categoryId.equals(Long.valueOf(0l))) ? null : catDao.getById(user, categoryId));
 		dao.update(note);
 	}
 

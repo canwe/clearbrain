@@ -28,8 +28,8 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "users")
 @SequenceGenerator(name = "seq_user", sequenceName = "users_user_id_seq", allocationSize = 1)
-public class User implements Serializable {
-	private static final long serialVersionUID = 6699360757037780548L;
+public final class User implements Serializable {
+	private static final long serialVersionUID = -8038762153134980938L;
 	private Long id;
 	private String email;
 	private String password;

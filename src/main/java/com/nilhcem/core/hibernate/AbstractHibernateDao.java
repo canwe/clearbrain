@@ -31,7 +31,7 @@ public abstract class AbstractHibernateDao<E> {
 	 * Create a {@code Criteria} using the current session.
 	 * @return Created criteria.
 	 */
-	protected Criteria criteria() {
+	protected final Criteria criteria() {
 		return currentSession().createCriteria(entityClass);
 	}
 
@@ -40,7 +40,7 @@ public abstract class AbstractHibernateDao<E> {
 	 * @param hql HQL for the Query.
 	 * @return Created query.
 	 */
-	protected Query query(String hql) {
+	protected final Query query(String hql) {
 		return currentSession().createQuery(hql);
 	}
 
@@ -48,7 +48,7 @@ public abstract class AbstractHibernateDao<E> {
 	 * Return the current Hibernate {@code Session}.
 	 * @return Current Hibernate session.
 	 */
-	protected Session currentSession() {
+	protected final Session currentSession() {
 		return sessionFactory.getCurrentSession();
 	}
 
@@ -56,7 +56,7 @@ public abstract class AbstractHibernateDao<E> {
 	 * Return all elements in a list.
 	 * @return All elements.
 	 */
-	protected List<E> all() {
+	protected final List<E> all() {
 		return list(criteria());
 	}
 
@@ -64,7 +64,7 @@ public abstract class AbstractHibernateDao<E> {
 	 * Return the {@code Entity} class.
 	 * @return Entity class.
 	 */
-	public Class<E> getEntityClass() {
+	public final Class<E> getEntityClass() {
 		return entityClass;
 	}
 
@@ -75,7 +75,7 @@ public abstract class AbstractHibernateDao<E> {
 	 * @return List of elements.
 	 */
 	@SuppressWarnings("unchecked")
-	protected List<E> list(Criteria criteria) {
+	protected final List<E> list(Criteria criteria) {
 		return criteria.list();
 	}
 
@@ -86,7 +86,7 @@ public abstract class AbstractHibernateDao<E> {
 	 * @return List of elements.
 	 */
     @SuppressWarnings("unchecked")
-    protected List<E> list(Query query) {
+    protected final List<E> list(Query query) {
         return query.list();
     }
 
@@ -97,7 +97,7 @@ public abstract class AbstractHibernateDao<E> {
 	 * @return Unique element.
 	 */
     @SuppressWarnings("unchecked")
-    protected E uniqueResult(Criteria criteria) {
+    protected final E uniqueResult(Criteria criteria) {
         return (E)criteria.uniqueResult();
     }
 
@@ -108,7 +108,7 @@ public abstract class AbstractHibernateDao<E> {
 	 * @return Unique element.
 	 */
     @SuppressWarnings("unchecked")
-    protected E uniqueResult(Query query) {
+    protected final E uniqueResult(Query query) {
         return (E)query.uniqueResult();
     }
 
@@ -119,7 +119,7 @@ public abstract class AbstractHibernateDao<E> {
 	 * @return Unique element.
 	 */
     @SuppressWarnings("unchecked")
-	protected E get(Serializable id) {
+	protected final E get(Serializable id) {
         return (E)currentSession().get(entityClass, id);
     }
 
@@ -128,7 +128,7 @@ public abstract class AbstractHibernateDao<E> {
 	 *
 	 * @param object the object we need to save.
 	 */
-	public void save(E object) {
+	public final void save(E object) {
 		currentSession().save(object);
 	}
 
@@ -137,7 +137,7 @@ public abstract class AbstractHibernateDao<E> {
 	 *
 	 * @param object the object we need to update.
 	 */
-	public void update(E object) {
+	public final void update(E object) {
 		currentSession().update(object);
 	}
 
@@ -146,7 +146,7 @@ public abstract class AbstractHibernateDao<E> {
 	 *
 	 * @param object the object we need to remove.
 	 */
-	public void delete(E object) {
+	public final void delete(E object) {
 		currentSession().delete(object);
 	}
 }

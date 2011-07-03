@@ -24,7 +24,7 @@ import com.nilhcem.validator.SignUpValidator;
  * @since 1.0
  */
 @Controller
-public class SignUpController extends AbstractController {
+public final class SignUpController extends AbstractController {
 	@Autowired
 	private SignUpValidator signUpValidator;
 	@Autowired
@@ -34,8 +34,9 @@ public class SignUpController extends AbstractController {
 	 * Define JS i18n keys.
 	 */
 	public SignUpController() {
-		String[] i18nJs = {"signup.err.pwd", "signup.err.pwdConf", "signup.err.mailRegist", "signup.err.mail", "signup.ok.mail",
-			"signup.ok.pwd", "signup.ok.pwdConf"};
+		super();
+		final String[] i18nJs = {"signup.err.pwd", "signup.err.pwdConf", "signup.err.mailRegist", "signup.err.mail", 
+			"signup.ok.mail", "signup.ok.pwd", "signup.ok.pwdConf"};
 		super.setI18nJsValues(i18nJs, "^signup\\.");
 	}
 
@@ -49,10 +50,12 @@ public class SignUpController extends AbstractController {
 	 * @return A new view (front/signupCompleted).
 	 */
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
-	public ModelAndView submitSignUpPage(@ModelAttribute("signupform") SignUpForm signUpForm, BindingResult result, SessionStatus status, HttpServletRequest request) {
+	public ModelAndView submitSignUpPage(@ModelAttribute("signupform") SignUpForm signUpForm, BindingResult result, 
+		SessionStatus status, HttpServletRequest request) {
 		signUpValidator.validate(signUpForm, result);
-		if (result.hasErrors())
+		if (result.hasErrors()) {
 			return new ModelAndView("front/signup");
+		}
 
 		userBo.signUpUser(signUpForm.getUser(), RequestContextUtils.getLocale(request));
 		status.setComplete();

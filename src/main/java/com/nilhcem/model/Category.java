@@ -24,7 +24,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 @Entity
 @Table(name = "categories")
 @SequenceGenerator(name = "seq_category", sequenceName = "categories_category_id_seq", allocationSize = 1)
-public class Category {
+public final class Category {
 	private Long id;
 	private String name;
 	private boolean displayed;

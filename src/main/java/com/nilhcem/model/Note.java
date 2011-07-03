@@ -24,7 +24,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 @Entity
 @Table(name = "notes")
 @SequenceGenerator(name = "seq_note", sequenceName = "notes_note_id_seq", allocationSize = 1)
-public class Note {
+public final class Note {
 	private Long id;
 	private String name;
 	private Date creationDate;

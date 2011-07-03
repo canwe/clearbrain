@@ -14,7 +14,7 @@ import com.nilhcem.model.User;
  * @since 1.0
  */
 @Repository
-public class UserDao extends AbstractHibernateDao<User> {
+public final class UserDao extends AbstractHibernateDao<User> {
 	@Autowired
 	public UserDao(SessionFactory sessionFactory) {
 		super(User.class, sessionFactory);

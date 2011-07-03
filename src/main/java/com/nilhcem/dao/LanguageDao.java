@@ -14,7 +14,7 @@ import com.nilhcem.model.Language;
  * @since 1.0
  */
 @Repository
-public class LanguageDao extends AbstractHibernateDao<Language> {
+public final class LanguageDao extends AbstractHibernateDao<Language> {
 	@Autowired
 	public LanguageDao(SessionFactory sessionFactory) {
 		super(Language.class, sessionFactory);

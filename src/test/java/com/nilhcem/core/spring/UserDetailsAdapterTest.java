@@ -9,7 +9,7 @@ import com.nilhcem.model.Right;
 import com.nilhcem.model.User;
 
 public class UserDetailsAdapterTest {
-	private User user = new User();
+	private final User user = new User();
 
     @Before
     public void setUp() {
@@ -30,7 +30,7 @@ public class UserDetailsAdapterTest {
 		assertEquals(user.getEmail(), userDetails.getUsername());
 		assertEquals(user.isEnabled(), userDetails.isEnabled());
 		assertEquals(user.getRights().size(), userDetails.getAuthorities().size());
-		Iterator<GrantedAuthority> i = userDetails.getAuthorities().iterator();
-		assertEquals(user.getRights().get(0).getName(), i.next().getAuthority());
+		Iterator<GrantedAuthority> iterator = userDetails.getAuthorities().iterator();
+		assertEquals(user.getRights().get(0).getName(), iterator.next().getAuthority());
 	}
 }

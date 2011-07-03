@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.nilhcem.business.CategoryBo;
 import com.nilhcem.business.NoteBo;
+import com.nilhcem.core.exception.CategoriesOrderException;
 import com.nilhcem.model.Category;
 import com.nilhcem.model.Note;
 
@@ -21,7 +22,7 @@ import com.nilhcem.model.Note;
 @Controller
 @PreAuthorize("hasRole('RIGHT_USER')")
 @RequestMapping("/dashboard-js")
-public class DashboardControllerAjax extends AbstractController {
+public final class DashboardControllerAjax extends AbstractController {
 	@Autowired
 	private CategoryBo categoryBo;
 	@Autowired
@@ -63,7 +64,7 @@ public class DashboardControllerAjax extends AbstractController {
 		@RequestParam(value = "before", required = true) boolean before) {
 		try {
 			categoryBo.updatePosition(getCurrentUser(), catId, oldId, before);
-		} catch (Exception e) {
+		} catch (CategoriesOrderException e) {
 			return false;
 		}
 		return true;

@@ -16,7 +16,7 @@ import com.nilhcem.model.User;
  * @since 1.0
  */
 @Repository
-public class NoteDao extends AbstractHibernateDao<Note> {
+public final class NoteDao extends AbstractHibernateDao<Note> {
 	@Autowired
 	public NoteDao(SessionFactory sessionFactory) {
 		super(Note.class, sessionFactory);

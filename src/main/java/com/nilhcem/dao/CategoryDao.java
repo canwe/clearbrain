@@ -5,6 +5,7 @@ import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import com.nilhcem.core.exception.CategoriesOrderException;
 import com.nilhcem.core.hibernate.AbstractHibernateDao;
 import com.nilhcem.model.Category;
 import com.nilhcem.model.User;
@@ -16,7 +17,7 @@ import com.nilhcem.model.User;
  * @since 1.0
  */
 @Repository
-public class CategoryDao extends AbstractHibernateDao<Category> {
+public final class CategoryDao extends AbstractHibernateDao<Category> {
 	@Autowired
 	public CategoryDao(SessionFactory sessionFactory) {
 		super(Category.class, sessionFactory);
@@ -82,10 +83,11 @@ public class CategoryDao extends AbstractHibernateDao<Category> {
 	 * @param user User of the categories.
 	 * @throws Exception If two categories have the same 'next' value, which means something was wrong. Exception will be used to do a rollback.
 	 */
-	public void checkIfCategoriesAreProperlyOrdered(User user) throws Exception {
+	public void checkIfCategoriesAreProperlyOrdered(User user) throws CategoriesOrderException {
 		Query query = query("FROM Category c1 WHERE c1.user=:user AND c1.nextCategoryId IN (Select c2.nextCategoryId FROM Category c2 WHERE c2.user=:user AND c2.id != c1.id)")
 			.setParameter("user", user);
-		if (!list(query).isEmpty())
-			throw new Exception("An error occured while updating categories positions");
+		if (!list(query).isEmpty()) {
+			throw new CategoriesOrderException();
+		}
 	}
 }

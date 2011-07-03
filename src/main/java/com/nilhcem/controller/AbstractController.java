@@ -31,18 +31,18 @@ public abstract class AbstractController {
 	 *
 	 * @return Current user.
 	 */
-	protected User getCurrentUser() {
+	protected final User getCurrentUser() {
 		return ((UserDetailsAdapter)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getHibernateUser();
 	}
 
 	/**
 	 * Set i18n keys to display in Javascript automatically.
 	 *
-	 * @see #i18nJs(HttpServletRequest) i18nJs
+	 * @see #sendI18nToJavascript(HttpServletRequest) i18nJs
 	 * @param i18nJs Array of keys for the Javascript.
 	 * @param i18nJsRemoveStr Regex substring to remove from the keys (to transfer less data)
 	 */
-	protected void setI18nJsValues(String[] i18nJs, String i18nJsRemoveStr) {
+	protected final void setI18nJsValues(String[] i18nJs, String i18nJsRemoveStr) {
 		this.i18nJs = i18nJs;
 		this.i18nJsRemoveStr = i18nJsRemoveStr;
 	}
@@ -55,12 +55,13 @@ public abstract class AbstractController {
 	 * @throws Exception.
 	 */
 	@ModelAttribute("i18nJS")
-	public Map<String, String> i18nJs(HttpServletRequest request) throws Exception {
+	public final Map<String, String> sendI18nToJavascript(HttpServletRequest request) {
 		Map<String, String> i18n = new LinkedHashMap<String, String>();
 		if (i18nJs != null && i18nJsRemoveStr != null) {
 			Locale locale = RequestContextUtils.getLocale(request);
-			for (String msg : i18nJs)
+			for (String msg : i18nJs) {
 				i18n.put(msg.replaceFirst(i18nJsRemoveStr, ""), message.getMessage(msg, null, locale));
+			}
 		}
 		return i18n;
 	}

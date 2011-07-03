@@ -8,7 +8,7 @@ import com.nilhcem.model.User;
  * @author Nilhcem
  * @since 1.0
  */
-public class SignUpForm {
+public final class SignUpForm {
 	private User user = new User();
 	private String passwordConfirmation;
 

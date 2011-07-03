@@ -14,7 +14,7 @@ import com.nilhcem.model.Right;
  * @since 1.0
  */
 @Repository
-public class RightDao extends AbstractHibernateDao<Right> {
+public final class RightDao extends AbstractHibernateDao<Right> {
 	public static final String RIGHT_USER = "RIGHT_USER";
 	public static final String RIGHT_ADMIN = "RIGHT_ADMIN";
 

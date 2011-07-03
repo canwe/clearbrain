@@ -14,7 +14,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import com.nilhcem.business.UserBo;
 import com.nilhcem.core.spring.UserDetailsAdapter;
 import com.nilhcem.dao.RightDao;
 import com.nilhcem.model.User;
@@ -42,7 +41,7 @@ public class UserBoTest {
 
 	@Test
 	@Rollback(true)
-	public void aUserCanSignUp() throws Exception{
+	public void aUserCanSignUp() {
 		User user = new User();
 		user.setEmail(UserBoTest.EMAIL);
 		user.setPassword(UserBoTest.PASSWORD);

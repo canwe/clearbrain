@@ -28,8 +28,9 @@ public class LanguageBo {
 	 */
 	public Language findByLocale(Locale locale) {
 		Language lang = dao.findByCode(locale.getLanguage() + "_" + locale.getCountry());
-		if (lang == null)
+		if (lang == null) {
 			lang = dao.findByCode(DEFAULT_LANG);
+		}
 		return lang;
 	}
 }

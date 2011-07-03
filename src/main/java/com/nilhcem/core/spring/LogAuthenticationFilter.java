@@ -15,8 +15,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  * @author Nilhcem
  * @since 1.0
  */
-public class LogAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-	private Logger logger = LoggerFactory.getLogger(LogAuthenticationFilter.class);
+public final class LogAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+	private final Logger logger = LoggerFactory.getLogger(LogAuthenticationFilter.class);
 
 	/**
 	 * Log after successful authentication.
@@ -26,8 +26,8 @@ public class LogAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	 * @param authResult The object returned from the attemptAuthentication method, which contains authentication data.
 	 */
 	@Override
-	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, Authentication authResult)
-		throws IOException, ServletException {
+	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+		Authentication authResult) throws IOException, ServletException {
 		super.successfulAuthentication(request, response, authResult);
 		logger.info("{} has logged-in", authResult.getName());
 	}

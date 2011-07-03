@@ -13,12 +13,12 @@ import org.springframework.web.servlet.view.RedirectView;
  * @author Nilhcem
  * @since 1.0
  */
-public class RedirectViewResolver implements ViewResolver, Ordered {
+public final class RedirectViewResolver implements ViewResolver, Ordered {
     // Have a highest priority by default
     private int order = Integer.MIN_VALUE; 
 
     // Uses this prefix to avoid interference with the default behaviour
-    public static final String REDIRECT_URL_PREFIX = "redirectWithoutModel:";     
+    public static final String REDIRECT_URL_PREFIX = "redirectWithoutModel:";
 
     /**
      * Check if view starts by "redirectWithoutModel:" prefix, if so, redirect without model.
@@ -27,7 +27,7 @@ public class RedirectViewResolver implements ViewResolver, Ordered {
      * @param arg1 Locale.
      * @return A RedirectView with no model.
      */
-    public View resolveViewName(String viewName, Locale arg1) throws Exception {
+    public View resolveViewName(String viewName, Locale arg1) {
         if (viewName.startsWith(REDIRECT_URL_PREFIX)) {
             String redirectUrl = viewName.substring(REDIRECT_URL_PREFIX.length());
             return new RedirectView(redirectUrl, true, true, false);

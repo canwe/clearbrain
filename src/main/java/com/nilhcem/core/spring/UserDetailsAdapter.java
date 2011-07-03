@@ -14,8 +14,8 @@ import com.nilhcem.model.User;
  * @author Nilhcem
  * @since 1.0
  */
-public class UserDetailsAdapter extends org.springframework.security.core.userdetails.User {
-	private static final long serialVersionUID = 2770692691492399454L;
+public final class UserDetailsAdapter extends org.springframework.security.core.userdetails.User {
+	private static final long serialVersionUID = -6770798467418697926L;
 	private final Long id;
 	private final User hibernateUser;
 
@@ -38,8 +38,9 @@ public class UserDetailsAdapter extends org.springframework.security.core.userde
 	 */
 	private static Collection<GrantedAuthority> toAuthorities(List<Right> rights) {
 		Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-		for (Right right : rights)
+		for (Right right : rights) {
 			authorities.add(new GrantedAuthorityImpl(right.getName()));
+		}
 		return authorities;
 	}
 
@@ -72,7 +73,7 @@ public class UserDetailsAdapter extends org.springframework.security.core.userde
 		if (this == rhs) {
 			if (rhs instanceof UserDetailsAdapter) {
 				UserDetailsAdapter otherRhs = (UserDetailsAdapter)rhs;
-				return (id == null ? otherRhs == null : id.equals(otherRhs.getId()));
+				return (id == null ? otherRhs.getId() == null : id.equals(otherRhs.getId()));
 			}
 			return super.equals(rhs);
 		}

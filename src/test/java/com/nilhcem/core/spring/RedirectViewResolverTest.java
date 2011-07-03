@@ -6,7 +6,7 @@ import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.RedirectView;
 
 public class RedirectViewResolverTest {
-	private RedirectViewResolver resolver = new RedirectViewResolver();
+	private final RedirectViewResolver resolver = new RedirectViewResolver();
 
 	@Test
 	public void redirectViewResolverOrderShouldBeTheFirstOne() {
@@ -20,7 +20,7 @@ public class RedirectViewResolverTest {
 
 	@Test
 	public void shoudRedirectWhenViewNameStartsByRedirectPrefix() throws Exception {
-		String url = "my-view";
+		final String url = "my-view";
 		View myView = resolver.resolveViewName(RedirectViewResolver.REDIRECT_URL_PREFIX + url, null);
 		assertNotNull(myView);
 		assertEquals(RedirectView.class, myView.getClass());

@@ -18,8 +18,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "languages")
 @SequenceGenerator(name = "seq_lang", sequenceName = "languages_language_id_seq", allocationSize = 1)
-public class Language implements Serializable {
-	private static final long serialVersionUID = 8719955341181530947L;
+public final class Language implements Serializable {
+	private static final long serialVersionUID = 1837022456648336570L;
 	private Long id;
 	private String code;
 	private String name;

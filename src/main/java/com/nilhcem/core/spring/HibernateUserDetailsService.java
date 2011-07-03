@@ -1,6 +1,7 @@
 package com.nilhcem.core.spring;
 
 import com.nilhcem.business.UserBo;
+import com.nilhcem.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service("userDetailsService")
 @Transactional(readOnly=true)
-public class HibernateUserDetailsService implements UserDetailsService {
+public final class HibernateUserDetailsService implements UserDetailsService {
 	@Autowired
 	private UserBo userBo;
 
@@ -29,9 +30,10 @@ public class HibernateUserDetailsService implements UserDetailsService {
 	 * @throws UsernameNotFoundException if we can't find the user from the database.
 	 */
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException {
-		com.nilhcem.model.User user = userBo.findByEmail(username);
-		if (user == null)
+		User user = userBo.findByEmail(username);
+		if (user == null) {
 			throw new UsernameNotFoundException("user not found");
+		}
 		return new UserDetailsAdapter(user);
 	}
 }

@@ -21,7 +21,7 @@ import com.nilhcem.model.Note;
 @Controller
 @PreAuthorize("hasRole('RIGHT_USER')")
 @RequestMapping("/dashboard")
-public class DashboardController extends AbstractController {
+public final class DashboardController extends AbstractController {
 	@Autowired
 	private CategoryBo categoryBo;
 	@Autowired
@@ -31,7 +31,8 @@ public class DashboardController extends AbstractController {
 	 * Define JS i18n keys.
 	 */
 	public DashboardController() {
-		String[] i18nJs = {"dashboard.cat.confRm", "dashboard.cat.confRmQ", "dashboard.cat.updErr"};
+		super();
+		final String[] i18nJs = {"dashboard.cat.confRm", "dashboard.cat.confRmQ", "dashboard.cat.updErr"};
 		super.setI18nJsValues(i18nJs, "^dashboard\\.");
 	}
 
