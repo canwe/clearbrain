@@ -1,6 +1,7 @@
 package com.nilhcem.core.spring;
 
 import com.nilhcem.business.UserBo;
+import com.nilhcem.core.hibernate.TransactionalReadOnly;
 import com.nilhcem.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -8,16 +9,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-/**
+/*
  * Custom {@code UserDetailsService} bean for SpringSecurity to handle authentication using Hibernate.
  *
  * @author Nilhcem
  * @since 1.0
  */
 @Service("userDetailsService")
-@Transactional(readOnly=true)
+@TransactionalReadOnly
 public final class HibernateUserDetailsService implements UserDetailsService {
 	@Autowired
 	private UserBo userBo;
