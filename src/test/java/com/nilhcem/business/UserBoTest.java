@@ -13,14 +13,13 @@ import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
+import com.nilhcem.core.hibernate.TransactionalReadWrite;
 import com.nilhcem.core.spring.UserDetailsAdapter;
 import com.nilhcem.dao.RightDao;
 import com.nilhcem.model.User;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:/applicationContext-test.xml"})
-@Transactional
 public class UserBoTest {
 	private static final String EMAIL = "###Test###@example.com";
 	private static final String PASSWORD = "myPassword";
@@ -40,6 +39,7 @@ public class UserBoTest {
 	private SaltSource saltSource;
 
 	@Test
+	@TransactionalReadWrite
 	@Rollback(true)
 	public void aUserCanSignUp() {
 		User user = new User();
