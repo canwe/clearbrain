@@ -33,7 +33,8 @@ public final class DashboardController extends AbstractController {
 	 */
 	public DashboardController() {
 		super();
-		final String[] i18nJs = {"dashboard.cat.confRm", "dashboard.cat.confRmQ", "dashboard.cat.updErr"};
+		final String[] i18nJs = {"dashboard.cat.confRm", "dashboard.cat.confRmQ", "dashboard.cat.updErr", 
+			"dashboard.cat.confRn1", "dashboard.cat.confRn2", "dashboard.cat.confRn3"};
 		super.setI18nJsValues(i18nJs, "^dashboard\\.");
 	}
 

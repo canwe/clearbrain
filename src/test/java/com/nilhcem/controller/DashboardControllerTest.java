@@ -22,7 +22,7 @@ public class DashboardControllerTest {
 
 	@Test
 	public void testJavascriptLocales() {
-		final String[] keys = {"cat.confRm", "cat.confRmQ", "cat.updErr"};
+		final String[] keys = {"cat.confRm", "cat.confRmQ", "cat.updErr", "cat.confRn1", "cat.confRn2", "cat.confRn3"};
 
 		MockHttpServletRequest request = new MockHttpServletRequest("get", "/logged/dashboard");
 		Map<String, String> map = controller.sendI18nToJavascript(request);

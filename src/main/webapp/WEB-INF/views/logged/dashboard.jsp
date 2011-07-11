@@ -25,8 +25,8 @@
 					<span id="catname-<c:out value="${cur.id}" />"><c:out value="${cur.name}" /></span>
 					<span id="catcount-<c:out value="${cur.id}" />" class="category-count"></span>
 					<span id="catmenu-<c:out value="${cur.id}" />" class="category-menus">
-						<a id="catrnm-<c:out value="${cur.id}" />" href="javascript:alert('TODO');"><img src="<spring:url value="/images/logged/cat-edit.gif" />" /></a>
-						<a id="catrmv-<c:out value="${cur.id}" />"><img src="<spring:url value="/images/logged/cat-remove.png" />" /></a>
+						<img id="catrnm-<c:out value="${cur.id}" />" src="<spring:url value="/images/logged/cat-edit.gif" />" />
+						<img id="catrmv-<c:out value="${cur.id}" />" src="<spring:url value="/images/logged/cat-remove.png" />" />
 					</span>
 				</li>
 			</c:forEach>

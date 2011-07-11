@@ -36,9 +36,9 @@ public class CategoryBoTest {
 		Date after = cal.getTime();
 		List<Category> sortedCategories = checkIfCategoriesAreCorrectlyAddedAndSorted(user, CATEGORIES);
 		checkCreationDate(before, after, sortedCategories.get(0));
-//		testShowHideCategories(user, sortedCategories);
 		moveCategories(user, sortedCategories);
 		removeCategories(user, sortedCategories);
+		renameCategory(user);
 	}
 
 	private void addCategories(User user) {
@@ -99,14 +99,12 @@ public class CategoryBoTest {
 		checkIfCategoriesAreCorrectlyAddedAndSorted(user, new String[] {});
 	}
 
-//	private void testShowHideCategories(User user, List<Category> cats) {
-//		Category curCat = cats.get(0);
-//		assertTrue(curCat.isDisplayed());
-//		service.showHideCategory(user, curCat.getId(), false);
-//		curCat = service.getSortedCategories(user).get(0);
-//		assertFalse(curCat.isDisplayed());
-//		service.showHideCategory(user, curCat.getId(), true);
-//		curCat = service.getSortedCategories(user).get(0);
-//		assertTrue(curCat.isDisplayed());
-//	}
+	private void renameCategory(User user) {
+		assertNotSame(CATEGORIES[0], CATEGORIES[1]);
+		Category toRename = service.addCategory(user, CATEGORIES[0]);
+		service.renameCategory(user, toRename.getId(), CATEGORIES[1]);
+		Category renamed = service.getSortedCategories(user).get(0);
+		assertNotSame(toRename.getName(), renamed.getName());
+		service.removeCategory(user,  renamed.getId());
+	}
 }

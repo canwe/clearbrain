@@ -52,6 +52,20 @@ public final class DashboardControllerAjax extends AbstractController {
 	}
 
 	/**
+	 * Rename a category.
+	 *
+	 * @param catId Category's id.
+	 * @param newName New Category's name.
+	 * @return true.
+	 */
+	@RequestMapping(method = RequestMethod.POST, params = { "rnmCat" })
+	public @ResponseBody boolean renameCategory(@RequestParam(value = "rnmCat", required = true) Long catId,
+		@RequestParam(value = "newName", required = true) String newName) {
+		categoryBo.renameCategory(getCurrentUser(), catId, newName);
+		return true;
+	}
+
+	/**
 	 * Update a category's position.
 	 *
 	 * @param catId The category's id we need to update.

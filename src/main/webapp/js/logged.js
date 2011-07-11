@@ -45,6 +45,7 @@ jQuery(function($) {
 			flagNoteDragged = false;
 		}
 	});
+	$('#notes-container').find('div[id^=note-]').disableSelection();
 
 	//Assign a category to a note
 	$('#categories-container').find('*[id^=cat-]').droppable({
@@ -121,6 +122,14 @@ $('#categories-edit').live('click', function() {
 	$('#categories').find('span[id^=catcount-]').hide();
 	$('#categories').find('span[id^=catmenu-]').show();
 	selectCategory($('#cat-unclassified'));
+
+	//Stop elements to be draggable
+	$('#notes-container').find('div[id^=note-]').draggable('disable');
+	$('#categories').sortable('disable');
+
+	//Dotted borders of elements to specify they can't be draggabled
+	$('#categories').find('li[id^=cat-]').addClass('dotted-border');
+	$('#notes-container').find('div[id^=note-]').addClass('dotted-border');
 });
 
 //When clicking on the "Finish editing" link
@@ -130,7 +139,16 @@ $('#categories-endedit').live('click', function() {
 	$('#cat-unclassified').show();
 	$('#categories').find('span[id^=catcount-]').show();
 	$('#categories').find('span[id^=catmenu-]').hide();
-	countNbNotesPerCategory(); //in case a category was deleted
+	countNbNotesPerCategory(); //in case a category was removed or notes were assigned to new categories
+
+	//Enable draggable elements again
+	$('#notes-container').find('div[id^=note-]').draggable('enable');
+	$('#categories').sortable('enable');
+
+	//Dotted borders of elements to specify they can't be draggabled
+	$('#categories').find('li[id^=cat-]').removeClass('dotted-border');
+	$('#notes-container').find('div[id^=note-]').removeClass('dotted-border');
+
 });
 
 //Add a category when pressing 'Enter key'
@@ -153,7 +171,7 @@ $('#catadd-name').live('keyup', function(e) {
 });
 
 //Remove a category when clicking on the 'cross' icon
-$('#categories').find('a[id^=catrmv-]').live('click', function(e) {
+$('#categories').find('img[id^=catrmv-]').live('click', function(e) {
 	var catId = $(this).attr('id').replace(/^catrmv-/, '');
 
 	if (confirm(i18n['cat.confRm'] + ' ' + $('#catname-' + catId).text() + i18n['cat.confRmQ'])) {
@@ -178,6 +196,53 @@ $('#categories').find('a[id^=catrmv-]').live('click', function(e) {
 			fillCatPositionsArray();
 		});
 	}
+});
+
+//Rename a category when clicking on the 'rename' icon
+$('#categories').find('img[id^=catrnm-]').live('click', function(e) {
+	var catId = $(this).attr('id').replace(/^catrnm-/, ''),
+		catName = $('#catname-' + catId),
+		previousName = catName.html();
+
+	//Replace name by Input text
+	$('#categories').enableSelection();
+	$('#catmenu-' + catId).hide();
+	catName.html('<input type="text" value="' + previousName.replace(/"/g, '&quot;') + '" />');
+	catName.find('input').focus();
+
+	//When pressing the Enter key
+	catName.find('input').live('keyup', function(e) {
+		if (e.keyCode == 13)
+			$('#catadd-name').trigger('focus'); //to make element loose focus and enable blur
+	});
+
+	//When loosing focus on input
+	catName.find('input').blur(function() {
+		$('#categories').disableSelection();
+		var newName = $('#catname-' + catId).find('input').val();
+
+		//Update name (only if it has changed)
+		if (previousName != newName) {
+			if (confirm(i18n['cat.confRn1'] + previousName + i18n['cat.confRn2'] + newName + i18n['cat.confRn3'])) {
+				$.post('dashboard-js', {
+					rnmCat : catId,
+					newName : newName
+				}, function() {
+					//TODO: Notification
+				});
+
+				//Loop notes to change category's name
+				for (var noteId in catNoteArray)
+					if (catNoteArray[noteId] == catId)
+						$('#notecat-' + noteId).html(newName);
+			}
+			else {
+				newName = previousName;
+			}
+		}
+		catName.html(newName);
+		$('#catmenu-' + catId).show();
+	});
 });
 
 
@@ -305,20 +370,3 @@ function countNbNotesPerCategory() {
 		$(this).html('(' + (nbNotesPerCategory[catId] ? nbNotesPerCategory[catId] : 0) + ')');
 	});
 }
-
-
-
-///* Categories */
-////When we click on the checkbox of a category
-//$('#categories').delegate('li input', 'click', function(event) {
-//	showHideCategory(getCategoryId($(this).parent().attr('id')), $(this).attr('checked'));
-//});
-//
-////Display or hide category
-//function showHideCategory(id, display) {
-//	$.post('dashboard-js', {
-//		id : id, //category's id
-//		display : display //display (true / false)
-//	});
-//}
-//

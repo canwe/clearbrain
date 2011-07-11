@@ -128,6 +128,21 @@ public class CategoryBo {
 	}
 
 	/**
+	 * Rename a category.
+	 *
+	 * @param user Owner of the category.
+	 * @param categoryId The category we want to rename.
+	 * @param newName The category's new name.
+	 */
+	@TransactionalReadWrite
+	public void renameCategory(User user, Long categoryId, String newName) {
+		logger.debug("Rename category {}", categoryId);
+		Category toRename = dao.getById(user, categoryId);
+		toRename.setName(newName);
+		dao.update(toRename);
+	}
+
+	/**
 	 * Update a category's position.
 	 *
 	 * @param user Owner of the categories.
@@ -168,18 +183,4 @@ public class CategoryBo {
 		//Check if new order has a sense...
 		dao.checkIfCategoriesAreProperlyOrdered(user);
 	}
-
-//	/**
-//	 * Update the display value of a category to indicate if it should be shown or note.
-//	 *
-//	 * @param user Owner of the category.
-//	 * @param categoryId The category we want to change the display value.
-//	 * @param displayed The new display value.
-//	 */
-//	@TransactionalReadWrite
-//	public void showHideCategory(User user, Long categoryId, boolean displayed) {
-//		Category category = dao.getById(user, categoryId);
-//		category.setDisplayed(displayed);
-//		dao.update(category);
-//	}
 }

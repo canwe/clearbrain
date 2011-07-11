@@ -16,8 +16,8 @@
 	<link rel="stylesheet" href="<spring:url value="/css/blueprint/ie.css" />" type="text/css" media="screen, projection" />
 	<![endif]-->
 	<link rel="stylesheet" href="<spring:url value="/css/logged.css" />" type="text/css" media="screen, projection" />
-	<script type="text/javascript" src="<spring:url value="/js/jquery-1.5.1.min.js" />"></script>
-	<script type="text/javascript" src="<spring:url value="/js/jquery-ui-1.8.11.custom.min.js" />"></script>
+	<script type="text/javascript" src="<spring:url value="/js/jquery-1.6.2.min.js" />"></script>
+	<script type="text/javascript" src="<spring:url value="/js/jquery-ui-1.8.14.custom.min.js" />"></script>
 	<script type="text/javascript" src="<spring:url value="/js/jquery-clearfield.min.js" />"></script>
 	<script type="text/javascript">
 		$('#m-notes-container, #m-profile-container').live('hover', function(){$(this).find('.dropdown').toggle();});

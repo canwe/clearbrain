@@ -341,6 +341,22 @@ body {
 	border: 1px solid #888 !important;
 }
 
+#categories img {
+	cursor: pointer;
+}
+
+#categories input {
+	background-color: transparent;
+	border: 0;
+	margin-top: -2px;
+	width: 228px;
+}
+
+.dotted-border {
+	border-style: dotted !important;
+	cursor: default !important;
+}
+
 
 /*** Notes ***/
 .note {
