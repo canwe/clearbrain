@@ -1,11 +1,16 @@
 /*** Categories ***/
 var catPositions, //used to know the categories positions
+	catNoteArray = new Array(), //to know which note belong to which category. key: noteId - value: categoryId
 	catNoteStack = new Array(), //stack to know which are the current selected categories to be the new note's category
 	flagNoteDragged = false; //flag to know if a note is currently dragged or not
 
 //Once document is ready (dashboard)
-jQuery(function($) { //same as $(document).ready(function()
+jQuery(function($) {
 	var categories = $('#categories');
+
+	//Display categories names and #nb of notes per category.
+	displayCategoryNameInNotes();
+	countNbNotesPerCategory();
 
 	//Enable clearField plugin on quick-add-task field
 	$('#quick-add-task').clearField();
@@ -125,6 +130,7 @@ $('#categories-endedit').live('click', function() {
 	$('#cat-unclassified').show();
 	$('#categories').find('span[id^=catcount-]').show();
 	$('#categories').find('span[id^=catmenu-]').hide();
+	countNbNotesPerCategory(); //in case a category was deleted
 });
 
 //Add a category when pressing 'Enter key'
@@ -157,6 +163,17 @@ $('#categories').find('a[id^=catrmv-]').live('click', function(e) {
 			//Check if this category was selected, if yes, select the default category
 			if ($('#categories').find('.selected-category').attr('id') == ('cat-' + catId))
 				selectCategory($('#cat-unclassified'));
+
+			//Update each note whose category was the deleted one to set the new category as Unclassified
+			var undefinedCategoryName = $('#catname-0').html()
+			for (var noteId in catNoteArray) {
+				if (catNoteArray[noteId] == catId) {
+					$('#notecat-' + noteId).html(undefinedCategoryName);
+					catNoteArray[noteId] = 0;
+				}
+			}
+
+			//Remove category
 			$('#cat-' + catId).remove();
 			fillCatPositionsArray();
 		});
@@ -172,14 +189,16 @@ function getNoteId(id) {
 
 //Display note edit button when hovering "in" note
 $('#notes-container').find('div[id^=note-]').live('mouseenter', function(e) {
-	if (!flagNoteDragged)
+	if (!flagNoteDragged) {
 		$('#noteedit-' + getNoteId($(this).attr('id'))).show();
+	}
 });
 
 //Display note edit button when hovering "out" note
 $('#notes-container').find('div[id^=note-]').live('mouseleave', function(e) {
-	if (!flagNoteDragged)
+	if (!flagNoteDragged) {
 		$('#notes-container').find('span[id^=noteedit-]').hide();
+	}
 });
 
 //when a note is over a category
@@ -235,6 +254,8 @@ function assignCatToNoteDrop(categories, ui) {
 	}, function(data) {
 		//Change category name in Note
 		$('#notecat-' + noteId).html($('#catname-' + catId).html());
+		catNoteArray[noteId] = catId;
+		countNbNotesPerCategory();
 		//TODO: Notification
 	});
 }
@@ -258,9 +279,32 @@ $('#quick-add-task').live('keyup', function(e) {
     return false;
 });
 
+//Display category name in notes
+function displayCategoryNameInNotes() {
+	for (var noteId in catNoteArray) {
+		$('#notecat-' + noteId).html($('#catname-' + catNoteArray[noteId]).html());
+	}
+}
 
+//Display Nb of notes per category
+function countNbNotesPerCategory() {
+	var nbNotesPerCategory = new Array();
 
+	//Fill nbNotesPerCategory Array
+	for (var key in catNoteArray) {
+		var catId = catNoteArray[key];
+		if (nbNotesPerCategory[catId])
+			nbNotesPerCategory[catId]++;
+		else
+			nbNotesPerCategory[catId] = 1;
+	}
 
+	//Loop each category and update #nb of notes per category
+	$('#categories-container').find('span[id^=catcount-]').each(function() {
+		var catId = $(this).attr('id').replace(/^catcount-/, '');
+		$(this).html('(' + (nbNotesPerCategory[catId] ? nbNotesPerCategory[catId] : 0) + ')');
+	});
+}
 
 
 

@@ -2,6 +2,7 @@ package com.nilhcem.business;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,5 +85,15 @@ public class NoteBo {
 	public void deleteNoteById(User user, Long noteId) {
 		Note note = dao.getById(user, noteId);
 		dao.delete(note);
+	}
+
+	/**
+	 * Return a Map for knowing which note belong to which category.
+	 *
+	 * @param user Owner of the notes we are searching for.
+	 * @return Associative array with key = noteId, value = catId.
+	 */
+	public Map<Long, Long> getCatIdByNoteIdMap(User user) {
+		return dao.getCatIdByNoteIdMap(user);
 	}
 }

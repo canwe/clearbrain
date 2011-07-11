@@ -91,6 +91,17 @@ public abstract class AbstractHibernateDao<E> {
     }
 
 	/**
+	 * List all element from a {@code Query} to an object array.
+	 * Generic suppression wrapper to avoid putting SuppressWarning annotations on DAO.
+	 * @param query Query we need to list elements from.
+	 * @return List of elements.
+	 */
+    @SuppressWarnings("unchecked")
+    protected final List<Object[]> listObjectArray(Query query) {
+        return query.list();
+    }
+
+	/**
 	 * Return a unique result from a {@code Criteria}.
 	 * Generic suppression wrapper to avoid putting SuppressWarning annotations on DAO.
 	 * @param criteria Criteria we need to get the element from.

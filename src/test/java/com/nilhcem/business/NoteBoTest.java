@@ -3,6 +3,7 @@ package com.nilhcem.business;
 import static org.junit.Assert.*;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Map;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,9 @@ public class NoteBoTest {
 	public void testNote() {
 		User user = testUtils.getTestUser();
 		Long noteId = testAddNote(user);
+		testGetCatIdByNoteId(user, noteId, 0L);
 		Long categoryId = testAssignACategoryToANote(user, noteId);
+		testGetCatIdByNoteId(user, noteId, categoryId);
 		testAddNoteWithACategoryDirectly(user, categoryId);
 		testDeleteNote(user, noteId, categoryId);
 	}
@@ -62,6 +65,7 @@ public class NoteBoTest {
 	private void testAddNoteWithACategoryDirectly(User user, Long categoryId) {
 		Note note = service.addNote(user, NOTE_NAME + "2", categoryId);
 		assertEquals(categoryId, note.getCategory().getId());
+		testGetCatIdByNoteId(user, note.getId(), note.getCategory().getId());
 		service.deleteNoteById(user, note.getId());
 	}
 
@@ -70,5 +74,10 @@ public class NoteBoTest {
 		assertNull(service.getNotes(user).get(0).getCategory());
 		service.deleteNoteById(user, noteId);
 		assertTrue(service.getNotes(user).isEmpty());
+	}
+
+	private void testGetCatIdByNoteId(User user, Long noteId, Long expectedResult) {
+		Map<Long, Long> map = service.getCatIdByNoteIdMap(user);
+		assertEquals(expectedResult, map.get(noteId));
 	}
 }

@@ -1,6 +1,8 @@
 package com.nilhcem.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,5 +49,23 @@ public final class NoteDao extends AbstractHibernateDao<Note> {
 			.setParameter("id", id)
 			.setMaxResults(1);
 		return uniqueResult(query);
+	}
+
+	/**
+	 * Return an associative array (key = noteId, value = categoryId) for all the notes owned by {@code user}.
+	 *
+	 * @param user Owner of the notes we are searching for.
+	 * @return Associative array with key = noteId, value = catId.
+	 */
+	public Map<Long, Long> getCatIdByNoteIdMap(User user) {
+		Query query = query("SELECT n.id, n.category.id FROM Note n WHERE user=:user")
+			.setParameter("user", user);
+
+		Map<Long, Long> map = new HashMap<Long, Long>();
+		List<Object[]> result = listObjectArray(query);
+		for (Object[] res : result) {
+			map.put((Long)res[0], (res[1] == null ? 0L : (Long)res[1]));
+		}
+		return map;
 	}
 }

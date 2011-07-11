@@ -5,6 +5,9 @@
 # Ignore target folder
 target/*
 
+# Ignore reports folder
+reports/*
+
 # Ignore specs folder
 specs/*
 

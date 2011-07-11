@@ -1,6 +1,7 @@
 package com.nilhcem.controller;
 
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -64,5 +65,15 @@ public final class DashboardController extends AbstractController {
 	@ModelAttribute(value="notesList")
 	public List<Note> populateNotesList() {
 		return noteBo.getNotes(getCurrentUser());
+	}
+
+	/**
+	 * Populate JS array to know which note belong to which category.
+	 *
+	 * @return Map with key=noteId, value=catId.
+	 */
+	@ModelAttribute(value="notesCatIds")
+	public Map<Long, Long> populatesNotesCatList() {
+		return noteBo.getCatIdByNoteIdMap(getCurrentUser());
 	}
 }
