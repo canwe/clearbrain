@@ -23,7 +23,7 @@ jQuery(function($) {
 		distance: 10,
 		opacity: 0.95,
 		placeholder: 'highlight',
-		update: function(event, ui) { 
+		update: function(event, ui) {
 			updateCategoryPosition(event, ui);
 		}
 	});

@@ -25,7 +25,7 @@ public class TestUtils {
 			user.setPassword(TEST_USER_PASSWD);
 			service.signUpUser(user, new Locale("en", "US"));
 			user.setEnabled(false); //test account
-			dao.update(user);
+			dao.save(user);
 		}
 		return user;
 	}

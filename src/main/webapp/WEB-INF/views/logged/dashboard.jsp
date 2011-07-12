@@ -1,4 +1,5 @@
 <%@include file="/WEB-INF/views/logged/header.jsp"%>
+<script type="text/javascript" src="<spring:url value="/js/logged/dashboard.js" />" ></script>
 
 <%-- Create an array to keep links between a note and a category --%>
 <script type="text/javascript">

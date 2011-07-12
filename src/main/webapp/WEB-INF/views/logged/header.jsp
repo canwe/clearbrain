@@ -15,6 +15,7 @@
 	<!--[if lt IE 8]>
 	<link rel="stylesheet" href="<spring:url value="/css/blueprint/ie.css" />" type="text/css" media="screen, projection" />
 	<![endif]-->
+    <link rel="stylesheet" href="<spring:url value="/css/blueprint/plugins/buttons/screen.css" />" type="text/css" media="screen, projection" />
 	<link rel="stylesheet" href="<spring:url value="/css/logged.css" />" type="text/css" media="screen, projection" />
 	<script type="text/javascript" src="<spring:url value="/js/jquery-1.6.2.min.js" />"></script>
 	<script type="text/javascript" src="<spring:url value="/js/jquery-ui-1.8.14.custom.min.js" />"></script>
@@ -26,7 +27,6 @@
 			<c:forEach var="entry" items="${i18nJS}">i18n["${entry.key}"]="${entry.value}";</c:forEach>
 		</c:if>
 	</script>
-	<script type="text/javascript" src="<spring:url value="/js/logged.js" />" ></script>
 	<title>~S2NDBRN logged~</title>
 </head>
 
@@ -79,7 +79,7 @@
 								<a id="m-add" href="javascript:alert('TODO');"><spring:message code="header.menu.add" /></a>
 							</li>
 							<li>
-								<a id="m-memo" href="javascript:alert('TODO');"><spring:message code="header.menu.memo" /></a>
+								<a id="m-memo" href="<spring:url value="/quick_memo" />"><spring:message code="header.menu.memo" /></a>
 							</li>
 							<li>
 								<a id="m-search" href="javascript:alert('TODO');"><spring:message code="header.menu.search" /></a>

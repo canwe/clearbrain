@@ -37,6 +37,8 @@ public class UserBo {
 	@Autowired
 	private LanguageBo langBo;
 	@Autowired
+	private QuickMemoBo memoBo;
+	@Autowired
 	private ShaPasswordEncoder passwordEncoder;
 	@Autowired
 	private SaltSource saltSource;
@@ -65,6 +67,9 @@ public class UserBo {
 		Object salt = saltSource.getSalt(userDetails);
 		myUser.setPassword(passwordEncoder.encodePassword(userDetails.getPassword(), salt));
 		userDao.update(myUser);
+
+		//Create a quick memo for this user
+		memoBo.createQuickMemo(myUser);
 	}
 
 	/**

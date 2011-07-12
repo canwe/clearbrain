@@ -22,7 +22,7 @@ import com.nilhcem.model.User;
  */
 public abstract class AbstractController {
 	@Autowired
-	private MessageSource message;
+	protected MessageSource message;
 	protected String[] i18nJs = null;
 	protected String i18nJsRemoveStr = null;
 

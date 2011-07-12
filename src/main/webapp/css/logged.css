@@ -402,3 +402,34 @@ body {
 .clearFieldActive {
 	color: #000;
 }
+
+
+/*** Quick memo ***/
+.hiddenClass {
+	visibility: hidden;
+}
+
+#memo-btn-container {
+	left: 50%;
+	margin-left: -75px;
+	position: fixed;
+	width: 150px;
+}
+
+#memo-btn-container button {
+	border-color: #BBB;
+	width: 100%;
+}
+
+#memo-btn-container button:hover {
+	background-color: #EDEDED;
+	border-color: #999;
+	color: #565656;
+}
+
+#memo-date-container {
+	color: #808080;
+    font-style: italic;
+    margin-top: 31px;
+    text-align: center;
+}

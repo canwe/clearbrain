@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+	<preConditions>
+		<dbms type="postgresql" />
+	</preConditions>
+
+	<changeSet id="0.2.0" author="nilhcem" runAlways="false">
+		<comment>Create table "memos"</comment>
+		<createTable tableName="memos" remarks="Quick-memos written by users">
+			<column name="memo_id" type="bigint">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="content" type="text">
+				<constraints nullable="false" />
+			</column>
+			<column name="save_date" type="timestamp" remarks="Save_date should be null when created, then should take the last saved date" >
+				<constraints nullable="true" />
+			</column>
+			<column name="user_id" type="bigint">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		<createSequence sequenceName="memos_memo_id_seq" />
+		<addForeignKeyConstraint constraintName="memos_user_id_fk" baseTableName="memos" baseColumnNames="user_id" referencedTableName="users" referencedColumnNames="user_id" onDelete="CASCADE" onUpdate="CASCADE" />
+	</changeSet>
+</databaseChangeLog>
