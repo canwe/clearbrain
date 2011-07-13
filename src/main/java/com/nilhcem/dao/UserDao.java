@@ -21,14 +21,14 @@ public final class UserDao extends AbstractHibernateDao<User> {
 	}
 
     /**
-	 * Find a user from his {@code email}.
+	 * Find a user from his {@code email}, <b>ignoring case</b>.
 	 *
      * @param email Email of the User we are searching for.
      * @return User object, or null if not found.
 	 */
 	public User findByEmail(String email) {
-		Query query = query("FROM User WHERE email=:email")
-			.setParameter("email", email)
+		Query query = query("FROM User WHERE lower(email)=:email")
+			.setParameter("email", email.toLowerCase())
 			.setMaxResults(1);
 		return uniqueResult(query);
 	}
