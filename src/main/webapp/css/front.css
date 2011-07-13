@@ -89,13 +89,13 @@ a.login {
 
 
 /* all */
-.mainBox {
+.main-box {
 	background-color: #FFF;
 	border: 1px solid #D0D0D0;
 	padding: 30px 0;
 }
 
-.successBlock, .errorBlock {
+.success-block, .error-block {
 	background-position: 2% 54%;
 	background-repeat: no-repeat;
 	display: block;
@@ -105,11 +105,11 @@ a.login {
 	padding-top: 1px;
 }
 
-.errorBlock {
+.error-block {
 	background-image: url('../images/front/cross.png');
 }
 
-.successBlock {
+.success-block {
 	background-image: url('./blueprint/plugins/buttons/icons/tick.png');
 }
 

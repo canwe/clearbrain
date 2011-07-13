@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
  * @since 1.0
  */
 @Service
-@TransactionalReadOnly
 public class LanguageBo {
 	private static final String DEFAULT_LANG = "en_US";
 	@Autowired
@@ -26,11 +25,24 @@ public class LanguageBo {
      * @param locale Locale (language we are searching for).
      * @return A Language object, or default language (en_US) if code was not found.
 	 */
+	@TransactionalReadOnly
 	public Language findByLocale(Locale locale) {
 		Language lang = dao.findByCode(locale.getLanguage() + "_" + locale.getCountry());
 		if (lang == null) {
 			lang = dao.findByCode(DEFAULT_LANG);
 		}
 		return lang;
+	}
+
+	/**
+	 * Convert a String code (ie: en_US) into a {@code Locale} object.
+	 *
+	 * @param code The String we need to convert.
+	 * @return A Locale object matching the String parameter.
+	 */
+	public Locale getLocalFromCode(String code) {
+		if (code == null)
+			return null;
+		return new Locale(code.split("_")[0], code.split("_")[1]);
 	}
 }

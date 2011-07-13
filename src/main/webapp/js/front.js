@@ -31,10 +31,10 @@ $(document).ready(function() {
 function displayRightMsg(elem, msg, success) {
 	if (success) {
 		elem.addClass('success');
-		elem.addClass('successBlock');
+		elem.addClass('success-block');
 	} else {
 		elem.addClass('error');
-		elem.addClass('errorBlock');
+		elem.addClass('error-block');
 	}
 	elem.html(msg);
 }
@@ -50,7 +50,7 @@ function reinitErrors(springSpan, errorElem) {
 //Check if email is valid
 function checkEmail() {
 	var emailCheck = $('#email-check'),
-		filter=/\S+@\S+/;
+		filter=/\S+@\S+/; //see logged/settings.js:checkEmail() if this is changed
 
 	reinitErrors('#emailError', emailCheck);
 	//Check if email is valid (see RFC822)
@@ -74,7 +74,7 @@ function checkEmail() {
 	});
 }
 
-//Check if password is not empty
+//Check if password is not empty. If rules change for password: modify also logged/settings.js
 function checkPassword() {
 	var passwordCheck = $('#password-check')
 	reinitErrors('#passwordError', passwordCheck);

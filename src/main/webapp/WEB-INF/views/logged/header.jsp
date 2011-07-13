@@ -15,6 +15,7 @@
 	<!--[if lt IE 8]>
 	<link rel="stylesheet" href="<spring:url value="/css/blueprint/ie.css" />" type="text/css" media="screen, projection" />
 	<![endif]-->
+    <link rel="stylesheet" href="<spring:url value="/css/blueprint/plugins/fancy-type/screen.css" />" type="text/css" media="screen, projection" />
     <link rel="stylesheet" href="<spring:url value="/css/blueprint/plugins/buttons/screen.css" />" type="text/css" media="screen, projection" />
 	<link rel="stylesheet" href="<spring:url value="/css/logged.css" />" type="text/css" media="screen, projection" />
 	<script type="text/javascript" src="<spring:url value="/js/jquery-1.6.2.min.js" />"></script>
@@ -53,8 +54,10 @@
 					</a>
 					<div class="dropdown">
 						<ul>
-							<li class="dropdown-li-top"><a id="m-settings" href="javascript:alert('TODO');">
-								<spring:message code="header.menu.settings" /></a>
+							<li class="dropdown-li-top">
+								<a id="m-settings" href="<spring:url value="/settings" />">
+									<spring:message code="header.menu.settings" />
+								</a>
 							</li>
 							<li>
 								<a id="m-stats" href="javascript:alert('TODO');"><spring:message code="header.menu.stats" /></a>

@@ -3,7 +3,6 @@ package com.nilhcem.business;
 import static org.junit.Assert.*;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.nilhcem.core.hibernate.TransactionalReadWrite;
 import com.nilhcem.core.spring.UserDetailsAdapter;
 import com.nilhcem.dao.RightDao;
+import com.nilhcem.form.SettingsForm;
 import com.nilhcem.model.User;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -23,11 +23,15 @@ import com.nilhcem.model.User;
 public class UserBoTest {
 	private static final String EMAIL = "###Test###@example.com";
 	private static final String PASSWORD = "myPassword";
-	private static final String LOCALE = "fr_FR";
+	private static final String LOCALE_FR = "fr_FR";
+	private static final String LOCALE_US = "en_US";
 
 	@Autowired
 	@Qualifier(value = "userBo")
 	private UserBo service;
+
+	@Autowired
+	private LanguageBo langBo;
 
 	@Autowired
 	private RightDao rightDao;
@@ -42,27 +46,34 @@ public class UserBoTest {
 	@TransactionalReadWrite
 	@Rollback(true)
 	public void aUserCanSignUp() {
-		User user = new User();
-		user.setEmail(UserBoTest.EMAIL);
-		user.setPassword(UserBoTest.PASSWORD);
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.SECOND, -1);
 		Date before = cal.getTime();
-		String[] localSplitted = UserBoTest.LOCALE.split("_");
-		service.signUpUser(user, new Locale(localSplitted[0], localSplitted[1]));
+		createUser();
 		cal = Calendar.getInstance();
 		cal.add(Calendar.SECOND, 1);
 		Date after = cal.getTime();
 		checkIfUserIsSavedInDB(before, after);
 	}
 
+	private void createUser() {
+		User user = new User();
+		user.setEmail(UserBoTest.EMAIL);
+		user.setPassword(UserBoTest.PASSWORD);
+		service.signUpUser(user, langBo.getLocalFromCode(UserBoTest.LOCALE_FR));
+	}
+
+	private User getUser() {
+		return service.findByEmail(UserBoTest.EMAIL);
+	}
+
 	private void checkIfUserIsSavedInDB(Date before, Date after) {
 		User userNull = service.findByEmail("");
 		assertNull(userNull);
-		User user = service.findByEmail(UserBoTest.EMAIL);
+		User user = getUser();
 		assertNotNull(user);
 		assertEquals(UserBoTest.EMAIL, user.getEmail());
-		assertEquals(UserBoTest.LOCALE, user.getLanguage().getCode());
+		assertEquals(UserBoTest.LOCALE_FR, user.getLanguage().getCode());
 
 		//Check password
 		assertEquals(passwordEncoder.encodePassword(UserBoTest.PASSWORD, saltSource.getSalt(new UserDetailsAdapter(user))), user.getPassword());
@@ -79,5 +90,61 @@ public class UserBoTest {
 	private void testRegistrationDate(Date before, Date registrationDate, Date after) {
 		assertFalse(before.after(registrationDate));
 		assertFalse(after.before(registrationDate));
+	}
+
+	@Test
+	@TransactionalReadWrite
+	public void updateAndDeleteUser() {
+		final String MY_NEW_PWD = "MY_NEW_PWD";
+		final String UNTAKEN_EMAIL = "$R)R#J(R@WQW@test";
+		assertFalse(UserBoTest.PASSWORD.equals(MY_NEW_PWD));
+
+		//Create user and settings
+		createUser();
+		SettingsForm settings = new SettingsForm();
+		settings.setEmail(UserBoTest.EMAIL);
+		settings.setNewPassword(MY_NEW_PWD);
+		settings.setLang(UserBoTest.LOCALE_US);
+
+		//Updates
+		updateWithoutEditingPassword(settings);
+		updateWithPasswordEdit(settings, MY_NEW_PWD);
+		updateLanguage(settings);
+		updateWithUntakenEmail(settings, UNTAKEN_EMAIL);
+
+		//Delete user
+		service.deleteUser(service.findByEmail(UNTAKEN_EMAIL));
+	}
+
+	private void updateWithoutEditingPassword(SettingsForm settings) {
+		settings.setEditPassword("no");
+		service.updateSettings(getUser(), settings);
+		User newUser = getUser();
+		assertEquals(service.hashPassword(newUser, UserBoTest.PASSWORD), newUser.getPassword());
+	}
+
+	private void updateWithPasswordEdit(SettingsForm settings, String newPassword) {
+		settings.setEditPassword("yes");
+		service.updateSettings(getUser(), settings);
+		User newUser = getUser();
+		assertEquals(service.hashPassword(newUser, newPassword), newUser.getPassword());
+	}
+
+	private void updateLanguage(SettingsForm settings) {
+		settings.setLang(UserBoTest.LOCALE_US);
+		service.updateSettings(getUser(), settings);
+		assertEquals(UserBoTest.LOCALE_US, getUser().getLanguage().getCode());
+
+		settings.setLang(UserBoTest.LOCALE_FR);
+		service.updateSettings(getUser(), settings);
+		assertEquals(UserBoTest.LOCALE_FR, getUser().getLanguage().getCode());
+	}
+
+	private void updateWithUntakenEmail(SettingsForm settings, String untakenEmail) {
+		assertNull(service.findByEmail(untakenEmail));
+		settings.setEmail(untakenEmail);
+		service.updateSettings(getUser(), settings);
+		assertNull(getUser());
+		assertNotNull(service.findByEmail(untakenEmail));
 	}
 }

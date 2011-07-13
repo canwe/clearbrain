@@ -8,6 +8,7 @@ import com.nilhcem.core.hibernate.TransactionalReadWrite;
 import com.nilhcem.core.spring.UserDetailsAdapter;
 import com.nilhcem.dao.RightDao;
 import com.nilhcem.dao.UserDao;
+import com.nilhcem.form.SettingsForm;
 import com.nilhcem.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,9 +64,7 @@ public class UserBo {
 
 		//Hash password
 		User myUser = userDao.findByEmail(user.getEmail());
-		UserDetailsAdapter userDetails = new UserDetailsAdapter(myUser);
-		Object salt = saltSource.getSalt(userDetails);
-		myUser.setPassword(passwordEncoder.encodePassword(userDetails.getPassword(), salt));
+		myUser.setPassword(hashPassword(myUser, myUser.getPassword()));
 		userDao.update(myUser);
 
 		//Create a quick memo for this user
@@ -101,5 +100,44 @@ public class UserBo {
 	        SecurityContextHolder.getContext().setAuthentication(null);
 	        logger.error("Failure in autoLogin", e);
 	    }
+	}
+
+	/**
+	 * Hash and Salt a password.
+	 *
+     * @param user User object.
+     * @param password The password we want to salt.
+     * @return New hashed and salted password.
+	 */
+	public String hashPassword(User user, String password) {
+		UserDetailsAdapter userDetails = new UserDetailsAdapter(user);
+		Object salt = saltSource.getSalt(userDetails);
+		return passwordEncoder.encodePassword(password, salt);
+	}
+
+	/**
+	 * Update a {@code User} object from a SettingsForm object.
+	 *
+	 * @param user User we need to update.
+	 * @param settings The settingsForm object which contains data to update.
+	 */
+	@TransactionalReadWrite
+	public void updateSettings(User user, SettingsForm settings) {
+		user.setEmail(settings.getEmail());
+		user.setLanguage(langBo.findByLocale(langBo.getLocalFromCode(settings.getLang())));
+		if (settings.getEditPassword().equals("yes")) {
+			user.setPassword(hashPassword(user, settings.getNewPassword()));
+		}
+		userDao.update(user);
+	}
+
+	/**
+	 * Delete a {@code User} from database.
+	 *
+	 * @param user User we need to delete.
+	 */
+	@TransactionalReadWrite
+	public void deleteUser(User user) {
+		userDao.delete(user);
 	}
 }

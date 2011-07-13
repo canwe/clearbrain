@@ -10,7 +10,7 @@ import com.nilhcem.business.UserBo;
 import com.nilhcem.form.SignUpForm;
 
 /**
- * Validate SignUp Form using Spring MVC Validator.
+ * Validate {@code SignUpForm} using Spring MVC Validator.
  *
  * @author Nilhcem
  * @since 1.0
@@ -20,7 +20,7 @@ public final class SignUpValidator implements Validator {
 	private UserBo userBo;
 
 	/**
-	 * Only support SignUp class.
+	 * Only support {@code SignUpForm} class.
 	 *
 	 * @param clazz The class which should be supported.
 	 * @return True if this validator supports clazz.
@@ -31,9 +31,9 @@ public final class SignUpValidator implements Validator {
 	}
 
 	/**
-	 * Validate data in SignUp object.
+	 * Validate data in {@code SignUpForm} object.
 	 *
-	 * @param target The SignUp object.
+	 * @param target The {@code SignUpForm} object.
 	 * @param errors Validation errors.
 	 */
 	@Override
@@ -47,7 +47,7 @@ public final class SignUpValidator implements Validator {
 		}
 
 		//Check if email is valid
-		final Pattern pattern = Pattern.compile("\\S+@\\S+");
+		final Pattern pattern = Pattern.compile("\\S+@\\S+"); //if this change, see also SettingsValidator
 		Matcher matcher = pattern.matcher(signUpForm.getUser().getEmail());
 		if (matcher.find()) {
 			//Check email already registered

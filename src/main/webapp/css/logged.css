@@ -433,3 +433,74 @@ body {
     margin-top: 31px;
     text-align: center;
 }
+
+
+/*** Settings ***/
+.success-block, .error-block {
+	background-position: 2% 54%;
+	background-repeat: no-repeat;
+	display: block;
+	height: 2em;
+	margin-right: 15px;
+	padding-left: 25px;
+	padding-top: 1px;
+}
+
+.error-block {
+	background-image: url('../images/front/cross.png');
+}
+
+.success-block {
+	background-image: url('./blueprint/plugins/buttons/icons/tick.png');
+}
+
+.top-msg-block {
+	margin-bottom: 0;
+	padding: 0;
+	text-align: center;
+}
+
+.settings-subtitle {
+	margin-top: 20px;
+}
+
+.settings-subtitle h3 {
+	border-bottom: 1px solid #B6B6B6;
+	line-height: 27px;
+	margin: 12px 70px 35px 0;
+}
+
+.settings-input-size {
+	width: 200px;
+}
+
+.settings-line-height {
+	height: 3.5em;
+}
+
+.settings-line-height-radio {
+	height: 55px;
+	line-height: 2;
+	margin-top: 10px;
+}
+
+.settings-line-height-radio label {
+	font-weight: normal;
+}
+
+.settings-bold {
+	font-weight: bold;
+}
+
+#settings-save-container {
+	margin-top: 10px;
+}
+
+#settings-save-container button {
+	padding: 4px 25px;
+}
+
+#settings-rm-container {
+	margin-top: 6px;
+	text-align: right;
+}

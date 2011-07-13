@@ -1,7 +1,6 @@
 package com.nilhcem.business;
 
 import static org.junit.Assert.*;
-import java.util.Locale;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,7 @@ public class LanguageBoTest {
 	private LanguageBo service;
 
 	private Language getLanguageByCode(String code) {
-		return service.findByLocale(new Locale(code.split("_")[0], code.split("_")[1]));
+		return service.findByLocale(service.getLocalFromCode(code));
 	}
 
 	@Test

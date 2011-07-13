@@ -1,7 +1,7 @@
 <%@include file="/WEB-INF/views/front/header.jsp"%>
 <br /><br /><br />
 
-<div class="mainBox span-24 last">
+<div class="main-box span-24 last">
 	<div id="signup-container" class="prepend-3 span-21 last">
 		<h2><img src="<spring:url value="/images/front/tick-grey.png" htmlEscape="true" />" alt="" /> <spring:message code="signup.title" /></h2>
 		<h3 class="alt"><spring:message code="signup.subtitle" /></h3>
@@ -17,7 +17,7 @@
 			</div>
 			<div class="span-8 last">
 				<div id="email-check" class="hide">&nbsp;</div>
-				<form:errors id="emailError" path="user.email" cssClass="error errorBlock" />
+				<form:errors id="emailError" path="user.email" cssClass="error error-block" />
 			</div>
 		</div>
 
@@ -30,7 +30,7 @@
 			</div>
 			<div class="span-8 last">
 				<div id="password-check" class="hide">&nbsp;</div>
-				<form:errors id="passwordError" path="user.password" cssClass="error errorBlock" />
+				<form:errors id="passwordError" path="user.password" cssClass="error error-block" />
 			</div>
 		</div>
 
@@ -43,7 +43,7 @@
 			</div>
 			<div class="span-8 last">
 				<div id="password-confirm-check" class="hide">&nbsp;</div>
-				<form:errors id="passwordConfirmError" path="passwordConfirmation" cssClass="error errorBlock" />
+				<form:errors id="passwordConfirmError" path="passwordConfirmation" cssClass="error error-block" />
 			</div>
 		</div>
 
@@ -58,5 +58,7 @@
 	</form:form>
 </div>
 
+<%-- Preload images --%>
 <img src="images/front/loading-circle.gif" class="hide" />
+
 <%@include file="/WEB-INF/views/front/footer.jsp"%>
