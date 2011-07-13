@@ -64,7 +64,7 @@ public class UserBoTest {
 	}
 
 	private User getUser() {
-		return service.findByEmail(UserBoTest.EMAIL);
+		return service.findByEmail(UserBoTest.EMAIL.toUpperCase()); //emails are case-insensitive
 	}
 
 	private void checkIfUserIsSavedInDB(Date before, Date after) {
