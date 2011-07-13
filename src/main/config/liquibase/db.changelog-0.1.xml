@@ -45,6 +45,9 @@
 			<column name="registration_date" type="timestamp">
 				<constraints nullable="false" />
 			</column>
+			<column name="delete_date" type="timestamp">
+				<constraints nullable="true" />
+			</column>
 			<column name="enabled" type="boolean" defaultValue="true" />
 			<column name="language_id" type="bigint">
 				<constraints primaryKey="true" nullable="false" foreignKeyName="users_language_id_fk" references="languages(language_id)" />

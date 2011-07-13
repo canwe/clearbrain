@@ -2,7 +2,7 @@
 <%@page import="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter"%>
 <br /><br /><br />
 
-<div class="mainBox span-24 last">
+<div class="main-box span-24 last">
 	<div id="signup-container" class="prepend-3 span-21 last">
 		<h2><img src="<spring:url value="/images/front/key.png" />" alt="" /> <spring:message code="login.logIn" /></h2>
 		<h3 class="alt"><spring:message code="login.subtitle" /></h3>

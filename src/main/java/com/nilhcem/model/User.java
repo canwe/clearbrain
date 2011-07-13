@@ -34,6 +34,7 @@ public final class User implements Serializable {
 	private String email;
 	private String password;
 	private Date registrationDate;
+	private Date deleteDate;
 	private boolean enabled;
 	private Language language;
 	private List<Right> rights = new ArrayList<Right>();
@@ -71,6 +72,15 @@ public final class User implements Serializable {
 	}
 	public void setRegistrationDate(Date registrationDate) {
 		this.registrationDate = registrationDate;
+	}
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "delete_date", nullable = true)
+	public Date getDeleteDate() {
+		return this.deleteDate;
+	}
+	public void setDeleteDate(Date deleteDate) {
+		this.deleteDate = deleteDate;
 	}
 
 	@Column(name = "enabled")

@@ -49,6 +49,7 @@
 	<!-- Forwards requests to some views -->
 	<mvc:view-controller path="/" view-name="front/welcome" />
 	<mvc:view-controller path="/login" view-name="front/login" />
+	<mvc:view-controller path="/account-deleted" view-name="front/accountDeleted" />
 	<!-- TODO
 	<mvc:view-controller path="/access-denied" view-name="AccessDenied" />
 	 -->

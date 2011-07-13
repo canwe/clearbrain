@@ -1,8 +1,10 @@
 package com.nilhcem.controller;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -38,7 +40,7 @@ public final class SettingsController extends AbstractController {
 	public SettingsController() {
 		super();
 		final String[] i18nJs = {"settings.err.pwd", "settings.err.pwdConf", "settings.err.mailRegist", "settings.err.mail",
-			"settings.ok.mail", "settings.ok.pwd", "settings.ok.pwdConf"};
+			"settings.ok.mail", "settings.ok.pwd", "settings.ok.pwdConf", "settings.cancel.confirm"};
 		super.setI18nJsValues(i18nJs, "^settings\\.");
 	}
 
@@ -94,5 +96,27 @@ public final class SettingsController extends AbstractController {
 	public @ResponseBody boolean checkEmailAvailability(@RequestParam(value = "emailToCheck", required = true) String email) {
 		User user = userBo.findByEmail(email);
 		return ((user == null) || (user.getEmail().equalsIgnoreCase(getCurrentUser().getEmail())));
+	}
+
+	/**
+	 * Deactivate account and flag it to be automatically deleted soon.
+	 */
+	@RequestMapping(value = "/settings_delete_account")
+	public ModelAndView deleteAccount(HttpServletRequest request) {
+		//mark the user as deletable
+		userBo.markAsDeletable(getCurrentUser());
+
+		//proceed logout
+		SecurityContextHolder.clearContext();
+		request.getSession().invalidate();
+
+		//drop cookies
+		Cookie[] cookies = request.getCookies();
+		for (Cookie cookie : cookies) {
+			cookie.setMaxAge(0);
+		}
+
+		//Redirect to confirmation page
+		return new ModelAndView("redirectWithoutModel:account-deleted");
 	}
 }

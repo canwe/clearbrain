@@ -21,8 +21,8 @@
 	</c:if>
 
 	<%-- Subtitle --%>
-	<div class="prepend-3 span-21 last settings-subtitle">
-		<h3 class="alt">
+	<div class="prepend-2 span-20 append-2 last settings-subtitle">
+		<h3 class="alt settings-title-separator">
 			<spring:message code="settings.sub.title" />
 		</h3>
 	</div>
@@ -125,8 +125,11 @@
 	</div>
 
 	<%-- Delete account --%>
-	<div id="settings-rm-container" class="span-24 last">
-		<a href="#"><spring:message code="settings.rm.account" /></a>
+	<div id="settings-rm-separator" class="prepend-2 span-20 append-2 last">
+		<div class="settings-title-separator"></div>
+	</div>
+	<div id="settings-rm-container" class="span-22 append-2 last">
+		<img src="<spring:url value="/images/logged/delete-account.png" />" /> <a href="<spring:url value="/settings_delete_account" />"><spring:message code="settings.rm.account" /></a>
 	</div>
 </form:form>
 

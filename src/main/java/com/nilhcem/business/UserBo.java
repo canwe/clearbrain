@@ -1,6 +1,7 @@
 package com.nilhcem.business;
 
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import com.nilhcem.core.hibernate.TransactionalReadOnly;
@@ -60,6 +61,7 @@ public class UserBo {
 		user.setRegistrationDate(Calendar.getInstance().getTime());
 		user.getRights().add(rightDao.findByName(RightDao.RIGHT_USER));
 		user.setLanguage(langBo.findByLocale(locale));
+		user.setDeleteDate(null);
 		userDao.save(user);
 
 		//Hash password
@@ -74,8 +76,8 @@ public class UserBo {
 	/**
 	 * Find a user from his email.
 	 *
-     * @param email Email of the User we are searching for.
-     * @return User object, or null if not found.
+	 * @param email Email of the User we are searching for.
+	 * @return User object, or null if not found.
 	 */
 	public User findByEmail(String email) {
 		return userDao.findByEmail(email);
@@ -90,24 +92,25 @@ public class UserBo {
 	 * @param request HTTP request.
 	 */
 	public void autoLoginAfterSignup(String username, String password, HttpServletRequest request) {
-	    try {
-	        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
-	        token.setDetails(new WebAuthenticationDetails(request));
-	        Authentication authentication = authenticationManager.authenticate(token);
-	        logger.debug("Logging in with [{}]", authentication.getPrincipal());
-	        SecurityContextHolder.getContext().setAuthentication(authentication);
-	    } catch (Exception e) {
-	        SecurityContextHolder.getContext().setAuthentication(null);
-	        logger.error("Failure in autoLogin", e);
-	    }
+		try {
+			UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
+			token.setDetails(new WebAuthenticationDetails(request));
+			Authentication authentication = authenticationManager.authenticate(token);
+			logger.debug("Logging in with [{}]", authentication.getPrincipal());
+			SecurityContextHolder.getContext().setAuthentication(authentication);
+		}
+		catch (Exception e) {
+			SecurityContextHolder.getContext().setAuthentication(null);
+			logger.error("Failure in autoLogin", e);
+		}
 	}
 
 	/**
 	 * Hash and Salt a password.
 	 *
-     * @param user User object.
-     * @param password The password we want to salt.
-     * @return New hashed and salted password.
+	 * @param user User object.
+	 * @param password The password we want to salt.
+	 * @return New hashed and salted password.
 	 */
 	public String hashPassword(User user, String password) {
 		UserDetailsAdapter userDetails = new UserDetailsAdapter(user);
@@ -132,12 +135,26 @@ public class UserBo {
 	}
 
 	/**
-	 * Delete a {@code User} from database.
+	 * Set a {@code User} as deletable by deactivating his account and setting a delete date.
+	 * A cron will then remove the user.
 	 *
 	 * @param user User we need to delete.
 	 */
 	@TransactionalReadWrite
-	public void deleteUser(User user) {
-		userDao.delete(user);
+	public void markAsDeletable(User user) {
+		user.setEnabled(false);
+		user.setDeleteDate(Calendar.getInstance().getTime());
+		userDao.update(user);
+	}
+
+	/**
+	 * Get all users which should be removed, and delete them
+	 */
+	@TransactionalReadWrite
+	public void removeDeletableUsers() {
+		List<User> users = userDao.getDeletableUsers();
+		for (User user : users) {
+			userDao.delete(user);
+		}
 	}
 }

@@ -142,6 +142,13 @@ p.createaccount {
 	color: #395972;
 }
 
+
+/* account deleted */
+.accdeleted-image {
+	vertical-align: middle;
+}
+
+
 /* footer */
 #footer {
 	background-color: #395972;

@@ -97,6 +97,7 @@
 
 		<sec:intercept-url pattern="/" access="permitAll()" />
 		<sec:intercept-url pattern="/signup" access="permitAll()" />
+		<sec:intercept-url pattern="/account-deleted" access="permitAll()" />
 		<sec:intercept-url pattern="/signup-completed" access="permitAll()" />
 		<sec:intercept-url pattern="/access-denied" access="permitAll()" />
 		<sec:intercept-url pattern="/login" access="permitAll()" />

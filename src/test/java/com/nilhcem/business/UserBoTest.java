@@ -15,6 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.nilhcem.core.hibernate.TransactionalReadWrite;
 import com.nilhcem.core.spring.UserDetailsAdapter;
 import com.nilhcem.dao.RightDao;
+import com.nilhcem.dao.UserDao;
 import com.nilhcem.form.SettingsForm;
 import com.nilhcem.model.User;
 
@@ -29,6 +30,9 @@ public class UserBoTest {
 	@Autowired
 	@Qualifier(value = "userBo")
 	private UserBo service;
+
+	@Autowired
+	private UserDao userDao;
 
 	@Autowired
 	private LanguageBo langBo;
@@ -74,11 +78,12 @@ public class UserBoTest {
 		assertNotNull(user);
 		assertEquals(UserBoTest.EMAIL, user.getEmail());
 		assertEquals(UserBoTest.LOCALE_FR, user.getLanguage().getCode());
+		assertNull(user.getDeleteDate());
 
 		//Check password
 		assertEquals(passwordEncoder.encodePassword(UserBoTest.PASSWORD, saltSource.getSalt(new UserDetailsAdapter(user))), user.getPassword());
 		aUserWhoSignsUpShouldHaveUserRight(user);
-		testRegistrationDate(before, user.getRegistrationDate(), after);
+		testDate(before, user.getRegistrationDate(), after);
 	}
 
 	private void aUserWhoSignsUpShouldHaveUserRight(User user) {
@@ -87,9 +92,9 @@ public class UserBoTest {
 		assertEquals(rightDao.findByName(RightDao.RIGHT_USER), user.getRights().get(0));
 	}
 
-	private void testRegistrationDate(Date before, Date registrationDate, Date after) {
-		assertFalse(before.after(registrationDate));
-		assertFalse(after.before(registrationDate));
+	private void testDate(Date before, Date date, Date after) {
+		assertFalse(before.after(date));
+		assertFalse(after.before(date));
 	}
 
 	@Test
@@ -113,7 +118,8 @@ public class UserBoTest {
 		updateWithUntakenEmail(settings, UNTAKEN_EMAIL);
 
 		//Delete user
-		service.deleteUser(service.findByEmail(UNTAKEN_EMAIL));
+		setAsDeletable(UNTAKEN_EMAIL);
+		deleteUser(UNTAKEN_EMAIL);
 	}
 
 	private void updateWithoutEditingPassword(SettingsForm settings) {
@@ -146,5 +152,55 @@ public class UserBoTest {
 		service.updateSettings(getUser(), settings);
 		assertNull(getUser());
 		assertNotNull(service.findByEmail(untakenEmail));
+	}
+
+	private void setAsDeletable(String email) {
+		User user = service.findByEmail(email);
+		assertNull(user.getDeleteDate());
+		assertTrue(user.isEnabled());
+
+		//Mark as deletable
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.SECOND, -1);
+		Date before = cal.getTime();
+		service.markAsDeletable(user);
+		cal = Calendar.getInstance();
+		cal.add(Calendar.SECOND, 1);
+		Date after = cal.getTime();
+
+		//Check values
+		assertFalse(user.isEnabled());
+		testDate(before, user.getDeleteDate(), after);
+	}
+
+	private void deleteUser(String email) {
+		//Try to delete user (should failed since deleteDate < 3 days)
+		service.removeDeletableUsers();
+		User user = service.findByEmail(email);
+		assertNotNull(user);
+
+		//Try again with another date < 3 days [should still failed]
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DAY_OF_YEAR, -2);
+		user.setDeleteDate(cal.getTime());
+		userDao.update(user);
+		service.removeDeletableUsers();
+		user = service.findByEmail(email);
+		assertNotNull(user);
+
+		//Try at last with a date >= 3 days
+		cal = Calendar.getInstance();
+		cal.add(Calendar.DAY_OF_YEAR, -3);
+		user.setDeleteDate(cal.getTime());
+		//...but with enable == true [should failed]
+		user.setEnabled(true);
+		userDao.update(user);
+		assertNotNull(user);
+
+		//...and now with enable == false [should work]
+		user.setEnabled(false);
+		userDao.update(user);
+		service.removeDeletableUsers();
+		assertNull(service.findByEmail(email));
 	}
 }

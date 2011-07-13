@@ -17,7 +17,7 @@ public class SettingsControllerTest {
 
 	@Test
 	public void testJavascriptLocales() {
-		final String[] keys = {"err.pwd", "err.pwdConf", "err.mailRegist", "err.mail", "ok.mail", "ok.pwd", "ok.pwdConf"};
+		final String[] keys = {"err.pwd", "err.pwdConf", "err.mailRegist", "err.mail", "ok.mail", "ok.pwd", "ok.pwdConf", "cancel.confirm"};
 
 		MockHttpServletRequest request = new MockHttpServletRequest("get", "/logged/settings");
 		Map<String, String> map = controller.sendI18nToJavascript(request);

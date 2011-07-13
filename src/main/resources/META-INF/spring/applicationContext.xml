@@ -9,6 +9,9 @@
 	<import resource="database/DataSource.xml" />
 	<import resource="database/Hibernate.xml" />
 
+	<!-- Scheduler -->
+	<import resource="scheduler/applicationContext-scheduler.xml" />
+
 	<!-- Auto scan the components: Allows to use @Autowire, @Required and @Qualifier annotations -->
 	<context:annotation-config />
 
@@ -17,6 +20,7 @@
 		<context:include-filter type="regex" expression="com.nilhcem.business.*" />
 		<context:include-filter type="regex" expression="com.nilhcem.core.spring.RedirectViewResolver" />
 		<context:include-filter type="regex" expression="com.nilhcem.dao.*" />
+		<context:include-filter type="regex" expression="com.nilhcem.job.*" />
 		<context:include-filter type="regex" expression="com.nilhcem.utils.*" />
 		<context:include-filter type="regex" expression="com.nilhcem.validator.*" />
 	    <context:exclude-filter expression="org.springframework.stereotype.Controller" type="annotation"/>

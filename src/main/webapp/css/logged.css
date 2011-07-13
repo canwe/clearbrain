@@ -464,10 +464,17 @@ body {
 	margin-top: 20px;
 }
 
-.settings-subtitle h3 {
+.settings-title-separator {
 	border-bottom: 1px solid #B6B6B6;
+}
+
+.settings-subtitle h3 {
 	line-height: 27px;
-	margin: 12px 70px 35px 0;
+	margin: 12px 0 35px;
+}
+
+#settings-rm-separator div {
+	margin: 25px 0 2px;
 }
 
 .settings-input-size {
@@ -501,6 +508,14 @@ body {
 }
 
 #settings-rm-container {
-	margin-top: 6px;
 	text-align: right;
+}
+
+#settings-rm-container a {
+	color: #909090;
+	font-weight: bold;
+}
+
+#settings-rm-container a:hover {
+	color: #666;
 }

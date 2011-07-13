@@ -9,7 +9,11 @@ jQuery.fn.isBlank = function() {
 /* Header */
 //Display/Hide login modal pop up
 function toggleLogin() {
-	$('#login-container').toggle();
+	var loginContainer = $('#login-container');
+
+	loginContainer.toggle();
+	if (loginContainer.is(':visible')) //focus on email when clicking
+		$('#j_username_t').focus();
 }
 
 //Hide login modal pop up if visible and if a user clicks outside this pop up
