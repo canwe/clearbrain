@@ -34,6 +34,6 @@ public class RightDaoTest {
 	public void makeSureThatAdminAndUserAreNotEqual() {
 		Right user = dao.findByName(RightDao.RIGHT_USER);
 		Right admin = dao.findByName(RightDao.RIGHT_ADMIN);
-		assertNotSame(admin.getId(), user.getId());
+		assertFalse(admin.getId().equals(user.getId()));
 	}
 }

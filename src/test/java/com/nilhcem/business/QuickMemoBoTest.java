@@ -42,7 +42,7 @@ public class QuickMemoBoTest {
 		//Get memo to check default values
 		User user = testUtils.getTestUser();
 		QuickMemo memo = service.getByUser(user);
-		assertNotSame(NEW_CONTENT, memo.getContent());
+		assertFalse(NEW_CONTENT.equals(memo.getContent()));
 
 		//Update memo and check date
 		Calendar cal = Calendar.getInstance();

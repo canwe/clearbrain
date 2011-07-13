@@ -100,11 +100,11 @@ public class CategoryBoTest {
 	}
 
 	private void renameCategory(User user) {
-		assertNotSame(CATEGORIES[0], CATEGORIES[1]);
+		assertFalse(CATEGORIES[0].equals(CATEGORIES[1]));
 		Category toRename = service.addCategory(user, CATEGORIES[0]);
 		service.renameCategory(user, toRename.getId(), CATEGORIES[1]);
 		Category renamed = service.getSortedCategories(user).get(0);
-		assertNotSame(toRename.getName(), renamed.getName());
+		assertFalse(toRename.getName().equals(renamed.getName()));
 		service.removeCategory(user,  renamed.getId());
 	}
 }
