@@ -48,7 +48,7 @@ public final class UserDao extends AbstractHibernateDao<User> {
 		Date threeDaysAgo = cal.getTime();
 
 		Query query = query("FROM User WHERE enabled=:enabled AND deleteDate <= :deleteDate")
-			.setParameter("enabled", Boolean.valueOf(false))
+			.setParameter("enabled", Boolean.FALSE)
 			.setParameter("deleteDate", threeDaysAgo);
 		return list(query);
 	}

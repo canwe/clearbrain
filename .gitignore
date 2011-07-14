@@ -16,5 +16,6 @@ src/main/webapp/META-INF/*
 
 # Ignore eclipse files
 .classpath
+.pmd
 .project
 .settings/*

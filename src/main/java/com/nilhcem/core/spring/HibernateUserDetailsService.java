@@ -12,13 +12,14 @@ import org.springframework.stereotype.Service;
 
 /*
  * Custom {@code UserDetailsService} bean for SpringSecurity to handle authentication using Hibernate.
+ * Note: Do not make it as final otherwise cglib will throw an exception when it will try to make a proxy.
  *
  * @author Nilhcem
  * @since 1.0
  */
 @Service("userDetailsService")
 @TransactionalReadOnly
-public final class HibernateUserDetailsService implements UserDetailsService {
+public class HibernateUserDetailsService implements UserDetailsService {
 	@Autowired
 	private UserBo userBo;
 

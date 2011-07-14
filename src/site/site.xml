@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="SecondBrain">
+	<bannerLeft>
+		<name>ClearBrain</name>
+		<src>./images/logo.png</src>
+		<href>#</href>
+	</bannerLeft>
+	<body>
+		<menu name="Introduction">
+			<item name="Overview" href="index.html" />
+		</menu>
+		<menu ref="reports" />
+	</body>
+</project>
