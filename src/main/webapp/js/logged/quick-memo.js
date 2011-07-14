@@ -1,11 +1,12 @@
 /*** Quick memo ***/
 var editor, //CLEditor
-	saved = true; //Flag to know if memo was saved.
+	saved; //Flag to know if memo was saved.
 
 jQuery(function($) {
 	editor = $('#input').cleditor({width: '946px', height: '100%'})[0].focus();
     $(window).resize();
     $('#cleditor-container').removeClass('hiddenClass');
+    saved = true;
 
     //Set flag to specify the memo content has changed, to prevent exit without saving
     editor.change(function() {

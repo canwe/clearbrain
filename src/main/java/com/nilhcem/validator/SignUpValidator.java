@@ -10,7 +10,7 @@ import com.nilhcem.business.UserBo;
 import com.nilhcem.form.SignUpForm;
 
 /**
- * Validate {@code SignUpForm} using Spring MVC Validator.
+ * Validate a {@code SignUpForm} using Spring MVC Validator.
  *
  * @author Nilhcem
  * @since 1.0

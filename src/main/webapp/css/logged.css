@@ -191,6 +191,41 @@ body {
 }
 
 
+/*** Forms ***/
+.forms-subtitle {
+	margin-top: 20px;
+}
+
+.forms-subtitle h3 {
+	line-height: 27px;
+	margin: 12px 0 35px;
+}
+
+.forms-border-separator {
+	border-bottom: 1px solid #B6B6B6;
+}
+
+.forms-line-height {
+	height: 3.5em;
+}
+
+.forms-input-size {
+	width: 200px;
+}
+
+.forms-save-container {
+	margin-top: 10px;
+}
+
+.forms-save-container button {
+	padding: 4px 25px;
+}
+
+.forms-down-separator div {
+	margin: 25px 0 2px;
+}
+
+
 /*** Main container ***/
 #content {
 	background-color: #FFF;
@@ -460,31 +495,6 @@ body {
 	text-align: center;
 }
 
-.settings-subtitle {
-	margin-top: 20px;
-}
-
-.settings-title-separator {
-	border-bottom: 1px solid #B6B6B6;
-}
-
-.settings-subtitle h3 {
-	line-height: 27px;
-	margin: 12px 0 35px;
-}
-
-#settings-rm-separator div {
-	margin: 25px 0 2px;
-}
-
-.settings-input-size {
-	width: 200px;
-}
-
-.settings-line-height {
-	height: 3.5em;
-}
-
 .settings-line-height-radio {
 	height: 55px;
 	line-height: 2;
@@ -499,14 +509,6 @@ body {
 	font-weight: bold;
 }
 
-#settings-save-container {
-	margin-top: 10px;
-}
-
-#settings-save-container button {
-	padding: 4px 25px;
-}
-
 #settings-rm-container {
 	text-align: right;
 }
@@ -518,4 +520,8 @@ body {
 
 #settings-rm-container a:hover {
 	color: #666;
+}
+
+#settings-rm-container img {
+	vertical-align: middle;
 }

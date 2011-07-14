@@ -63,13 +63,35 @@ public final class SettingsController extends AbstractController {
 	}
 
 	/**
+	 * Deactivate account and flag it to be automatically deleted soon.
+	 */
+	@RequestMapping(value = "/settings_delete_account", method = RequestMethod.GET)
+	public ModelAndView deleteAccount(HttpServletRequest request) {
+		//mark the user as deletable
+		userBo.markAsDeletable(getCurrentUser());
+
+		//proceed logout
+		SecurityContextHolder.clearContext();
+		request.getSession().invalidate();
+
+		//drop cookies
+		Cookie[] cookies = request.getCookies();
+		for (Cookie cookie : cookies) {
+			cookie.setMaxAge(0);
+		}
+
+		//Redirect to confirmation page
+		return new ModelAndView("redirectWithoutModel:account-deleted");
+	}
+
+	/**
 	 * Register a user who has just signed up.
 	 *
 	 * @param signUpForm The signup form.
 	 * @param result Binding result.
 	 * @param status Session status.
 	 * @param request HTTP request.
-	 * @return A new view (front/signupCompleted).
+	 * @return A new view (logged/settings).
 	 */
 	@RequestMapping(value = "/settings", method = RequestMethod.POST)
 	public ModelAndView submitSettingsPage(@ModelAttribute("settingsform") SettingsForm settingsForm, BindingResult result, 
@@ -96,27 +118,5 @@ public final class SettingsController extends AbstractController {
 	public @ResponseBody boolean checkEmailAvailability(@RequestParam(value = "emailToCheck", required = true) String email) {
 		User user = userBo.findByEmail(email);
 		return ((user == null) || (user.getEmail().equalsIgnoreCase(getCurrentUser().getEmail())));
-	}
-
-	/**
-	 * Deactivate account and flag it to be automatically deleted soon.
-	 */
-	@RequestMapping(value = "/settings_delete_account")
-	public ModelAndView deleteAccount(HttpServletRequest request) {
-		//mark the user as deletable
-		userBo.markAsDeletable(getCurrentUser());
-
-		//proceed logout
-		SecurityContextHolder.clearContext();
-		request.getSession().invalidate();
-
-		//drop cookies
-		Cookie[] cookies = request.getCookies();
-		for (Cookie cookie : cookies) {
-			cookie.setMaxAge(0);
-		}
-
-		//Redirect to confirmation page
-		return new ModelAndView("redirectWithoutModel:account-deleted");
 	}
 }

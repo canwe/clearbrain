@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.nilhcem.core.test.TestUtils;
+import com.nilhcem.form.NoteForm;
 import com.nilhcem.model.Category;
 import com.nilhcem.model.Note;
 import com.nilhcem.model.User;
@@ -18,6 +19,7 @@ import com.nilhcem.model.User;
 @ContextConfiguration(locations = {"classpath:/applicationContext-test.xml"})
 public class NoteBoTest {
 	private static final String NOTE_NAME = "My first note";
+	private static final String CATEGORY_NAME = "My Category";
 
 	@Autowired
 	private TestUtils testUtils;
@@ -41,13 +43,13 @@ public class NoteBoTest {
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.SECOND, -1);
 		Date before = cal.getTime();
-		Note note = service.addNote(user, NOTE_NAME, 0L);
+		Note note = service.addNote(user, NoteBoTest.NOTE_NAME, 0L);
 		cal = Calendar.getInstance();
 		cal.add(Calendar.SECOND, 1);
 		Date after = cal.getTime();
 		assertNull(note.getCategory());
 		assertNull(note.getResolvedDate());
-		assertEquals(NOTE_NAME, note.getName());
+		assertEquals(NoteBoTest.NOTE_NAME, note.getName());
 		assertEquals(user, note.getUser());
 		assertFalse(before.after(note.getCreationDate()));
 		assertFalse(after.before(note.getCreationDate()));
@@ -55,7 +57,7 @@ public class NoteBoTest {
 	}
 
 	private Long testAssignACategoryToANote(User user, Long noteId) {
-		Category category = categoryService.addCategory(user, "My Category");
+		Category category = categoryService.addCategory(user, NoteBoTest.CATEGORY_NAME);
 		service.assignCategoryToNote(user, category.getId(), noteId);
 		Note note = service.getNotes(user).get(0);
 		assertEquals(category.getId(), note.getCategory().getId());
@@ -63,7 +65,7 @@ public class NoteBoTest {
 	}
 
 	private void testAddNoteWithACategoryDirectly(User user, Long categoryId) {
-		Note note = service.addNote(user, NOTE_NAME + "2", categoryId);
+		Note note = service.addNote(user, NoteBoTest.NOTE_NAME + "2", categoryId);
 		assertEquals(categoryId, note.getCategory().getId());
 		testGetCatIdByNoteId(user, note.getId(), note.getCategory().getId());
 		service.deleteNoteById(user, note.getId());
@@ -79,5 +81,51 @@ public class NoteBoTest {
 	private void testGetCatIdByNoteId(User user, Long noteId, Long expectedResult) {
 		Map<Long, Long> map = service.getCatIdByNoteIdMap(user);
 		assertEquals(expectedResult, map.get(noteId));
+	}
+
+	@Test
+	public void testAddEditNoteForm() {
+		User user = testUtils.getTestUser();
+		assertEquals(service.getNotes(user).size(), 0);
+		Note note = new Note();
+
+		//Test add
+		note.setId(null);
+		note.setName(NoteBoTest.NOTE_NAME);
+		NoteForm form = new NoteForm();
+		form.setCategoryId(0L);
+		form.setNote(note);
+		service.addEditNote(user, form);
+
+		assertEquals(service.getNotes(user).size(), 1);
+		Note insertedNote = service.getNotes(user).get(0);
+		Date createdDate = insertedNote.getCreationDate();
+		assertEquals(NoteBoTest.NOTE_NAME, insertedNote.getName());
+		assertNull(insertedNote.getCategory());
+
+		//Test edit
+		form.getNote().setId(insertedNote.getId());
+		final String NEW_NAME = "NEW_NAME";
+		assertFalse(NEW_NAME.equals(NoteBoTest.NOTE_NAME));
+		form.getNote().setName(NEW_NAME);
+		Category category = categoryService.addCategory(user, NoteBoTest.CATEGORY_NAME);
+		form.setCategoryId(category.getId());
+		service.addEditNote(user, form);
+
+		assertEquals(service.getNotes(user).size(), 1);
+		insertedNote = service.getNotes(user).get(0);
+		assertEquals(NEW_NAME, insertedNote.getName());
+		assertEquals(category.getId(), insertedNote.getCategory().getId());
+		assertEquals(createdDate, insertedNote.getCreationDate()); //should not change
+
+		//Delete category, check again and delete note
+		categoryService.removeCategory(user, category.getId());
+		form.setCategoryId(0L);
+		service.addEditNote(user, form);
+
+		insertedNote = service.getNotes(user).get(0);
+		assertNull(insertedNote.getCategory());
+		service.deleteNoteById(user, insertedNote.getId());
+		assertEquals(service.getNotes(user).size(), 0);
 	}
 }

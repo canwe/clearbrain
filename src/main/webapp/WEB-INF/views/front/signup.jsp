@@ -17,7 +17,7 @@
 			</div>
 			<div class="span-8 last">
 				<div id="email-check" class="hide">&nbsp;</div>
-				<form:errors id="emailError" path="user.email" cssClass="error error-block" />
+				<form:errors id="email-error" path="user.email" cssClass="error error-block" />
 			</div>
 		</div>
 
@@ -30,7 +30,7 @@
 			</div>
 			<div class="span-8 last">
 				<div id="password-check" class="hide">&nbsp;</div>
-				<form:errors id="passwordError" path="user.password" cssClass="error error-block" />
+				<form:errors id="password-error" path="user.password" cssClass="error error-block" />
 			</div>
 		</div>
 
@@ -43,7 +43,7 @@
 			</div>
 			<div class="span-8 last">
 				<div id="password-confirm-check" class="hide">&nbsp;</div>
-				<form:errors id="passwordConfirmError" path="passwordConfirmation" cssClass="error error-block" />
+				<form:errors id="password-confirm-error" path="passwordConfirmation" cssClass="error error-block" />
 			</div>
 		</div>
 

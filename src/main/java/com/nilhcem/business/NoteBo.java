@@ -11,6 +11,7 @@ import com.nilhcem.core.hibernate.TransactionalReadOnly;
 import com.nilhcem.core.hibernate.TransactionalReadWrite;
 import com.nilhcem.dao.CategoryDao;
 import com.nilhcem.dao.NoteDao;
+import com.nilhcem.form.NoteForm;
 import com.nilhcem.model.Note;
 import com.nilhcem.model.User;
 
@@ -52,18 +53,29 @@ public class NoteBo {
 	}
 
 	/**
-	 * Assign or remove a category to a note.
-	 * @param user Owner of the notes / categories.
-	 * @param categoryId The id of the category we want to assign, or 0 if we need to remove the category from the note.
-	 * @param noteId The note's id.
+	 * Add or edit (if form.note.id != null) a {@code Note} using a noteForm.
+	 *
+	 * @param user Owner of the note.
+	 * @param form the form containing data to be saved.
+	 * @param add <code>true</code> if we add the note, <code>false</code> if we edit the note.
 	 */
 	@TransactionalReadWrite
-	public void assignCategoryToNote(User user, Long categoryId, Long noteId) {
-		logger.debug("Assign category {} to note {}", categoryId, noteId);
+	public void addEditNote(User user, NoteForm form) {
+		logger.debug("Add note {} in category {}", form.getNote().getName(), form.getCategoryId());
+		Note note = form.getNote();
+		note.setCategory((form.getCategoryId().equals(Long.valueOf(0l))) ? null : catDao.getById(user, form.getCategoryId()));
 
-		Note note = dao.getById(user, noteId);
-		note.setCategory((categoryId.equals(Long.valueOf(0l))) ? null : catDao.getById(user, categoryId));
-		dao.update(note);
+		if (note.getId() == null) { //add
+			note.setCreationDate(Calendar.getInstance().getTime());
+			note.setUser(user);
+			dao.save(note);
+		}
+		else { //edit
+			Note realNote = dao.getById(user, note.getId());
+			realNote.setName(note.getName());
+			realNote.setCategory(note.getCategory());
+			dao.update(realNote);
+		}
 	}
 
 	/**
@@ -77,14 +89,29 @@ public class NoteBo {
 	}
 
 	/**
-	 * Delete a Note from its Id. Currently used only by NoteBoTest
+	 * Find a note from its {@code id}.
+	 *
+	 * @param user Owner of the note we are searching for.
+	 * @param id Id of the note we are searching for.
+	 * @return Note.
+	 */
+	public Note getNoteById(User user, Long id) {
+		return dao.getById(user, id);
+	}
+
+	/**
+	 * Assign or remove a category to a note.
 	 * @param user Owner of the notes / categories.
-	 * @param noteId Id of the note we need to remove.
+	 * @param categoryId The id of the category we want to assign, or 0 if we need to remove the category from the note.
+	 * @param noteId The note's id.
 	 */
 	@TransactionalReadWrite
-	public void deleteNoteById(User user, Long noteId) {
-		Note note = dao.getById(user, noteId);
-		dao.delete(note);
+	public void assignCategoryToNote(User user, Long categoryId, Long noteId) {
+		logger.debug("Assign category {} to note {}", categoryId, noteId);
+
+		Note note = getNoteById(user, noteId);
+		note.setCategory((categoryId.equals(Long.valueOf(0l))) ? null : catDao.getById(user, categoryId));
+		dao.update(note);
 	}
 
 	/**
@@ -95,5 +122,16 @@ public class NoteBo {
 	 */
 	public Map<Long, Long> getCatIdByNoteIdMap(User user) {
 		return dao.getCatIdByNoteIdMap(user);
+	}
+
+	/**
+	 * Delete a Note from its Id. Currently used only by NoteBoTest.
+	 * @param user Owner of the notes / categories.
+	 * @param noteId Id of the note we need to remove.
+	 */
+	@TransactionalReadWrite
+	public void deleteNoteById(User user, Long noteId) {
+		Note note = getNoteById(user, noteId);
+		dao.delete(note);
 	}
 }

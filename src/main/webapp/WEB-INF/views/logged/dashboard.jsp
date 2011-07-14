@@ -67,7 +67,9 @@
 		<c:forEach items="${notesList}" var="cur">
 			<div id="note-<c:out value="${cur.id}" />" class="note">
 				<input type="checkbox"> <c:out value="${cur.name}" />
-				<span id="noteedit-<c:out value="${cur.id}" />" class="notes-edit"><a href="javascript:alert('TODO');"><img src="<spring:url value="/images/logged/edit.gif" />" /></a></span>
+				<span id="noteedit-<c:out value="${cur.id}" />" class="notes-edit">
+					<a href="<spring:url value="/note?id=" />${cur.id}"><img src="<spring:url value="/images/logged/edit.gif" />" /></a>
+				</span>
 				<div id="notecat-<c:out value="${cur.id}" />" class="note-category"></div>
 			</div>
 		</c:forEach>

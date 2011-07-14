@@ -13,7 +13,7 @@ import com.nilhcem.form.SettingsForm;
 import com.nilhcem.model.User;
 
 /**
- * Validate {@code SettingsForm} using Spring MVC Validator.
+ * Validate a {@code SettingsForm} using Spring MVC Validator.
  *
  * @author Nilhcem
  * @since 1.0

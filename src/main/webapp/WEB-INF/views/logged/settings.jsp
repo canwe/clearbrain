@@ -2,7 +2,7 @@
 <script type="text/javascript" src="<spring:url value="/js/logged/settings.js" />"></script>
 
 <form:form method="POST" commandName="settingsform" class="inline">
-	<form:hidden id="currentEmail" path="currentEmail" />
+	<form:hidden id="current-email" path="currentEmail" />
 
 	<%-- If profile modification failed, display error --%>
 	<c:if test="${sessionScope.settings_ko != null}">
@@ -21,23 +21,23 @@
 	</c:if>
 
 	<%-- Subtitle --%>
-	<div class="prepend-2 span-20 append-2 last settings-subtitle">
-		<h3 class="alt settings-title-separator">
+	<div class="prepend-2 span-20 append-2 last forms-subtitle">
+		<h3 class="alt forms-border-separator">
 			<spring:message code="settings.sub.title" />
 		</h3>
 	</div>
 
 	<%-- Main email address --%>
-	<div class="prepend-5 span-19 last settings-line-height">
+	<div class="prepend-5 span-19 last forms-line-height">
 		<div class="span-5">
 			<label for="email"><spring:message code="settings.main.email" /></label>
 		</div>
 		<div class="span-6">
-			<form:input id="email" path="email" cssClass="settings-input-size" />
+			<form:input id="email" path="email" cssClass="forms-input-size" />
 		</div>
 		<div class="span-8 last">
 			<div id="email-check" class="hide">&nbsp;</div>
-			<form:errors id="emailError" path="email" cssClass="error error-block" />
+			<form:errors id="email-error" path="email" cssClass="error error-block" />
 		</div>
 	</div>
 
@@ -46,56 +46,54 @@
 		<div class="span-5 settings-bold">
 			<spring:message code="settings.pwd.change" />
 		</div>
-		<div id="editPasswordRadios" class="span-6">
-			<form:radiobutton id="editPassword1" path="editPassword" value="no" />
-			<label for="editPassword1"><spring:message code="settings.pwd.no" /></label><br />
-			<form:radiobutton id="editPassword2" path="editPassword" value="yes"/>
-			<label for="editPassword2"><spring:message code="settings.pwd.yes" /></label>
-		</div>
-		<div class="span-8 last">
+		<div id="edit-password-radios" class="span-14 last">
+			<form:radiobutton id="edit-password-1" path="editPassword" value="no" />
+			<label for="edit-password-1"><spring:message code="settings.pwd.no" /></label><br />
+			<form:radiobutton id="edit-password-2" path="editPassword" value="yes"/>
+			<label for="edit-password-2"><spring:message code="settings.pwd.yes" /></label>
 		</div>
 	</div>
 
 	<div id="password-container" class="hide">
 		<%-- Current Password --%>
-		<div class="prepend-5 span-19 last settings-line-height">
+		<div class="prepend-5 span-19 last forms-line-height">
 			<div class="span-5">
-				<label for="currentPassword"><spring:message code="settings.pwd.current" /></label>
+				<label for="current-password"><spring:message code="settings.pwd.current" /></label>
 			</div>
 			<div class="span-6">
-				<form:password id="currentPassword" path="currentPassword" cssClass="settings-input-size" />
+				<form:password id="current-password" path="currentPassword" cssClass="forms-input-size" />
 			</div>
 			<div class="span-8 last">
 				<div id="curpwd-check" class="hide">&nbsp;</div>
-				<form:errors id="currentPasswordError" path="currentPassword" cssClass="error error-block" />
+				<form:errors id="current-password-error" path="currentPassword" cssClass="error error-block" />
 			</div>
 		</div>
 
 		<%-- New Password --%>
-		<div class="prepend-5 span-19 last settings-line-height">
+		<div class="prepend-5 span-19 last forms-line-height">
 			<div class="span-5">
-				<label for="newPassword"><spring:message code="settings.pwd.new" /></label>
+				<label for="new-password"><spring:message code="settings.pwd.new" /></label>
 			</div>
 			<div class="span-6">
-				<form:password id="newPassword" path="newPassword" cssClass="settings-input-size" />
+				<form:password id="new-password" path="newPassword" cssClass="forms-input-size" />
 			</div>
 			<div class="span-8 last">
 				<div id="newpwd-check" class="hide">&nbsp;</div>
-				<form:errors id="newPasswordError" path="newPassword" cssClass="error error-block" />
+				<form:errors id="new-password-error" path="newPassword" cssClass="error error-block" />
 			</div>
 		</div>
 
 		<%-- Verify Password --%>
-		<div class="prepend-5 span-19 last settings-line-height">
+		<div class="prepend-5 span-19 last forms-line-height">
 			<div class="span-5">
-				<label for="confirmPassword"><spring:message code="settings.pwd.confirm" /></label>
+				<label for="confirm-password"><spring:message code="settings.pwd.confirm" /></label>
 			</div>
 			<div class="span-6">
-				<form:password id="confirmPassword" path="confirmPassword" cssClass="settings-input-size" />
+				<form:password id="confirm-password" path="confirmPassword" cssClass="forms-input-size" />
 			</div>
 			<div class="span-8 last">
 				<div id="confirmpwd-check" class="hide">&nbsp;</div>
-				<form:errors id="confirmPasswordError" path="confirmPassword" cssClass="error error-block" />
+				<form:errors id="confirm-password-error" path="confirmPassword" cssClass="error error-block" />
 			</div>
 		</div>
 	</div>
@@ -116,7 +114,7 @@
 	</div>
 
 	<%-- Save button --%>
-	<div id="settings-save-container" class="prepend-10 span-14 last">
+	<div class="prepend-10 span-14 last forms-save-container">
 		<p class="buttons createaccount">
 			<button class="button positive" type="submit">
 				<spring:message code="settings.save.btn" />
@@ -125,8 +123,8 @@
 	</div>
 
 	<%-- Delete account --%>
-	<div id="settings-rm-separator" class="prepend-2 span-20 append-2 last">
-		<div class="settings-title-separator"></div>
+	<div class="prepend-2 span-20 append-2 last forms-down-separator">
+		<div class="forms-border-separator"></div>
 	</div>
 	<div id="settings-rm-container" class="span-22 append-2 last">
 		<img src="<spring:url value="/images/logged/delete-account.png" />" /> <a href="<spring:url value="/settings_delete_account" />"><spring:message code="settings.rm.account" /></a>

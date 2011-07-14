@@ -19,13 +19,14 @@
     <link rel="stylesheet" href="<spring:url value="/css/blueprint/plugins/buttons/screen.css" />" type="text/css" media="screen, projection" />
     <link rel="stylesheet" href="<spring:url value="/css/front.css" />" type="text/css" media="screen, projection" />
 	<script type="text/javascript" src="<spring:url value="/js/jquery-1.6.2.min.js" />"></script>
+	<script type="text/javascript" src="<spring:url value="/js/core.js" />"></script>
+	<script type="text/javascript" src="<spring:url value="/js/front.js" />" ></script>
 	<c:if test="${i18nJS != null && not empty i18nJS}">
 		<script type="text/javascript">
 			var i18n = new Array();
 			<c:forEach var="entry" items="${i18nJS}">i18n["${entry.key}"]="${entry.value}";</c:forEach>
 		</script>
 	</c:if>
-	<script type="text/javascript" src="<spring:url value="/js/front.js" />" ></script>
     <title>~S2NDBRN~</title>
 </head>
 

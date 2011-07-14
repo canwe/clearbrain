@@ -84,20 +84,6 @@ public final class DashboardControllerAjax extends AbstractController {
 		return true;
 	}
 
-//	/**
-//	 * Display or hide a category.
-//	 *
-//	 * @param catId The category's id we need to display or hide.
-//	 * @param display True if we need to display the category, otherwise false.
-//	 * @return true.
-//	 */
-//	@RequestMapping(method = RequestMethod.POST, params = { "display" })
-//	public @ResponseBody boolean showHideCategory(@RequestParam(value = "id", required = true) Long catId,
-//		@RequestParam(value = "display", required = true) boolean displayed) {
-//		categoryBo.showHideCategory(getCurrentUser(), catId, displayed);
-//		return true;
-//	}
-
 	/**
 	 * Add a quick note.
 	 *

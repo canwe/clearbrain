@@ -21,6 +21,7 @@
 	<script type="text/javascript" src="<spring:url value="/js/jquery-1.6.2.min.js" />"></script>
 	<script type="text/javascript" src="<spring:url value="/js/jquery-ui-1.8.14.custom.min.js" />"></script>
 	<script type="text/javascript" src="<spring:url value="/js/jquery-clearfield.min.js" />"></script>
+	<script type="text/javascript" src="<spring:url value="/js/core.js" />"></script>
 	<script type="text/javascript">
 		$('#m-notes-container, #m-profile-container').live('hover', function(){$(this).find('.dropdown').toggle();});
 		<c:if test="${i18nJS != null && not empty i18nJS}">
@@ -79,7 +80,7 @@
 					<div class="dropdown">
 						<ul>
 							<li class="dropdown-li-top">
-								<a id="m-add" href="javascript:alert('TODO');"><spring:message code="header.menu.add" /></a>
+								<a id="m-add" href="<spring:url value="/note" />"><spring:message code="header.menu.add" /></a>
 							</li>
 							<li>
 								<a id="m-memo" href="<spring:url value="/quick_memo" />"><spring:message code="header.menu.memo" /></a>

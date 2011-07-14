@@ -41,29 +41,6 @@ public final class SignUpController extends AbstractController {
 	}
 
 	/**
-	 * Register a user who has just signed up.
-	 *
-	 * @param signUpForm The signup form.
-	 * @param result Binding result.
-	 * @param status Session status.
-	 * @param request HTTP request.
-	 * @return A new view (front/signupCompleted).
-	 */
-	@RequestMapping(value = "/signup", method = RequestMethod.POST)
-	public ModelAndView submitSignUpPage(@ModelAttribute("signupform") SignUpForm signUpForm, BindingResult result, 
-		SessionStatus status, HttpServletRequest request) {
-		signUpValidator.validate(signUpForm, result);
-		if (result.hasErrors()) {
-			return new ModelAndView("front/signup");
-		}
-
-		userBo.signUpUser(signUpForm.getUser(), RequestContextUtils.getLocale(request));
-		status.setComplete();
-		userBo.autoLoginAfterSignup(signUpForm.getUser().getEmail(), signUpForm.getPasswordConfirmation(), request);
-		return new ModelAndView("redirectWithoutModel:signup-completed");
-	}
-
-	/**
 	 * Initialize sign up form, giving it the SignUp model.
 	 *
 	 * @param model Model map.
@@ -84,6 +61,29 @@ public final class SignUpController extends AbstractController {
 	@RequestMapping(value = "/signup-completed", method = RequestMethod.GET)
 	public String getSignUpCompletedPage() {
 		return "front/signupCompleted";
+	}
+
+	/**
+	 * Register a user who has just signed up.
+	 *
+	 * @param signUpForm The signup form.
+	 * @param result Binding result.
+	 * @param status Session status.
+	 * @param request HTTP request.
+	 * @return A new view (front/signupCompleted).
+	 */
+	@RequestMapping(value = "/signup", method = RequestMethod.POST)
+	public ModelAndView submitSignUpPage(@ModelAttribute("signupform") SignUpForm signUpForm, BindingResult result,
+		SessionStatus status, HttpServletRequest request) {
+		signUpValidator.validate(signUpForm, result);
+		if (result.hasErrors()) {
+			return new ModelAndView("front/signup");
+		}
+
+		userBo.signUpUser(signUpForm.getUser(), RequestContextUtils.getLocale(request));
+		status.setComplete();
+		userBo.autoLoginAfterSignup(signUpForm.getUser().getEmail(), signUpForm.getPasswordConfirmation(), request);
+		return new ModelAndView("redirectWithoutModel:signup-completed");
 	}
 
 	/**
