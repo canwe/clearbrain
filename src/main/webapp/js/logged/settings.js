@@ -85,6 +85,6 @@ function checkPasswordConfirmation() {
 }
 
 //Display confirmation message if user clicks on 'Remove account'
-$('#settings-rm-container').find('a').live('click', function() {
+$('#delete-account').live('click', function() {
 	return (confirm(i18n['cancel.confirm']));
 });

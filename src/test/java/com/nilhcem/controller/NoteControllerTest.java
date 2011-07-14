@@ -17,7 +17,7 @@ public class NoteControllerTest {
 
 	@Test
 	public void testJavascriptLocales() {
-		final String[] keys = {"err.name"};
+		final String[] keys = {"err.name", "delete.confirm"};
 
 		MockHttpServletRequest request = new MockHttpServletRequest("get", "/logged/note");
 		Map<String, String> map = controller.sendI18nToJavascript(request);

@@ -64,6 +64,8 @@ public final class SettingsController extends AbstractController {
 
 	/**
 	 * Deactivate account and flag it to be automatically deleted soon.
+	 * @param request The Http request, used to delete session.
+	 * @return Redirection to an "account delete" page.
 	 */
 	@RequestMapping(value = "/settings_delete_account", method = RequestMethod.GET)
 	public ModelAndView deleteAccount(HttpServletRequest request) {

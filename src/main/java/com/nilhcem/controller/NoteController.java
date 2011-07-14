@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -31,7 +33,6 @@ import com.nilhcem.validator.NoteValidator;
  */
 @Controller
 @PreAuthorize("hasRole('RIGHT_USER')")
-@RequestMapping("/note")
 public final class NoteController extends AbstractController {
 	@Autowired
 	private NoteBo noteBo;
@@ -39,13 +40,14 @@ public final class NoteController extends AbstractController {
 	private CategoryBo categoryBo;
 	@Autowired
 	private NoteValidator noteValidator;
+	private final Logger logger = LoggerFactory.getLogger(NoteController.class);
 
 	/**
 	 * Define JS i18n keys.
 	 */
 	public NoteController() {
 		super();
-		final String[] i18nJs = {"note.err.name"};
+		final String[] i18nJs = {"note.err.name", "note.delete.confirm"};
 		super.setI18nJsValues(i18nJs, "^note\\.");
 	}
 
@@ -57,7 +59,7 @@ public final class NoteController extends AbstractController {
 	 * @param model Model map.
 	 * @return the Note view, or a redirection without any parameter if parameter is invalid.
 	 */
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(value = "/note", method = RequestMethod.GET)
 	public String initNotePage(ModelMap model, HttpServletRequest request) {
 		Note note = null;
 		NoteForm noteForm = new NoteForm();
@@ -72,6 +74,7 @@ public final class NoteController extends AbstractController {
 				noteForm.setCategoryId((note.getCategory() == null) ? 0L : note.getCategory().getId());
 			}
 			catch (NumberFormatException e) {
+				logger.error("", e);
 				return "redirectWithoutModel:note";
 			}
 		}
@@ -82,6 +85,28 @@ public final class NoteController extends AbstractController {
 
 		model.addAttribute("noteform", noteForm);
 		return "logged/note";
+	}
+
+	/**
+	 * Delete a note.
+	 * @param request To know which note we need to delete
+	 * @return Redirection to the dashboard.
+	 */
+	//TODO: Put in another controller to avoid doing too much requests
+	@RequestMapping(value = "/delete_note", method = RequestMethod.GET)
+	public ModelAndView deleteAccount(HttpServletRequest request) {
+		if (request.getParameter("id") != null) {
+			try {
+				Long id = Long.parseLong(request.getParameter("id"));
+				noteBo.deleteNoteById(getCurrentUser(), id);
+			}
+			catch (NumberFormatException e) {
+				logger.error("", e);
+			}
+		}
+
+		//Redirect to dashboard
+		return new ModelAndView("redirectWithoutModel:dashboard");
 	}
 
 	/**
@@ -112,7 +137,7 @@ public final class NoteController extends AbstractController {
 	 * @param request HTTP request.
 	 * @return A new view (logged/note).
 	 */
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(value = "/note", method = RequestMethod.POST)
 	public ModelAndView submitSettingsPage(@ModelAttribute("noteform") NoteForm noteForm, BindingResult result,
 		SessionStatus status, HttpServletRequest request) {
 		noteValidator.validate(noteForm, result);

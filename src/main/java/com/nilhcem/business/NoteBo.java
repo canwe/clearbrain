@@ -125,7 +125,7 @@ public class NoteBo {
 	}
 
 	/**
-	 * Delete a Note from its Id. Currently used only by NoteBoTest.
+	 * Delete a Note from its Id.
 	 * @param user Owner of the notes / categories.
 	 * @param noteId Id of the note we need to remove.
 	 */

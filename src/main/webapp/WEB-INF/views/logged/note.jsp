@@ -68,10 +68,17 @@
 		</p>
 	</div>
 
-	<%-- Delete account --%>
 	<div class="prepend-2 span-20 append-2 last forms-down-separator">
 		<div class="forms-border-separator"></div>
 	</div>
+	<%-- Delete note --%>
+	<c:if test="${param.id != null}">
+		<div class="span-22 append-2 last forms-rm-container">
+			<img src="<spring:url value="/images/logged/grey-cross.png" />" />
+			<a id="delete-note" href="<spring:url value="/delete_note?id=" />${param.id}"><spring:message code="note.delete.text" /></a>
+		</div>
+	</c:if>
+
 </form:form>
 
 <%-- Preload images --%>

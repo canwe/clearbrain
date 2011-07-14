@@ -225,6 +225,23 @@ body {
 	margin: 25px 0 2px;
 }
 
+.forms-rm-container {
+	text-align: right;
+}
+
+.forms-rm-container a {
+	color: #909090;
+	font-weight: bold;
+}
+
+.forms-rm-container a:hover {
+	color: #666;
+}
+
+.forms-rm-container img {
+	vertical-align: middle;
+}
+
 
 /*** Main container ***/
 #content {
@@ -507,21 +524,4 @@ body {
 
 .settings-bold {
 	font-weight: bold;
-}
-
-#settings-rm-container {
-	text-align: right;
-}
-
-#settings-rm-container a {
-	color: #909090;
-	font-weight: bold;
-}
-
-#settings-rm-container a:hover {
-	color: #666;
-}
-
-#settings-rm-container img {
-	vertical-align: middle;
 }

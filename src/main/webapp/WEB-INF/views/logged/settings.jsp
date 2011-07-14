@@ -126,8 +126,9 @@
 	<div class="prepend-2 span-20 append-2 last forms-down-separator">
 		<div class="forms-border-separator"></div>
 	</div>
-	<div id="settings-rm-container" class="span-22 append-2 last">
-		<img src="<spring:url value="/images/logged/delete-account.png" />" /> <a href="<spring:url value="/settings_delete_account" />"><spring:message code="settings.rm.account" /></a>
+	<div class="span-22 append-2 last forms-rm-container">
+		<img src="<spring:url value="/images/logged/grey-cross.png" />" />
+		<a id="delete-account" href="<spring:url value="/settings_delete_account" />"><spring:message code="settings.rm.account" /></a>
 	</div>
 </form:form>
 
