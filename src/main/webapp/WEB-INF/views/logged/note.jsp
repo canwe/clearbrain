@@ -1,6 +1,13 @@
 <%@include file="/WEB-INF/views/logged/header.jsp"%>
 <script type="text/javascript" src="<spring:url value="/js/logged/note.js" />"></script>
 
+<%-- Import Jquery UI Datepicker CSS + JS (i18n) --%>
+<link rel="stylesheet" href="<spring:url value="/css/jquery.ui.css" />" type="text/css" media="screen, projection" />
+<spring:message code="note.calendar.locale" var="jslocale" />
+<c:if test="${!empty jslocale}">
+	<script src="<spring:url value="/js/jquery-ui.datepicker-${jslocale}.js" />"></script>
+</c:if>
+
 <%-- Check if this is a save or an update --%>
 <c:set var="saveupdate" value="save" />
 <c:if test="${param.id != null}">
@@ -9,6 +16,7 @@
 
 <form:form method="POST" commandName="noteform" class="inline">
 	<form:hidden path="note.id" />
+	<form:hidden id="alt-datepicker" path="dueDate" />
 
 	<%-- If note insert/modification failed, display error --%>
 	<c:if test="${sessionScope.note_ko != null}">
@@ -35,10 +43,10 @@
 
 	<%-- Description --%>
 	<div class="prepend-5 span-19 last forms-line-height">
-		<div class="span-5">
+		<div class="span-4">
 			<label for="name"><spring:message code="note.description" /></label>
 		</div>
-		<div class="span-6">
+		<div class="span-7">
 			<form:input id="name" path="note.name" cssClass="forms-input-size" />
 		</div>
 		<div class="span-8 last">
@@ -49,13 +57,33 @@
 
 	<%-- Category --%>
 	<div class="prepend-5 span-19 last forms-line-height">
-		<div class="span-5">
+		<div class="span-4">
 			<label for="categoryId"><spring:message code="note.category" /></label>
 		</div>
-		<div class="span-14 last">
+		<div class="span-15 last">
 			<form:select id="categoryId" path="categoryId" cssClass="forms-input-size">
 				<form:options items="${categoriesList}" />
 			</form:select>
+		</div>
+	</div>
+
+	<%-- Due date --%>
+	<div class="prepend-5 span-19 last forms-line-height-radio">
+		<div class="span-4 forms-bold">
+			<spring:message code="note.due.date" />
+		</div>
+		<div id="edit-duedate-radios" class="span-7">
+			<form:radiobutton id="edit-duedate-1" path="editDueDate" value="no" />
+			<label for="edit-duedate-1"><spring:message code="note.no.duedate" /></label><br />
+			<form:radiobutton id="edit-duedate-2" path="editDueDate" value="yes"/>
+			<label for="edit-duedate-2">
+				<form:input id="datepicker" readonly="true" path="dueDateStr" cssClass="forms-input-size" cssStyle="width: 160px;" />
+				<img src="<spring:url value="/images/logged/calendar.png" />" />
+			</label>
+		</div>
+		<div class="span-8 last">
+			<div id="duedate-check" class="hide">&nbsp;</div>
+			<form:errors id="duedate-error" path="dueDate" cssClass="error error-block" />
 		</div>
 	</div>
 

@@ -28,6 +28,7 @@ public final class Note {
 	private Long id;
 	private String name;
 	private Date creationDate;
+	private Date dueDate;
 	private Date resolvedDate;
 	private Category category;
 	private User user;
@@ -58,6 +59,15 @@ public final class Note {
 	}
 	public void setCreationDate(Date creationDate) {
 		this.creationDate = creationDate;
+	}
+
+	@Temporal(TemporalType.DATE)
+	@Column(name = "due_date", nullable = true)
+	public Date getDueDate() {
+		return this.dueDate;
+	}
+	public void setDueDate(Date dueDate) {
+		this.dueDate = dueDate;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)

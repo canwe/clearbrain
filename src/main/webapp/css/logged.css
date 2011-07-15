@@ -192,6 +192,30 @@ body {
 
 
 /*** Forms ***/
+.success-block, .error-block {
+	background-position: 2% 54%;
+	background-repeat: no-repeat;
+	display: block;
+	height: 2em;
+	margin-right: 15px;
+	padding-left: 25px;
+	padding-top: 1px;
+}
+
+.error-block {
+	background-image: url('../images/front/cross.png');
+}
+
+.success-block {
+	background-image: url('./blueprint/plugins/buttons/icons/tick.png');
+}
+
+.top-msg-block {
+	margin-bottom: 0;
+	padding: 0;
+	text-align: center;
+}
+
 .forms-subtitle {
 	margin-top: 20px;
 }
@@ -207,6 +231,20 @@ body {
 
 .forms-line-height {
 	height: 3.5em;
+}
+
+.forms-line-height-radio {
+	height: 55px;
+	line-height: 2;
+	margin-top: 10px;
+}
+
+.forms-line-height-radio label {
+	font-weight: normal;
+}
+
+.forms-bold {
+	font-weight: bold;
 }
 
 .forms-input-size {
@@ -445,6 +483,29 @@ body {
 	top: -6px;
 }
 
+#duedate-error {
+	height: 19px;
+	padding-top: 6px;
+}
+
+
+/*** UI Calendar fixes ***/
+.ui-datepicker-calendar thead th, .ui-datepicker-calendar tbody tr:nth-child(2n) td, tbody tr.even td {
+	background: transparent !important;
+}
+
+#edit-duedate-radios img {
+	cursor: pointer;
+	padding: 0 0 3px 3px;
+	vertical-align: middle;
+}
+
+#ui-datepicker-div {
+	font-size: 0.9em;
+	line-height: 13px;
+	z-index: 1000 !important;
+}
+
 
 /*** Clearfield plugin ***/
 .clearFieldBlurred {
@@ -484,44 +545,4 @@ body {
     font-style: italic;
     margin-top: 31px;
     text-align: center;
-}
-
-
-/*** Settings ***/
-.success-block, .error-block {
-	background-position: 2% 54%;
-	background-repeat: no-repeat;
-	display: block;
-	height: 2em;
-	margin-right: 15px;
-	padding-left: 25px;
-	padding-top: 1px;
-}
-
-.error-block {
-	background-image: url('../images/front/cross.png');
-}
-
-.success-block {
-	background-image: url('./blueprint/plugins/buttons/icons/tick.png');
-}
-
-.top-msg-block {
-	margin-bottom: 0;
-	padding: 0;
-	text-align: center;
-}
-
-.settings-line-height-radio {
-	height: 55px;
-	line-height: 2;
-	margin-top: 10px;
-}
-
-.settings-line-height-radio label {
-	font-weight: normal;
-}
-
-.settings-bold {
-	font-weight: bold;
 }

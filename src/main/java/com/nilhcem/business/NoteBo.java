@@ -1,5 +1,7 @@
 package com.nilhcem.business;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +31,7 @@ public class NoteBo {
 	@Autowired
 	private CategoryDao catDao;
 	private final Logger logger = LoggerFactory.getLogger(NoteBo.class);
+	private final SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 
 	/**
 	 * Add a {@code Note} in database.
@@ -54,16 +57,28 @@ public class NoteBo {
 
 	/**
 	 * Add or edit (if form.note.id != null) a {@code Note} using a noteForm.
+	 * use form.getDueDate
 	 *
 	 * @param user Owner of the note.
 	 * @param form the form containing data to be saved.
-	 * @param add <code>true</code> if we add the note, <code>false</code> if we edit the note.
 	 */
 	@TransactionalReadWrite
 	public void addEditNote(User user, NoteForm form) {
 		logger.debug("Add note {} in category {}", form.getNote().getName(), form.getCategoryId());
 		Note note = form.getNote();
+
+		//Category
 		note.setCategory((form.getCategoryId().equals(Long.valueOf(0l))) ? null : catDao.getById(user, form.getCategoryId()));
+
+		//Due date
+		if (form.getEditDueDate().equals("yes")) {
+			try {
+				note.setDueDate(dateFormat.parse(form.getDueDate()));
+			}
+			catch (ParseException e) {
+				logger.error("", e);
+			}
+		}
 
 		if (note.getId() == null) { //add
 			note.setCreationDate(Calendar.getInstance().getTime());
@@ -74,6 +89,7 @@ public class NoteBo {
 			Note realNote = dao.getById(user, note.getId());
 			realNote.setName(note.getName());
 			realNote.setCategory(note.getCategory());
+			realNote.setDueDate(note.getDueDate());
 			dao.update(realNote);
 		}
 	}

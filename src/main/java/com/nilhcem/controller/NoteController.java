@@ -1,5 +1,6 @@
 package com.nilhcem.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -41,13 +42,15 @@ public final class NoteController extends AbstractController {
 	@Autowired
 	private NoteValidator noteValidator;
 	private final Logger logger = LoggerFactory.getLogger(NoteController.class);
+	private final SimpleDateFormat dateFormat;
 
 	/**
 	 * Define JS i18n keys.
 	 */
 	public NoteController() {
 		super();
-		final String[] i18nJs = {"note.err.name", "note.delete.confirm"};
+		dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		final String[] i18nJs = {"note.err.name", "note.delete.confirm", "note.caldate.format"};
 		super.setI18nJsValues(i18nJs, "^note\\.");
 	}
 
@@ -58,12 +61,13 @@ public final class NoteController extends AbstractController {
 	 *
 	 * @param model Model map.
 	 * @param noteId Note id (if exists)
+	 * @param locale User's locale
 	 * @return the Note view, or a redirection without any parameter if parameter is invalid.
 	 */
 	@RequestMapping(value = "/note", method = RequestMethod.GET)
-	public String initNotePage(ModelMap model, @RequestParam(value = "id", required = false) Long noteId) {
+	public String initNotePage(ModelMap model, @RequestParam(value = "id", required = false) Long noteId, Locale locale) {
 		Note note = null;
-		NoteForm noteForm = new NoteForm();
+		NoteForm form = new NoteForm();
 
 		//Check if we edit a note, or we add a new one. If we edit a note, check that the id is correct.
 		if (noteId != null) {
@@ -71,7 +75,17 @@ public final class NoteController extends AbstractController {
 				note = noteBo.getNoteById(getCurrentUser(), noteId);
 				if (note == null)
 					throw new Exception(); //TODO: throw custom exception
-				noteForm.setCategoryId((note.getCategory() == null) ? 0L : note.getCategory().getId());
+
+				//Category
+				form.setCategoryId((note.getCategory() == null) ? 0L : note.getCategory().getId());
+
+				//Due date
+				if (note.getDueDate() != null) {
+					form.setEditDueDate("yes");
+					form.setDueDate(dateFormat.format(note.getDueDate())); //real one
+					SimpleDateFormat dateFormatStr = new SimpleDateFormat(message.getMessage("note.caldate.formatjava", null, locale), locale);
+					form.setDueDateStr(dateFormatStr.format(note.getDueDate())); //user experience
+				}
 			}
 			catch (Exception e) {
 				logger.error("", e);
@@ -81,9 +95,13 @@ public final class NoteController extends AbstractController {
 		else {
 			note = new Note();
 		}
-		noteForm.setNote(note);
+		form.setNote(note);
 
-		model.addAttribute("noteform", noteForm);
+		if (form.getEditDueDate() == null) {
+			form.setEditDueDate("no");
+		}
+
+		model.addAttribute("noteform", form);
 		return "logged/note";
 	}
 
@@ -124,7 +142,7 @@ public final class NoteController extends AbstractController {
 	 * @param noteForm The note form.
 	 * @param result Binding result.
 	 * @param status Session status.
-	 * @param session HTTP session.
+	 * @param request HTTP request.
 	 * @return A new view (logged/note).
 	 */
 	@RequestMapping(value = "/note", method = RequestMethod.POST)

@@ -17,7 +17,7 @@ public class NoteControllerTest {
 
 	@Test
 	public void testJavascriptLocales() {
-		final String[] keys = {"err.name", "delete.confirm"};
+		final String[] keys = {"err.name", "delete.confirm", "caldate.format"};
 		Map<String, String> map = controller.sendI18nToJavascript(new Locale("en", "US"));
 		assertNotNull(map);
 

@@ -1,6 +1,7 @@
 package com.nilhcem.business;
 
 import static org.junit.Assert.*;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
@@ -85,8 +86,14 @@ public class NoteBoTest {
 
 	@Test
 	public void testAddEditNoteForm() {
+		final String DUE_DATE_STR = "05/15/2088";
+		final String DUE_DATE_STR_2 = "04/02/2042";
+		final String NEW_NAME = "NEW_NAME";
+		final SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+
 		User user = testUtils.getTestUser();
 		assertEquals(service.getNotes(user).size(), 0);
+		assertFalse(DUE_DATE_STR.equals(DUE_DATE_STR_2));
 		Note note = new Note();
 
 		//Test add
@@ -95,17 +102,20 @@ public class NoteBoTest {
 		NoteForm form = new NoteForm();
 		form.setCategoryId(0L);
 		form.setNote(note);
+		form.setEditDueDate("yes");
+		form.setDueDate(DUE_DATE_STR);
 		service.addEditNote(user, form);
 
 		assertEquals(service.getNotes(user).size(), 1);
 		Note insertedNote = service.getNotes(user).get(0);
 		Date createdDate = insertedNote.getCreationDate();
 		assertEquals(NoteBoTest.NOTE_NAME, insertedNote.getName());
+		assertEquals(DUE_DATE_STR, new SimpleDateFormat("MM/dd/yyyy").format(insertedNote.getDueDate()));
 		assertNull(insertedNote.getCategory());
 
 		//Test edit
 		form.getNote().setId(insertedNote.getId());
-		final String NEW_NAME = "NEW_NAME";
+		form.setEditDueDate("no");
 		assertFalse(NEW_NAME.equals(NoteBoTest.NOTE_NAME));
 		form.getNote().setName(NEW_NAME);
 		Category category = categoryService.addCategory(user, NoteBoTest.CATEGORY_NAME);
@@ -117,14 +127,20 @@ public class NoteBoTest {
 		assertEquals(NEW_NAME, insertedNote.getName());
 		assertEquals(category.getId(), insertedNote.getCategory().getId());
 		assertEquals(createdDate, insertedNote.getCreationDate()); //should not change
+		assertEquals(DUE_DATE_STR, dateFormat.format(insertedNote.getDueDate())); //should not change
 
-		//Delete category, check again and delete note
+		//Delete category, change due date, check again
 		categoryService.removeCategory(user, category.getId());
 		form.setCategoryId(0L);
+		form.setEditDueDate("yes");
+		form.setDueDate(DUE_DATE_STR_2);
 		service.addEditNote(user, form);
 
 		insertedNote = service.getNotes(user).get(0);
 		assertNull(insertedNote.getCategory());
+		assertEquals(DUE_DATE_STR_2, dateFormat.format(insertedNote.getDueDate()));
+
+		//Delete note
 		service.deleteNoteById(user, insertedNote.getId());
 		assertEquals(service.getNotes(user).size(), 0);
 	}

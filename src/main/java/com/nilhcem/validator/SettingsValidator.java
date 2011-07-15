@@ -41,21 +41,21 @@ public final class SettingsValidator implements Validator {
 	 */
 	@Override
 	public void validate(Object target, Errors errors) {
-		SettingsForm settingsForm = (SettingsForm)target;
+		SettingsForm form = (SettingsForm)target;
 		User currentUser = ((UserDetailsAdapter)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getHibernateUser();
 
 		//Check password
-		if (settingsForm.getEditPassword().equals("yes")) {
+		if (form.getEditPassword().equals("yes")) {
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "currentPassword", "settings.err.pwd");
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "newPassword", "settings.err.pwd");
 
 			//Check password confirmation
-			if (!settingsForm.getNewPassword().equals(settingsForm.getConfirmPassword())) {
+			if (!form.getNewPassword().equals(form.getConfirmPassword())) {
 				errors.rejectValue("confirmPassword", "settings.err.pwdConf");
 			}
 
 			//Check if current password is OK
-			String hashedPassword = userBo.hashPassword(currentUser, settingsForm.getCurrentPassword());
+			String hashedPassword = userBo.hashPassword(currentUser, form.getCurrentPassword());
 			if (!hashedPassword.equals(currentUser.getPassword())) {
 				errors.rejectValue("currentPassword", "settings.err.curPwd");
 			}
@@ -63,12 +63,12 @@ public final class SettingsValidator implements Validator {
 
 		//Check if email is valid
 		final Pattern pattern = Pattern.compile("\\S+@\\S+"); //if this change, see also SignUpValidator
-		Matcher matcher = pattern.matcher(settingsForm.getEmail());
+		Matcher matcher = pattern.matcher(form.getEmail());
 		if (matcher.find()) {
 			//Check if email has changed (compared to current email)
-			if (!settingsForm.getEmail().equalsIgnoreCase(currentUser.getEmail())) {
+			if (!form.getEmail().equalsIgnoreCase(currentUser.getEmail())) {
 				//Check email already registered
-				if (userBo.findByEmail(settingsForm.getEmail()) != null) {
+				if (userBo.findByEmail(form.getEmail()) != null) {
 					errors.rejectValue("email", "settings.err.mailRegist");
 				}
 			}

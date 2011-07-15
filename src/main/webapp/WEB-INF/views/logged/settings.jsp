@@ -42,8 +42,8 @@
 	</div>
 
 	<%-- Edit password --%>
-	<div class="prepend-5 span-19 last settings-line-height-radio">
-		<div class="span-5 settings-bold">
+	<div class="prepend-5 span-19 last forms-line-height-radio">
+		<div class="span-5 forms-bold">
 			<spring:message code="settings.pwd.change" />
 		</div>
 		<div id="edit-password-radios" class="span-14 last">
@@ -99,8 +99,8 @@
 	</div>
 
 	<%-- Language --%>
-	<div class="prepend-5 span-19 last settings-line-height-radio">
-		<div class="span-5 settings-bold">
+	<div class="prepend-5 span-19 last forms-line-height-radio">
+		<div class="span-5 forms-bold">
 			<spring:message code="settings.main.lang" />
 		</div>
 		<div class="span-14 last">

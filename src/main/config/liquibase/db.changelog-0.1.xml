@@ -45,12 +45,12 @@
 			<column name="registration_date" type="timestamp">
 				<constraints nullable="false" />
 			</column>
-			<column name="delete_date" type="timestamp">
-				<constraints nullable="true" />
-			</column>
 			<column name="enabled" type="boolean" defaultValue="true" />
 			<column name="language_id" type="bigint">
 				<constraints primaryKey="true" nullable="false" foreignKeyName="users_language_id_fk" references="languages(language_id)" />
+			</column>
+			<column name="delete_date" type="timestamp">
+				<constraints nullable="true" />
 			</column>
 		</createTable>
 		<createSequence sequenceName="users_user_id_seq" />
@@ -142,6 +142,9 @@
 			</column>
 			<column name="creation_date" type="timestamp">
 				<constraints nullable="false" />
+			</column>
+			<column name="due_date" type="date">
+				<constraints nullable="true" />
 			</column>
 			<column name="resolved_date" type="timestamp" remarks="When the note was ticked as 'Done'"/>
 			<column name="category_id" type="bigint" />

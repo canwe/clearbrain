@@ -4,7 +4,7 @@ var catPositions, //used to know the categories positions
 	catNoteStack = new Array(), //stack to know which are the current selected categories to be the new note's category
 	flagNoteDragged = false; //flag to know if a note is currently dragged or not
 
-//Once document is ready (dashboard)
+//Once document is ready
 jQuery(function($) {
 	var categories = $('#categories');
 

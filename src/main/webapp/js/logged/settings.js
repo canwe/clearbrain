@@ -1,4 +1,4 @@
-//Once document is ready (dashboard)
+//Once document is ready
 jQuery(function($) {
 	//Show/hide password container depending on radio button
 	showHideEditPasswordForm();
