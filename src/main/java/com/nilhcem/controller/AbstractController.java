@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.servlet.support.RequestContextUtils;
 import com.nilhcem.core.spring.UserDetailsAdapter;
 import com.nilhcem.model.User;
 
@@ -50,15 +49,14 @@ public abstract class AbstractController {
 	/**
 	 * Inject localized strings into Javascript.
 	 *
-	 * @param request HTTP request.
+	 * @param Locale User's locale.
 	 * @return A map of i18n string for Javascript.
 	 * @throws Exception.
 	 */
 	@ModelAttribute("i18nJS")
-	public final Map<String, String> sendI18nToJavascript(HttpServletRequest request) {
+	public final Map<String, String> sendI18nToJavascript(Locale locale) {
 		Map<String, String> i18n = new LinkedHashMap<String, String>();
 		if (i18nJs != null && i18nJsRemoveStr != null) {
-			Locale locale = RequestContextUtils.getLocale(request);
 			for (String msg : i18nJs) {
 				i18n.put(msg.replaceFirst(i18nJsRemoveStr, ""), message.getMessage(msg, null, locale));
 			}

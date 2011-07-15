@@ -2,6 +2,7 @@ package com.nilhcem.controller;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -92,21 +93,21 @@ public final class SettingsController extends AbstractController {
 	 * @param signUpForm The signup form.
 	 * @param result Binding result.
 	 * @param status Session status.
-	 * @param request HTTP request.
+	 * @param session HTTP session.
 	 * @return A new view (logged/settings).
 	 */
 	@RequestMapping(value = "/settings", method = RequestMethod.POST)
 	public ModelAndView submitSettingsPage(@ModelAttribute("settingsform") SettingsForm settingsForm, BindingResult result, 
-		SessionStatus status, HttpServletRequest request) {
+		SessionStatus status, HttpSession session) {
 		settingsValidator.validate(settingsForm, result);
 		if (result.hasErrors()) {
-			request.getSession().setAttribute("settings_ko", ""); //to display error message on client side
+			session.setAttribute("settings_ko", ""); //to display error message on client side
 			return new ModelAndView("logged/settings");
 		}
 
 		userBo.updateSettings(getCurrentUser(), settingsForm);
 		status.setComplete();
-		request.getSession().setAttribute("settings_ok", ""); //to display confirmation message on client side
+		session.setAttribute("settings_ok", ""); //to display confirmation message on client side
 		return new ModelAndView("redirectWithoutModel:settings");
 	}
 

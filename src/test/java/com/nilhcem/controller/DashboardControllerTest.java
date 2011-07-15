@@ -1,11 +1,11 @@
 package com.nilhcem.controller;
 
 import static org.junit.Assert.*;
+import java.util.Locale;
 import java.util.Map;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -23,9 +23,7 @@ public class DashboardControllerTest {
 	@Test
 	public void testJavascriptLocales() {
 		final String[] keys = {"cat.confRm", "cat.confRmQ", "cat.updErr", "cat.confRn1", "cat.confRn2", "cat.confRn3"};
-
-		MockHttpServletRequest request = new MockHttpServletRequest("get", "/logged/dashboard");
-		Map<String, String> map = controller.sendI18nToJavascript(request);
+		Map<String, String> map = controller.sendI18nToJavascript(new Locale("en", "US"));
 		assertNotNull(map);
 
 		for (String key : keys) {

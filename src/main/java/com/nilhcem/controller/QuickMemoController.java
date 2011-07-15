@@ -1,18 +1,15 @@
 package com.nilhcem.controller;
 
 import java.util.Locale;
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.support.RequestContextUtils;
 import com.nilhcem.business.QuickMemoBo;
 import com.nilhcem.form.QuickMemoForm;
 import com.nilhcem.model.QuickMemo;
@@ -37,13 +34,12 @@ public final class QuickMemoController extends AbstractController {
 	 * @return the QuickMemo view.
 	 */
 	@RequestMapping(method = RequestMethod.GET)
-	public String getQuickMemoView(HttpServletRequest request, ModelMap model) {
+	public String getQuickMemoView(ModelMap model, Locale locale) {
 		QuickMemoForm memoForm = new QuickMemoForm();
 		QuickMemo memo = quickMemoBo.getByUser(getCurrentUser());
 
 		//If this is the first time a quick memo is opened, display default text
 		if (memo.getSaveDate() == null) {
-			Locale locale = RequestContextUtils.getLocale(request);
 			memoForm.setInput(message.getMessage("memo.default.text", null, locale));
 		}
 		else {
@@ -58,14 +54,11 @@ public final class QuickMemoController extends AbstractController {
 	 * Submit a quick memo to save it.
 	 *
 	 * @param memoForm The quick memo form.
-	 * @param result Binding result.
 	 * @param status Session status.
-	 * @param request HTTP request.
 	 * @return A new view (logged/quick-memo).
 	 */
 	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView submitSignUpPage(@ModelAttribute("memoform") QuickMemoForm memoForm, BindingResult result,
-		SessionStatus status, HttpServletRequest request) {
+	public ModelAndView submitSignUpPage(@ModelAttribute("memoform") QuickMemoForm memoForm, SessionStatus status) {
 		status.setComplete();
 		quickMemoBo.updateMemo(getCurrentUser(), memoForm.getInput());
 		return new ModelAndView("redirectWithoutModel:quick_memo");

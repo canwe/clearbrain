@@ -4,7 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +15,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.support.RequestContextUtils;
 import com.nilhcem.business.CategoryBo;
 import com.nilhcem.business.NoteBo;
 import com.nilhcem.form.NoteForm;
@@ -57,23 +57,23 @@ public final class NoteController extends AbstractController {
 	 * Add note by default. If there is a request parameter called {@code id} with a valid id, then it's an edit.
 	 *
 	 * @param model Model map.
+	 * @param noteId Note id (if exists)
 	 * @return the Note view, or a redirection without any parameter if parameter is invalid.
 	 */
 	@RequestMapping(value = "/note", method = RequestMethod.GET)
-	public String initNotePage(ModelMap model, HttpServletRequest request) {
+	public String initNotePage(ModelMap model, @RequestParam(value = "id", required = false) Long noteId) {
 		Note note = null;
 		NoteForm noteForm = new NoteForm();
 
 		//Check if we edit a note, or we add a new one. If we edit a note, check that the id is correct.
-		if (request.getParameter("id") != null) {
+		if (noteId != null) {
 			try {
-				Long id = Long.parseLong(request.getParameter("id"));
-				note = noteBo.getNoteById(getCurrentUser(), id);
+				note = noteBo.getNoteById(getCurrentUser(), noteId);
 				if (note == null)
-					throw new NumberFormatException();
+					throw new Exception(); //TODO: throw custom exception
 				noteForm.setCategoryId((note.getCategory() == null) ? 0L : note.getCategory().getId());
 			}
-			catch (NumberFormatException e) {
+			catch (Exception e) {
 				logger.error("", e);
 				return "redirectWithoutModel:note";
 			}
@@ -89,37 +89,27 @@ public final class NoteController extends AbstractController {
 
 	/**
 	 * Delete a note.
-	 * @param request To know which note we need to delete
+	 * @param noteId note we need to delete.
 	 * @return Redirection to the dashboard.
 	 */
 	//TODO: Put in another controller to avoid doing too much requests
 	@RequestMapping(value = "/delete_note", method = RequestMethod.GET)
-	public ModelAndView deleteAccount(HttpServletRequest request) {
-		if (request.getParameter("id") != null) {
-			try {
-				Long id = Long.parseLong(request.getParameter("id"));
-				noteBo.deleteNoteById(getCurrentUser(), id);
-			}
-			catch (NumberFormatException e) {
-				logger.error("", e);
-			}
-		}
-
-		//Redirect to dashboard
+	public ModelAndView deleteNote(@RequestParam(value = "id", required = true) Long noteId) {
+		noteBo.deleteNoteById(getCurrentUser(), noteId);
 		return new ModelAndView("redirectWithoutModel:dashboard");
 	}
 
 	/**
 	 * Populate categories list.
 	 *
+	 * @param Locale User's locale
 	 * @return Users' categories.
 	 */
 	@ModelAttribute(value="categoriesList")
-	public Map<Long, String> populateCategories(HttpServletRequest request) {
+	public Map<Long, String> populateCategories(Locale locale) {
 		Map<Long, String> map = new LinkedHashMap<Long, String>();
 
 		//Put unclassified category
-		Locale locale = RequestContextUtils.getLocale(request);
 		map.put(0L, message.getMessage("note.cat.unclassified", null, locale));
 		List<Category> categories = categoryBo.getSortedCategories(getCurrentUser());
 		for (Category category : categories) {
@@ -134,22 +124,22 @@ public final class NoteController extends AbstractController {
 	 * @param noteForm The note form.
 	 * @param result Binding result.
 	 * @param status Session status.
-	 * @param request HTTP request.
+	 * @param session HTTP session.
 	 * @return A new view (logged/note).
 	 */
 	@RequestMapping(value = "/note", method = RequestMethod.POST)
 	public ModelAndView submitSettingsPage(@ModelAttribute("noteform") NoteForm noteForm, BindingResult result,
-		SessionStatus status, HttpServletRequest request) {
+		SessionStatus status, HttpSession session) {
 		noteValidator.validate(noteForm, result);
 		if (result.hasErrors()) {
-			request.getSession().setAttribute("note_ko", ""); //to display error message on client side
+			session.setAttribute("note_ko", ""); //to display error message on client side
 			return new ModelAndView("logged/note");
 		}
 
 		Long noteId = noteForm.getNote().getId();
 		noteBo.addEditNote(getCurrentUser(), noteForm);
 		status.setComplete();
-		request.getSession().setAttribute("note_ok", ""); //to display confirmation message on client side
+		session.setAttribute("note_ok", ""); //to display confirmation message on client side
 		if (noteId != null)
 			return new ModelAndView("redirectWithoutModel:note?id=" + noteId);
 		return new ModelAndView("redirectWithoutModel:note");

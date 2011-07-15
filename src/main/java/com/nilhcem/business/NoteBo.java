@@ -110,8 +110,10 @@ public class NoteBo {
 		logger.debug("Assign category {} to note {}", categoryId, noteId);
 
 		Note note = getNoteById(user, noteId);
-		note.setCategory((categoryId.equals(Long.valueOf(0l))) ? null : catDao.getById(user, categoryId));
-		dao.update(note);
+		if (note != null) {
+			note.setCategory((categoryId.equals(Long.valueOf(0l))) ? null : catDao.getById(user, categoryId));
+			dao.update(note);
+		}
 	}
 
 	/**
@@ -132,6 +134,8 @@ public class NoteBo {
 	@TransactionalReadWrite
 	public void deleteNoteById(User user, Long noteId) {
 		Note note = getNoteById(user, noteId);
-		dao.delete(note);
+		if (note != null) {
+			dao.delete(note);
+		}
 	}
 }
