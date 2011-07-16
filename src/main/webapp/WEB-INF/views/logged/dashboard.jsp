@@ -3,9 +3,7 @@
 
 <%-- Create an array to keep links between a note and a category --%>
 <script type="text/javascript">
-	<c:forEach var="entry" items="${notesCatIds}">
-		catNoteArray[${entry.key}] = ${entry.value};
-	</c:forEach>
+	<c:forEach var="entry" items="${notesCatIds}">catNA[${entry.key}] = ${entry.value};</c:forEach>
 </script>
 
 <%-- Left --%>
@@ -22,12 +20,12 @@
 	<div id="categories-container">
 		<ul id="categories" class="pointer">
 			<c:forEach items="${categoriesList}" var="cur">
-				<li id="cat-<c:out value="${cur.id}" />" class="category">
-					<span id="catname-<c:out value="${cur.id}" />"><c:out value="${cur.name}" /></span>
-					<span id="catcount-<c:out value="${cur.id}" />" class="category-count"></span>
-					<span id="catmenu-<c:out value="${cur.id}" />" class="category-menus">
-						<img id="catrnm-<c:out value="${cur.id}" />" src="<spring:url value="/images/logged/cat-edit.gif" />" />
-						<img id="catrmv-<c:out value="${cur.id}" />" src="<spring:url value="/images/logged/cat-remove.png" />" />
+				<li id="cat-${cur.id}" class="category">
+					<span id="catname-${cur.id}"><c:out value="${cur.name}" /></span>
+					<span id="catcount-${cur.id}" class="category-count"></span>
+					<span id="catmenu-${cur.id}" class="category-menus">
+						<img id="catrnm-${cur.id}" src="<spring:url value="/images/logged/cat-edit.gif" />" />
+						<img id="catrmv-${cur.id}" src="<spring:url value="/images/logged/cat-remove.png" />" />
 					</span>
 				</li>
 			</c:forEach>
@@ -65,12 +63,13 @@
 	<div class="title">Notes:</div><br />
 	<div id="notes-container">
 		<c:forEach items="${notesList}" var="cur">
-			<div id="note-<c:out value="${cur.id}" />" class="note">
-				<input type="checkbox"> <c:out value="${cur.name}" />
-				<span id="noteedit-<c:out value="${cur.id}" />" class="notes-edit">
-					<a href="<spring:url value="/note?id=" />${cur.id}"><img src="<spring:url value="/images/logged/edit.gif" />" /></a>
+			<div id="note-${cur.id}" class="note">
+				<input type="checkbox"<c:if test="${cur.resolvedDate != null}"> checked="checked"</c:if> />
+				<c:out value="${cur.name}" />
+				<span id="noteedit-${cur.id}" class="notes-edit">
+					<a href="<spring:url value="/note?id=${cur.id}" />"><img src="<spring:url value="/images/logged/edit.gif" />" /></a>
 				</span>
-				<div id="notecat-<c:out value="${cur.id}" />" class="note-category"></div>
+				<div id="notecat-${cur.id}" class="note-category"></div>
 			</div>
 		</c:forEach>
 	</div>

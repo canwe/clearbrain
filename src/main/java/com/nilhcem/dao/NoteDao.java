@@ -34,7 +34,7 @@ public final class NoteDao extends AbstractHibernateDao<Note> {
 	 * @return List of notes.
 	 */
 	public List<Note> getNotes(User user) {
-		Query query = query("FROM Note WHERE user=:user")
+		Query query = query("FROM Note WHERE user=:user ORDER BY creationDate ASC")
 			.setParameter("user", user);
 		return list(query);
 	}

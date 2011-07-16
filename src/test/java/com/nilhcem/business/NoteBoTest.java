@@ -8,8 +8,10 @@ import java.util.Map;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import com.nilhcem.core.hibernate.TransactionalReadWrite;
 import com.nilhcem.core.test.TestUtils;
 import com.nilhcem.form.NoteForm;
 import com.nilhcem.model.Category;
@@ -143,5 +145,29 @@ public class NoteBoTest {
 		//Delete note
 		service.deleteNoteById(user, insertedNote.getId());
 		assertEquals(service.getNotes(user).size(), 0);
+	}
+
+	@Test
+	@TransactionalReadWrite
+	@Rollback(true)
+	public void testCheckUncheckNote() {
+		User user = testUtils.getTestUser();
+		Note note = service.addNote(user, "My note", 0L);
+		assertNull(note.getResolvedDate());
+
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.SECOND, -1);
+		Date before = cal.getTime();
+		service.checkUncheckNote(user, note.getId(), true);
+		cal = Calendar.getInstance();
+		cal.add(Calendar.SECOND, 1);
+		Date after = cal.getTime();
+
+		assertNotNull(note.getResolvedDate());
+		assertFalse(before.after(note.getResolvedDate()));
+		assertFalse(after.before(note.getResolvedDate()));
+
+		service.checkUncheckNote(user, note.getId(), false);
+		assertNull(note.getResolvedDate());
 	}
 }

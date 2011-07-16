@@ -11,6 +11,10 @@ body {
 	position: relative;
 }
 
+.hide-forced {
+	display: none !important;
+}
+
 
 /*** Menus ***/
 #menu {

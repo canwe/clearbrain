@@ -1,5 +1,6 @@
 package com.nilhcem.controller;
 
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.nilhcem.business.CategoryBo;
 import com.nilhcem.business.NoteBo;
+import com.nilhcem.business.SessionBo;
 import com.nilhcem.core.exception.CategoriesOrderException;
 import com.nilhcem.model.Category;
 import com.nilhcem.model.Note;
@@ -27,6 +29,8 @@ public final class DashboardControllerAjax extends AbstractController {
 	private CategoryBo categoryBo;
 	@Autowired
 	private NoteBo noteBo;
+	@Autowired
+	private SessionBo sessionBo;
 
 	/**
 	 * Add a category.
@@ -109,5 +113,24 @@ public final class DashboardControllerAjax extends AbstractController {
 		@RequestParam(value = "noteId", required = true) Long noteId) {
 		noteBo.assignCategoryToNote(getCurrentUser(), catId, noteId);
 		return true;
+	}
+
+	/**
+	 * Mark / Unmark the note as checked.
+	 *
+	 * @param noteId Id of the note we need to remove.
+	 * @param checked If <code>true</code> then mark the note as checked, other wise, mark it as unchecked.
+	 * @param session Http session.
+	 */
+	@RequestMapping(method = RequestMethod.POST, params = { "checked" })
+	public @ResponseBody Long[] checkNote(@RequestParam(value = "noteId", required = true) Long noteId,
+		@RequestParam(value = "checked", required = true) boolean checked, HttpSession session) {
+		Long[] todoHeaders = new Long[3];
+		noteBo.checkUncheckNote(getCurrentUser(), noteId, checked);
+		sessionBo.fillSession(false, session);
+		todoHeaders[0] = (Long)session.getAttribute("today");
+		todoHeaders[1] = (Long)session.getAttribute("tomorrow");
+		todoHeaders[2] = (Long)session.getAttribute("week");
+		return todoHeaders;
 	}
 }

@@ -117,6 +117,7 @@ public class NoteBo {
 
 	/**
 	 * Assign or remove a category to a note.
+	 *
 	 * @param user Owner of the notes / categories.
 	 * @param categoryId The id of the category we want to assign, or 0 if we need to remove the category from the note.
 	 * @param noteId The note's id.
@@ -144,6 +145,7 @@ public class NoteBo {
 
 	/**
 	 * Delete a Note from its Id.
+	 *
 	 * @param user Owner of the notes / categories.
 	 * @param noteId Id of the note we need to remove.
 	 */
@@ -153,5 +155,24 @@ public class NoteBo {
 		if (note != null) {
 			dao.delete(note);
 		}
+	}
+
+	/**
+	 * Check or uncheck a note from its id.
+	 *
+	 * @param user Owner of the note.
+	 * @param noteId Id of the note we need to remove.
+	 * @param checked If <code>true</code> then mark the note as checked, other wise, mark it as unchecked.
+	 */
+	@TransactionalReadWrite
+	public void checkUncheckNote(User user, Long noteId, boolean checked) {
+		Note note = getNoteById(user, noteId);
+		if (checked) {
+			note.setResolvedDate(Calendar.getInstance().getTime());
+		}
+		else {
+			note.setResolvedDate(null);
+		}
+		dao.update(note);
 	}
 }

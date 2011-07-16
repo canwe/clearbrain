@@ -1,6 +1,6 @@
 /*** Categories ***/
 var catPositions, //used to know the categories positions
-	catNoteArray = new Array(), //to know which note belong to which category. key: noteId - value: categoryId
+	catNA = new Array(), //CatNoteArray: to know which note belong to which category. key: noteId - value: categoryId
 	catNoteStack = new Array(), //stack to know which are the current selected categories to be the new note's category
 	flagNoteDragged = false; //flag to know if a note is currently dragged or not
 
@@ -184,10 +184,10 @@ $('#categories').find('img[id^=catrmv-]').live('click', function(e) {
 
 			//Update each note whose category was the deleted one to set the new category as Unclassified
 			var undefinedCategoryName = $('#catname-0').html()
-			for (var noteId in catNoteArray) {
-				if (catNoteArray[noteId] == catId) {
+			for (var noteId in catNA) {
+				if (catNA[noteId] == catId) {
 					$('#notecat-' + noteId).html(undefinedCategoryName);
-					catNoteArray[noteId] = 0;
+					catNA[noteId] = 0;
 				}
 			}
 
@@ -232,8 +232,8 @@ $('#categories').find('img[id^=catrnm-]').live('click', function(e) {
 				});
 
 				//Loop notes to change category's name
-				for (var noteId in catNoteArray)
-					if (catNoteArray[noteId] == catId)
+				for (var noteId in catNA)
+					if (catNA[noteId] == catId)
 						$('#notecat-' + noteId).html(newName);
 			}
 			else {
@@ -251,6 +251,11 @@ $('#categories').find('img[id^=catrnm-]').live('click', function(e) {
 function getNoteId(id) {
 	return id.replace(/^note-/, '');
 }
+
+//Go to note edit when clicking on a note
+$('#notes-container').find('div[id^=note-]').live('click', function(event) {
+	window.location = ('note?id=' + getNoteId($(this).attr('id')));
+});
 
 //Display note edit button when hovering "in" note
 $('#notes-container').find('div[id^=note-]').live('mouseenter', function(e) {
@@ -319,7 +324,7 @@ function assignCatToNoteDrop(categories, ui) {
 	}, function(data) {
 		//Change category name in Note
 		$('#notecat-' + noteId).html($('#catname-' + catId).html());
-		catNoteArray[noteId] = catId;
+		catNA[noteId] = catId;
 		countNbNotesPerCategory();
 		//TODO: Notification
 	});
@@ -346,8 +351,8 @@ $('#quick-add-task').live('keyup', function(e) {
 
 //Display category name in notes
 function displayCategoryNameInNotes() {
-	for (var noteId in catNoteArray) {
-		$('#notecat-' + noteId).html($('#catname-' + catNoteArray[noteId]).html());
+	for (var noteId in catNA) {
+		$('#notecat-' + noteId).html($('#catname-' + catNA[noteId]).html());
 	}
 }
 
@@ -356,8 +361,8 @@ function countNbNotesPerCategory() {
 	var nbNotesPerCategory = new Array();
 
 	//Fill nbNotesPerCategory Array
-	for (var key in catNoteArray) {
-		var catId = catNoteArray[key];
+	for (var key in catNA) {
+		var catId = catNA[key];
 		if (nbNotesPerCategory[catId])
 			nbNotesPerCategory[catId]++;
 		else
@@ -369,4 +374,40 @@ function countNbNotesPerCategory() {
 		var catId = $(this).attr('id').replace(/^catcount-/, '');
 		$(this).html('(' + (nbNotesPerCategory[catId] ? nbNotesPerCategory[catId] : 0) + ')');
 	});
+}
+
+//Check/uncheck todo
+$('#notes-container').find('input[type=checkbox]').live('click', function(event) {
+	$.post('dashboard-js', {
+		noteId : getNoteId($(this).parent().attr('id')),
+		checked : $(this).is(':checked')
+	}, function(data) {
+		//TODO: disappear effect...
+		//etc.
+		refreshCountTodoHeader(data[0], data[1], data[2]);
+	});
+
+	event.stopPropagation(); //to avoid a redirection to the edit note page while clicking on the note element
+});
+
+//Refresh in JS the count todo header
+function refreshCountTodoHeaderUpdate(value, spanId, hidden) {
+	var span = $(spanId).find('span');
+
+	if (value == '0') {
+		if (!span.hasClass(hidden))
+			span.addClass(hidden);
+	}
+	else {
+		span.html(value);
+		if (span.hasClass(hidden))
+			span.removeClass(hidden);
+	}
+}
+function refreshCountTodoHeader(today, tomorrow, week) {
+	var hidden = 'hide-forced';
+
+	refreshCountTodoHeaderUpdate(today, '#m-today', hidden);
+	refreshCountTodoHeaderUpdate(tomorrow, '#m-tomorrow', hidden);
+	refreshCountTodoHeaderUpdate(week, '#m-week', hidden);
 }
