@@ -23,11 +23,11 @@
 	<script type="text/javascript" src="<spring:url value="/js/jquery-clearfield.min.js" />"></script>
 	<script type="text/javascript" src="<spring:url value="/js/core.js" />"></script>
 	<script type="text/javascript">
-		$('#m-notes-container, #m-profile-container').live('hover', function(){$(this).find('.dropdown').toggle();});
-		<c:if test="${i18nJS != null && not empty i18nJS}">
-			var i18n = new Array();
-			<c:forEach var="entry" items="${i18nJS}">i18n["${entry.key}"]="${entry.value}";</c:forEach>
-		</c:if>
+	jQuery(function($){$('#m-notes-container, #m-profile-container').hover(function(){$(this).find('.dropdown').removeClass("hide-forced");},function(){$(this).find('.dropdown').addClass("hide-forced");});$('#m-notes-container, #m-profile-container').find('.dropdown').live('hover', function(event){event.stopPropagation();});});
+	<c:if test="${i18nJS != null && not empty i18nJS}">
+		var i18n = new Array();
+		<c:forEach var="entry" items="${i18nJS}">i18n["${entry.key}"]="${entry.value}";</c:forEach>
+	</c:if>
 	</script>
 	<title>~S2NDBRN logged~</title>
 </head>
@@ -62,7 +62,7 @@
 					<a id="m-profile">
 						<spring:message code="header.menu.profile" /><img src="<spring:url value="/images/logged/dropdown.png" />" />
 					</a>
-					<div class="dropdown">
+					<div class="dropdown hide-forced">
 						<ul>
 							<li class="dropdown-li-top">
 								<a id="m-settings" href="<spring:url value="/settings" />">
@@ -86,7 +86,7 @@
 					<a id="m-notes">
 						<spring:message code="header.menu.notes" /><img src="<spring:url value="/images/logged/dropdown.png" />" />
 					</a>
-					<div class="dropdown">
+					<div class="dropdown hide-forced">
 						<ul>
 							<li class="dropdown-li-top">
 								<a id="m-add" href="<spring:url value="/note" />"><spring:message code="header.menu.add" /></a>

@@ -23,7 +23,7 @@ public class DeleteAccountsJob {
 	/**
 	 * Delete accounts which should be deleted every day at midnight
 	 */
-	@Scheduled(cron = "0 0 * * * ?")
+	@Scheduled(cron = "0 0 0 * * ?")
 	public void deleteAccounts() {
 		logger.debug("Start delete accounts job");
 		userBo.removeDeletableUsers();

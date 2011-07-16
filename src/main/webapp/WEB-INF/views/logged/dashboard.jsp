@@ -34,6 +34,7 @@
 			<span id="catname-0"><spring:message code="dashboard.cat.unclassified" /></span>
 			<span id="catcount-0" class="category-count"></span>
 		</div>
+		<div id="no-category"><spring:message code="dashboard.cat.nothing" /></div>
 	</div>
 	<%-- Categories edition link --%>
 	<div id="categories-edit-link">
@@ -62,6 +63,9 @@
 	<%-- Notes --%>
 	<div class="title">Notes:</div><br />
 	<div id="notes-container">
+		<c:if test="${fn:length(notesList) == 0}">
+			<div id="no-note"><spring:message code="dashboard.note.nothing" /></div>
+		</c:if>
 		<c:forEach items="${notesList}" var="cur">
 			<div id="note-${cur.id}" class="note">
 				<input type="checkbox"<c:if test="${cur.resolvedDate != null}"> checked="checked"</c:if> />

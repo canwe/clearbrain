@@ -153,7 +153,6 @@ body {
 
 .dropdown {
 	background: #FFF;
-	display: none;
 	margin-left: -1px;
 	position: absolute;
 	white-space: nowrap;
@@ -306,6 +305,7 @@ body {
 }
 
 .date-container {
+	color: #353A60;
 	height: 23px; /* height + padding-top should be equal to #insert-note-container::height */
 	margin: 0 18px;
 	padding-top: 6px;
@@ -441,9 +441,16 @@ body {
 	width: 228px;
 }
 
-.dotted-border {
-	border-style: dotted !important;
+.undraggable {
 	cursor: default !important;
+}
+
+#no-category {
+	color: #353A60;
+	display: none;
+	font-style: italic;
+	padding-right: 20px;
+	text-align: center;
 }
 
 
@@ -480,6 +487,11 @@ body {
 	position: relative;
 	right: -6px;
 	top: -6px;
+}
+
+#no-note {
+	color: #353A60;
+	font-style: italic;
 }
 
 #duedate-error {

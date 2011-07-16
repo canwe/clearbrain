@@ -87,13 +87,14 @@ $('#categories-edit').live('click', function() {
 	$('#categories').find('span[id^=catcount-]').hide();
 	$('#categories').find('span[id^=catmenu-]').show();
 	selectCategory($('#cat-unclassified'));
+	displayMsgIfNoCategory();
 
 	//Stop elements to be draggable
 	$('#notes-container').find('div[id^=note-]').draggable('disable');
 	$('#categories').sortable('disable');
 
-	//Dotted borders of elements to specify they can't be draggabled
-	$('#categories').find('li[id^=cat-]').addClass('dotted-border');
+	//Specify elements can't be moved
+	$('#categories').find('li').addClass('undraggable');
 });
 
 //When clicking on the "Finish editing" link
@@ -103,14 +104,15 @@ $('#categories-endedit').live('click', function() {
 	$('#cat-unclassified').show();
 	$('#categories').find('span[id^=catcount-]').show();
 	$('#categories').find('span[id^=catmenu-]').hide();
+	$('#no-category').hide();
 	countNbNotesPerCategory(); //in case a category was removed or notes were assigned to new categories
 
 	//Enable draggable elements again
 	$('#notes-container').find('div[id^=note-]').draggable('enable');
 	$('#categories').sortable('enable');
 
-	//Dotted borders of elements to specify they can't be draggabled
-	$('#categories').find('li[id^=cat-]').removeClass('dotted-border');
+	//Specify elements can't be moved
+	$('#categories').find('li').removeClass('undraggable');
 });
 
 //Add a category when pressing 'Enter key'
@@ -118,14 +120,14 @@ $('#catadd-name').live('keyup', function(e) {
 	if (e.keyCode == 13 && $(this).val() != '') {
 		$.post('dashboard-js', {
 			addCat : $(this).val()
-		}, function(data) {
+		}, function() {
 			window.location.reload();
 		});
 	}
 });
 
 //Remove a category when clicking on the 'cross' icon
-$('#categories').find('img[id^=catrmv-]').live('click', function(e) {
+$('#categories').find('img[id^=catrmv-]').live('click', function() {
 	var catId = $(this).attr('id').replace(/^catrmv-/, '');
 
 	if (confirm(i18n['cat.confRm'] + ' ' + $('#catname-' + catId).text() + i18n['cat.confRmQ'])) {
@@ -148,12 +150,13 @@ $('#categories').find('img[id^=catrmv-]').live('click', function(e) {
 			//Remove category
 			$('#cat-' + catId).remove();
 			fillCatPositionsArray();
+			displayMsgIfNoCategory();
 		});
 	}
 });
 
 //Rename a category when clicking on the 'rename' icon
-$('#categories').find('img[id^=catrnm-]').live('click', function(e) {
+$('#categories').find('img[id^=catrnm-]').live('click', function() {
 	var catId = $(this).attr('id').replace(/^catrnm-/, ''),
 		catName = $('#catname-' + catId),
 		previousName = catName.html();
@@ -197,6 +200,13 @@ $('#categories').find('img[id^=catrnm-]').live('click', function(e) {
 	});
 });
 
+//If there is no category currently, display a special message and focus on insert
+function displayMsgIfNoCategory() {
+	if ($('#categories').find('li').length == 0) {
+		$('#no-category').show();
+		$('#catadd-name').focus();
+	}
+}
 
 /*** Notes ***/
 //Get note id by removing 'note-' before
@@ -205,17 +215,17 @@ function getNoteId(id) {
 }
 
 //Go to note edit when clicking on a note
-$('#notes-container').find('div[id^=note-]').live('click', function(event) {
+$('#notes-container').find('div[id^=note-]').live('click', function() {
 	window.location = ('note?id=' + getNoteId($(this).attr('id')));
 });
 
 //Display note edit button when hovering "in" note
-$('#notes-container').find('div[id^=note-]').live('mouseenter', function(e) {
+$('#notes-container').find('div[id^=note-]').live('mouseenter', function() {
 	$('#noteedit-' + getNoteId($(this).attr('id'))).show();
 });
 
 //Display note edit button when hovering "out" note
-$('#notes-container').find('div[id^=note-]').live('mouseleave', function(e) {
+$('#notes-container').find('div[id^=note-]').live('mouseleave', function() {
 	$('#notes-container').find('span[id^=noteedit-]').hide();
 });
 
@@ -225,7 +235,7 @@ $('#quick-add-task').live('keyup', function(e) {
 		$.post('dashboard-js', {
 			addNote : $(this).val(),
 			catId : getSelectedCategoryId()
-		}, function(data) {
+		}, function() {
 			$(this).val('');
 			$('#quick-add-task').clearField()
 			window.location.reload();

@@ -6,6 +6,8 @@ jQuery(function($) {
 	editor = $('#input').cleditor({width: '946px', height: '100%'})[0].focus();
     $(window).resize();
     $('#cleditor-container').removeClass('hiddenClass');
+    editor.updateFrame();
+    $('#content').click();
     saved = true;
 
     //Set flag to specify the memo content has changed, to prevent exit without saving
