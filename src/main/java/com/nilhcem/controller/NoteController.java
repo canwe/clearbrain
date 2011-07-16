@@ -21,13 +21,14 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 import com.nilhcem.business.CategoryBo;
 import com.nilhcem.business.NoteBo;
+import com.nilhcem.business.SessionBo;
 import com.nilhcem.form.NoteForm;
 import com.nilhcem.model.Category;
 import com.nilhcem.model.Note;
 import com.nilhcem.validator.NoteValidator;
 
 /**
- * Spring MVC Controller class for displaying settings.
+ * Spring MVC Controller class for displaying notes.
  *
  * @author Nilhcem
  * @since 1.0
@@ -39,6 +40,8 @@ public final class NoteController extends AbstractController {
 	private NoteBo noteBo;
 	@Autowired
 	private CategoryBo categoryBo;
+	@Autowired
+	private SessionBo sessionBo;
 	@Autowired
 	private NoteValidator noteValidator;
 	private final Logger logger = LoggerFactory.getLogger(NoteController.class);
@@ -108,12 +111,14 @@ public final class NoteController extends AbstractController {
 	/**
 	 * Delete a note.
 	 * @param noteId note we need to delete.
+	 * @param session Http session.
 	 * @return Redirection to the dashboard.
 	 */
 	//TODO: Put in another controller to avoid doing too much requests
 	@RequestMapping(value = "/delete_note", method = RequestMethod.GET)
-	public ModelAndView deleteNote(@RequestParam(value = "id", required = true) Long noteId) {
+	public ModelAndView deleteNote(@RequestParam(value = "id", required = true) Long noteId, HttpSession session) {
 		noteBo.deleteNoteById(getCurrentUser(), noteId);
+		sessionBo.fillSession(false, session);
 		return new ModelAndView("redirectWithoutModel:dashboard");
 	}
 
@@ -146,7 +151,7 @@ public final class NoteController extends AbstractController {
 	 * @return A new view (logged/note).
 	 */
 	@RequestMapping(value = "/note", method = RequestMethod.POST)
-	public ModelAndView submitSettingsPage(@ModelAttribute("noteform") NoteForm noteForm, BindingResult result,
+	public ModelAndView submitNotePage(@ModelAttribute("noteform") NoteForm noteForm, BindingResult result,
 		SessionStatus status, HttpSession session) {
 		noteValidator.validate(noteForm, result);
 		if (result.hasErrors()) {
@@ -158,6 +163,7 @@ public final class NoteController extends AbstractController {
 		noteBo.addEditNote(getCurrentUser(), noteForm);
 		status.setComplete();
 		session.setAttribute("note_ok", ""); //to display confirmation message on client side
+		sessionBo.fillSession(false, session);
 		if (noteId != null)
 			return new ModelAndView("redirectWithoutModel:note?id=" + noteId);
 		return new ModelAndView("redirectWithoutModel:note");

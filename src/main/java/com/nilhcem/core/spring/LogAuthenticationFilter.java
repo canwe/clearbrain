@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import com.nilhcem.business.AuthenticationFilterBo;
+import com.nilhcem.business.SessionBo;
 
 /**
  * Custom {@code UsernamePasswordAuthenticationFilter} bean for SpringSecurity to log information once authentication is successful.
@@ -22,7 +22,7 @@ public final class LogAuthenticationFilter extends UsernamePasswordAuthenticatio
 	private final Logger logger = LoggerFactory.getLogger(LogAuthenticationFilter.class);
 
 	@Autowired
-	private AuthenticationFilterBo authenticationService;
+	private SessionBo service;
 
 	/**
 	 * Log after successful authentication.
@@ -36,6 +36,6 @@ public final class LogAuthenticationFilter extends UsernamePasswordAuthenticatio
 		Authentication authResult) throws IOException, ServletException {
 		super.successfulAuthentication(request, response, authResult);
 		logger.info("{} has logged-in", authResult.getName());
-		authenticationService.fillSession(request);
+		service.fillSession(true, request.getSession());
 	}
 }

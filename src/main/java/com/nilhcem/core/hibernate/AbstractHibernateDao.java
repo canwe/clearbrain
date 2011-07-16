@@ -10,10 +10,9 @@ import org.springframework.util.Assert;
 
 /**
  * Simplify Hibernate use. Every DAO class should extend from it.
- * 
+ *
  * @author Nilhcem, inspired from http://raykrueger.blogspot.com/2007/09/best-abstracthibernatedao-ever.html
  * @since 1.0
- *
  * @param <E> Hibernate model Element.
  */
 public abstract class AbstractHibernateDao<E> {
@@ -29,6 +28,7 @@ public abstract class AbstractHibernateDao<E> {
 
 	/**
 	 * Create a {@code Criteria} using the current session.
+	 *
 	 * @return Created criteria.
 	 */
 	protected final Criteria criteria() {
@@ -37,6 +37,7 @@ public abstract class AbstractHibernateDao<E> {
 
 	/**
 	 * Create a {@code Query} object using the current session.
+	 *
 	 * @param hql HQL for the Query.
 	 * @return Created query.
 	 */
@@ -46,6 +47,7 @@ public abstract class AbstractHibernateDao<E> {
 
 	/**
 	 * Return the current Hibernate {@code Session}.
+	 *
 	 * @return Current Hibernate session.
 	 */
 	protected final Session currentSession() {
@@ -54,6 +56,7 @@ public abstract class AbstractHibernateDao<E> {
 
 	/**
 	 * Return all elements in a list.
+	 *
 	 * @return All elements.
 	 */
 	protected final List<E> all() {
@@ -62,6 +65,7 @@ public abstract class AbstractHibernateDao<E> {
 
 	/**
 	 * Return the {@code Entity} class.
+	 *
 	 * @return Entity class.
 	 */
 	public final Class<E> getEntityClass() {
@@ -71,6 +75,7 @@ public abstract class AbstractHibernateDao<E> {
 	/**
 	 * List all element from a {@code Criteria}.
 	 * Generic suppression wrapper to avoid putting SuppressWarning annotations on DAO.
+	 *
 	 * @param criteria Criteria we need to list elements from.
 	 * @return List of elements.
 	 */
@@ -82,57 +87,62 @@ public abstract class AbstractHibernateDao<E> {
 	/**
 	 * List all element from a {@code Query}.
 	 * Generic suppression wrapper to avoid putting SuppressWarning annotations on DAO.
+	 *
 	 * @param query Query we need to list elements from.
 	 * @return List of elements.
 	 */
-    @SuppressWarnings("unchecked")
-    protected final List<E> list(Query query) {
-        return query.list();
-    }
+	@SuppressWarnings("unchecked")
+	protected final List<E> list(Query query) {
+		return query.list();
+	}
 
 	/**
 	 * List all element from a {@code Query} to an object array.
 	 * Generic suppression wrapper to avoid putting SuppressWarning annotations on DAO.
+	 *
 	 * @param query Query we need to list elements from.
 	 * @return List of elements.
 	 */
-    @SuppressWarnings("unchecked")
-    protected final List<Object[]> listObjectArray(Query query) {
-        return query.list();
-    }
+	@SuppressWarnings("unchecked")
+	protected final List<Object[]> listObjectArray(Query query) {
+		return query.list();
+	}
 
 	/**
 	 * Return a unique result from a {@code Criteria}.
 	 * Generic suppression wrapper to avoid putting SuppressWarning annotations on DAO.
+	 *
 	 * @param criteria Criteria we need to get the element from.
 	 * @return Unique element.
 	 */
-    @SuppressWarnings("unchecked")
-    protected final E uniqueResult(Criteria criteria) {
-        return (E)criteria.uniqueResult();
-    }
+	@SuppressWarnings("unchecked")
+	protected final E uniqueResult(Criteria criteria) {
+		return (E)criteria.uniqueResult();
+	}
 
 	/**
 	 * Return a unique result from a {@code Query}.
 	 * Generic suppression wrapper to avoid putting SuppressWarning annotations on DAO.
+	 *
 	 * @param query Query we need to get the element from.
 	 * @return Unique element.
 	 */
-    @SuppressWarnings("unchecked")
-    protected final E uniqueResult(Query query) {
-        return (E)query.uniqueResult();
-    }
+	@SuppressWarnings("unchecked")
+	protected final E uniqueResult(Query query) {
+		return (E)query.uniqueResult();
+	}
 
 	/**
 	 * Return an element from its {@code id}.
 	 * Generic suppression wrapper to avoid putting SuppressWarning annotations on DAO.
+	 *
 	 * @param id Id of the element we are searching for.
 	 * @return Unique element.
 	 */
-    @SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	protected final E get(Serializable id) {
-        return (E)currentSession().get(entityClass, id);
-    }
+		return (E)currentSession().get(entityClass, id);
+	}
 
 	/**
 	 * Save an object.

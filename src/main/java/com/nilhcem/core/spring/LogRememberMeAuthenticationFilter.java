@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter;
-import com.nilhcem.business.AuthenticationFilterBo;
+import com.nilhcem.business.SessionBo;
 
 /**
  * Custom {@code RememberMeAuthenticationFilter} bean for SpringSecurity to log information once authentication is successful through remember me.
@@ -20,7 +20,7 @@ public final class LogRememberMeAuthenticationFilter extends RememberMeAuthentic
 	private final Logger logger = LoggerFactory.getLogger(LogRememberMeAuthenticationFilter.class);
 
 	@Autowired
-	private AuthenticationFilterBo authenticationService;
+	private SessionBo service;
 
 	/**
 	 * Log after successful authentication through remember me.
@@ -33,6 +33,6 @@ public final class LogRememberMeAuthenticationFilter extends RememberMeAuthentic
 	protected void onSuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, Authentication authResult) {
 		super.onSuccessfulAuthentication(request, response, authResult);
 		logger.info("{} has logged-in through 'remember me'", authResult.getName());
-		authenticationService.fillSession(request);
+		service.fillSession(true, request.getSession());
 	}
 }
