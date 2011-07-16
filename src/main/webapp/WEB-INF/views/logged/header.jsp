@@ -40,19 +40,19 @@
 				<div id="logo"><a href="<spring:url value="/dashboard" />">ClearBrain</a></div>
 				<a id="m-today" class="m-datebox" href="javascript:alert('TODO');">
 					<spring:message code="header.menu.today" />
-					<span <c:if test="${sessionScope.today == '0'}"> class="hide-forced"</c:if>>
+					<span <c:if test="${sessionScope.today == null || sessionScope.today == '0'}"> class="hide-forced"</c:if>>
 						${sessionScope.today}
 					</span>
 				</a>
 				<a id="m-tomorrow" class="m-datebox" href="javascript:alert('TODO');">
 					<spring:message code="header.menu.tomorrow" />
-					<span <c:if test="${sessionScope.tomorrow == '0'}"> class="hide-forced"</c:if>>
+					<span <c:if test="${sessionScope.tomorrow == null || sessionScope.tomorrow == '0'}"> class="hide-forced"</c:if>>
 						${sessionScope.tomorrow}
 					</span>
 				</a>
 				<a id="m-week" class="m-datebox" href="javascript:alert('TODO');">
 					<spring:message code="header.menu.week" />
-					<span <c:if test="${sessionScope.week == '0'}"> class="hide-forced"</c:if>>
+					<span <c:if test="${sessionScope.week == null || sessionScope.week == '0'}"> class="hide-forced"</c:if>>
 						${sessionScope.week}
 					</span>
 				</a>

@@ -1,8 +1,6 @@
 /*** Categories ***/
 var catPositions, //used to know the categories positions
-	catNA = new Array(), //CatNoteArray: to know which note belong to which category. key: noteId - value: categoryId
-	catNoteStack = new Array(), //stack to know which are the current selected categories to be the new note's category
-	flagNoteDragged = false; //flag to know if a note is currently dragged or not
+	catNA = new Array(); //CatNoteArray: to know which note belong to which category. key: noteId - value: categoryId
 
 //Once document is ready
 jQuery(function($) {
@@ -29,39 +27,6 @@ jQuery(function($) {
 	});
 	categories.disableSelection();
 	$('#cat-unclassified').disableSelection();
-
-	//Make notes draggable
-	$('#notes-container').find('div[id^=note-]').draggable({
-		containment: '#content',
-		distance: 10,
-		opacity: 0.8,
-		revert: true,
-		revertDuration: 200,
-		start: function(event, ui) {
-			flagNoteDragged = true;
-			$('#notes-container').find('span[id^=noteedit-]').hide();
-		},
-		stop: function(event, ui) {
-			flagNoteDragged = false;
-		}
-	});
-	$('#notes-container').find('div[id^=note-]').disableSelection();
-
-	//Assign a category to a note
-	$('#categories-container').find('*[id^=cat-]').droppable({
-		accept: '#notes-container div',
-		tolerance: 'touch',
-		greedy: true,
-		over: function(event, ui) {
-			assignCatToNoteOver($(this));
-		},
-		out: function(event, ui) {
-			assignCatToNoteOut($(this));
-		},
-		drop: function(event, ui) {
-			assignCatToNoteDrop(categories, ui);
-		}
-	});
 });
 
 //Change style when selecting a category (starting by 'cat-' by clicking on it)
@@ -129,7 +94,6 @@ $('#categories-edit').live('click', function() {
 
 	//Dotted borders of elements to specify they can't be draggabled
 	$('#categories').find('li[id^=cat-]').addClass('dotted-border');
-	$('#notes-container').find('div[id^=note-]').addClass('dotted-border');
 });
 
 //When clicking on the "Finish editing" link
@@ -147,24 +111,14 @@ $('#categories-endedit').live('click', function() {
 
 	//Dotted borders of elements to specify they can't be draggabled
 	$('#categories').find('li[id^=cat-]').removeClass('dotted-border');
-	$('#notes-container').find('div[id^=note-]').removeClass('dotted-border');
-
 });
 
 //Add a category when pressing 'Enter key'
 $('#catadd-name').live('keyup', function(e) {
 	if (e.keyCode == 13 && $(this).val() != '') {
-//		$(this).attr('disabled', true);
 		$.post('dashboard-js', {
 			addCat : $(this).val()
 		}, function(data) {
-//			//TODO: Clone element and modify it
-//			$(this).val('');
-//			//Update catPositions
-//			catPositions[catPositions.length] = data.id;
-//			$(this).attr('disabled', false);
-
-			//Easy way: reload page, TODO: remove this later
 			window.location.reload();
 		});
 	}
@@ -227,9 +181,7 @@ $('#categories').find('img[id^=catrnm-]').live('click', function(e) {
 				$.post('dashboard-js', {
 					rnmCat : catId,
 					newName : newName
-				}, function() {
-					//TODO: Notification
-				});
+				}, function() {});
 
 				//Loop notes to change category's name
 				for (var noteId in catNA)
@@ -259,90 +211,23 @@ $('#notes-container').find('div[id^=note-]').live('click', function(event) {
 
 //Display note edit button when hovering "in" note
 $('#notes-container').find('div[id^=note-]').live('mouseenter', function(e) {
-	if (!flagNoteDragged) {
-		$('#noteedit-' + getNoteId($(this).attr('id'))).show();
-	}
+	$('#noteedit-' + getNoteId($(this).attr('id'))).show();
 });
 
 //Display note edit button when hovering "out" note
 $('#notes-container').find('div[id^=note-]').live('mouseleave', function(e) {
-	if (!flagNoteDragged) {
-		$('#notes-container').find('span[id^=noteedit-]').hide();
-	}
+	$('#notes-container').find('span[id^=noteedit-]').hide();
 });
-
-//when a note is over a category
-function assignCatToNoteOver(elem) {
-	var insertToStack = true;
-	if (catNoteStack.length < 2) {
-		elem.addClass('category-to-note');
-		//Do not touch to array but remove class of everyone except current
-		for (var i = 0; i < catNoteStack.length; i++) {
-			if (catNoteStack[i].attr('id') != elem.attr('id'))
-				catNoteStack[i].removeClass('category-to-note');
-			else
-				insertToStack = false;
-		}
-		if (insertToStack)
-			catNoteStack[catNoteStack.length] = elem;
-	}
-}
-
-//when a note is out from a category
-function assignCatToNoteOut(elem) {
-	elem.removeClass('category-to-note');
-	var curElem = null;
-
-	//Remove element from stack and reset colors to already existing stack elements
-	for (var i = 0; i < catNoteStack.length; i++)
-		if (catNoteStack[i].attr('id') != elem.attr('id')) {
-			catNoteStack[i].addClass('category-to-note');
-			curElem = catNoteStack[i];
-			break;
-		}
-
-	catNoteStack = new Array();
-	if (curElem != null)
-		catNoteStack[0] = curElem;
-}
-
-//When a note is dropped in a category
-function assignCatToNoteDrop(categories, ui) {
-	var noteId = getNoteId(ui.draggable.attr('id')),
-		selectedCat = categories.find('.category-to-note'),
-		catId = (selectedCat.length == 0 ? 0 : getCategoryId(selectedCat.attr('id')));
-
-	//Remove border for all
-	for (var i = 0; i < catNoteStack.length; i++)
-		catNoteStack[i].removeClass('category-to-note');
-	catNoteStack = new Array();
-
-	//Send request to server
-	$.post('dashboard-js', {
-		assignCat : catId,
-		noteId : noteId
-	}, function(data) {
-		//Change category name in Note
-		$('#notecat-' + noteId).html($('#catname-' + catId).html());
-		catNA[noteId] = catId;
-		countNbNotesPerCategory();
-		//TODO: Notification
-	});
-}
 
 //Add a note when pressing 'Enter key'
 $('#quick-add-task').live('keyup', function(e) {
 	if (e.keyCode == 13 && $(this).val() != '') {
-//		$(this).attr('disabled', true);
 		$.post('dashboard-js', {
 			addNote : $(this).val(),
 			catId : getSelectedCategoryId()
 		}, function(data) {
-			//TODO: A lot of things (create a templateNote, clone it...)
-//			$(this).attr('disabled', false);
 			$(this).val('');
 			$('#quick-add-task').clearField()
-			//Easy way: reload page, TODO: remove this later
 			window.location.reload();
 		});
     }
@@ -382,8 +267,6 @@ $('#notes-container').find('input[type=checkbox]').live('click', function(event)
 		noteId : getNoteId($(this).parent().attr('id')),
 		checked : $(this).is(':checked')
 	}, function(data) {
-		//TODO: disappear effect...
-		//etc.
 		refreshCountTodoHeader(data[0], data[1], data[2]);
 	});
 

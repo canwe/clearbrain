@@ -36,8 +36,8 @@ public class NoteBoTest {
 		User user = testUtils.getTestUser();
 		Long noteId = testAddNote(user);
 		testGetCatIdByNoteId(user, noteId, 0L);
-		Long categoryId = testAssignACategoryToANote(user, noteId);
-		testGetCatIdByNoteId(user, noteId, categoryId);
+		Category category = categoryService.addCategory(user, NoteBoTest.CATEGORY_NAME);
+		Long categoryId = category.getId();
 		testAddNoteWithACategoryDirectly(user, categoryId);
 		testDeleteNote(user, noteId, categoryId);
 	}
@@ -57,14 +57,6 @@ public class NoteBoTest {
 		assertFalse(before.after(note.getCreationDate()));
 		assertFalse(after.before(note.getCreationDate()));
 		return note.getId();
-	}
-
-	private Long testAssignACategoryToANote(User user, Long noteId) {
-		Category category = categoryService.addCategory(user, NoteBoTest.CATEGORY_NAME);
-		service.assignCategoryToNote(user, category.getId(), noteId);
-		Note note = service.getNotes(user).get(0);
-		assertEquals(category.getId(), note.getCategory().getId());
-		return category.getId();
 	}
 
 	private void testAddNoteWithACategoryDirectly(User user, Long categoryId) {

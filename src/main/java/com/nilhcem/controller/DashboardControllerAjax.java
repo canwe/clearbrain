@@ -102,20 +102,6 @@ public final class DashboardControllerAjax extends AbstractController {
 	}
 
 	/**
-	 * Assign a category to a note.
-	 *
-	 * @param catId The category's id we need to display or hide.
-	 * @param noteId The note's id which will contain the category.
-	 * @return true.
-	 */
-	@RequestMapping(method = RequestMethod.POST, params = { "assignCat" })
-	public @ResponseBody boolean assignCatToNote(@RequestParam(value = "assignCat", required = true) Long catId,
-		@RequestParam(value = "noteId", required = true) Long noteId) {
-		noteBo.assignCategoryToNote(getCurrentUser(), catId, noteId);
-		return true;
-	}
-
-	/**
 	 * Mark / Unmark the note as checked.
 	 *
 	 * @param noteId Id of the note we need to remove.

@@ -430,11 +430,6 @@ body {
 	cursor: default;
 }
 
-.category-to-note {
-	background-image: url("../images/logged/cat-bg-to-note.png");
-	border: 1px solid #888 !important;
-}
-
 #categories img {
 	cursor: pointer;
 }

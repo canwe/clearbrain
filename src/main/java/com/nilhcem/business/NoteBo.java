@@ -116,24 +116,6 @@ public class NoteBo {
 	}
 
 	/**
-	 * Assign or remove a category to a note.
-	 *
-	 * @param user Owner of the notes / categories.
-	 * @param categoryId The id of the category we want to assign, or 0 if we need to remove the category from the note.
-	 * @param noteId The note's id.
-	 */
-	@TransactionalReadWrite
-	public void assignCategoryToNote(User user, Long categoryId, Long noteId) {
-		logger.debug("Assign category {} to note {}", categoryId, noteId);
-
-		Note note = getNoteById(user, noteId);
-		if (note != null) {
-			note.setCategory((categoryId.equals(Long.valueOf(0l))) ? null : catDao.getById(user, categoryId));
-			dao.update(note);
-		}
-	}
-
-	/**
 	 * Return a Map for knowing which note belong to which category.
 	 *
 	 * @param user Owner of the notes we are searching for.
