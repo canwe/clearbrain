@@ -280,6 +280,13 @@
 				</configuration>
 			</plugin>
 
+			<!-- Launch project using mvn jetty:run -->
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>7.4.4.v20110707</version>
+			</plugin>
+
 			<!-- Create a site using mvn site -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
