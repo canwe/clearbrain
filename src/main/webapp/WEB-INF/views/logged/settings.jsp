@@ -128,7 +128,7 @@
 	</div>
 	<div class="span-22 append-2 last forms-rm-container">
 		<img src="<spring:url value="/images/logged/grey-cross.png" />" />
-		<a id="delete-account" href="<spring:url value="/settings_delete_account" />"><spring:message code="settings.rm.account" /></a>
+		<input id="delete-account" type="submit" name="_action_delete" value="<spring:message code="settings.rm.account" />" />
 	</div>
 </form:form>
 

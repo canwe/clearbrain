@@ -270,12 +270,20 @@ body {
 	text-align: right;
 }
 
-.forms-rm-container a {
+.forms-rm-container input {
+	background: none repeat scroll 0 0 #FFF;
+    border: 0 none;
 	color: #909090;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 100%;
 	font-weight: bold;
+	margin: 0;
+	padding: 0;
+	text-decoration: underline;
 }
 
-.forms-rm-container a:hover {
+.forms-rm-container input:hover {
 	color: #666;
 }
 

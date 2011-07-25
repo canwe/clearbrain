@@ -103,7 +103,7 @@
 	<c:if test="${param.id != null}">
 		<div class="span-22 append-2 last forms-rm-container">
 			<img src="<spring:url value="/images/logged/grey-cross.png" />" />
-			<a id="delete-note" href="<spring:url value="/delete_note?id=" />${param.id}"><spring:message code="note.delete.text" /></a>
+			<input id="delete-note" type="submit" name="_action_delete" value="<spring:message code="note.delete.text" />" />
 		</div>
 	</c:if>
 

@@ -5,6 +5,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.WebUtils;
+
 import com.nilhcem.business.CategoryBo;
 import com.nilhcem.business.NoteBo;
 import com.nilhcem.business.SessionBo;
@@ -109,20 +113,6 @@ public final class NoteController extends AbstractController {
 	}
 
 	/**
-	 * Delete a note.
-	 * @param noteId note we need to delete.
-	 * @param session Http session.
-	 * @return Redirection to the dashboard.
-	 */
-	//TODO: Put in another controller to avoid doing too much requests
-	@RequestMapping(value = "/delete_note", method = RequestMethod.GET)
-	public ModelAndView deleteNote(@RequestParam(value = "id", required = true) Long noteId, HttpSession session) {
-		noteBo.deleteNoteById(getCurrentUser(), noteId);
-		sessionBo.fillSession(false, session);
-		return new ModelAndView("redirectWithoutModel:dashboard");
-	}
-
-	/**
 	 * Populate categories list.
 	 *
 	 * @param Locale User's locale
@@ -142,7 +132,7 @@ public final class NoteController extends AbstractController {
 	}
 
 	/**
-	 * Add or edit a note.
+	 * Add, edit or delete a note.
 	 *
 	 * @param noteForm The note form.
 	 * @param result Binding result.
@@ -152,20 +142,32 @@ public final class NoteController extends AbstractController {
 	 */
 	@RequestMapping(value = "/note", method = RequestMethod.POST)
 	public ModelAndView submitNotePage(@ModelAttribute("noteform") NoteForm noteForm, BindingResult result,
-		SessionStatus status, HttpSession session) {
-		noteValidator.validate(noteForm, result);
-		if (result.hasErrors()) {
-			session.setAttribute("note_ko", ""); //to display error message on client side
-			return new ModelAndView("logged/note");
-		}
+		SessionStatus status, HttpServletRequest request) {
+		ModelAndView modelAndView;
+		HttpSession session = request.getSession();
 
-		Long noteId = noteForm.getNote().getId();
-		noteBo.addEditNote(getCurrentUser(), noteForm);
-		status.setComplete();
-		session.setAttribute("note_ok", ""); //to display confirmation message on client side
-		sessionBo.fillSession(false, session);
-		if (noteId != null)
-			return new ModelAndView("redirectWithoutModel:note?id=" + noteId);
-		return new ModelAndView("redirectWithoutModel:note");
+		//Delete
+		if (WebUtils.hasSubmitParameter(request, "_action_delete")) {
+			//TODO: Prevent CSRF
+			noteBo.deleteNoteById(getCurrentUser(), noteForm.getNote().getId());
+			sessionBo.fillSession(false, session);
+			modelAndView = new ModelAndView("redirectWithoutModel:dashboard");
+		}
+		else { //Add / Edit
+			noteValidator.validate(noteForm, result);
+			if (result.hasErrors()) {
+				session.setAttribute("note_ko", ""); //to display error message on client side
+				modelAndView = new ModelAndView("logged/note");
+			}
+			else {
+				Long noteId = noteForm.getNote().getId();
+				noteBo.addEditNote(getCurrentUser(), noteForm);
+				status.setComplete();
+				session.setAttribute("note_ok", ""); //to display confirmation message on client side
+				sessionBo.fillSession(false, session);
+				modelAndView = new ModelAndView((noteId == null) ? "redirectWithoutModel:note" : ("redirectWithoutModel:note?id=" + noteId));
+			}
+		}
+		return modelAndView;
 	}
 }

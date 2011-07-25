@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.WebUtils;
+
 import com.nilhcem.business.UserBo;
 import com.nilhcem.form.SettingsForm;
 import com.nilhcem.model.User;
@@ -64,51 +66,53 @@ public final class SettingsController extends AbstractController {
 	}
 
 	/**
-	 * Deactivate account and flag it to be automatically deleted soon.
-	 * @param request The Http request, used to delete session.
-	 * @return Redirection to an "account delete" page.
-	 */
-	@RequestMapping(value = "/settings_delete_account", method = RequestMethod.GET)
-	public ModelAndView deleteAccount(HttpServletRequest request) {
-		//mark the user as deletable
-		userBo.markAsDeletable(getCurrentUser());
-
-		//proceed logout
-		SecurityContextHolder.clearContext();
-		request.getSession().invalidate();
-
-		//drop cookies
-		Cookie[] cookies = request.getCookies();
-		for (Cookie cookie : cookies) {
-			cookie.setMaxAge(0);
-		}
-
-		//Redirect to confirmation page
-		return new ModelAndView("redirectWithoutModel:account-deleted");
-	}
-
-	/**
-	 * Register a user who has just signed up.
+	 * Update users profile information, or delete a User.
 	 *
-	 * @param signUpForm The signup form.
+	 * @param settingsForm The settings form.
 	 * @param result Binding result.
 	 * @param status Session status.
-	 * @param session HTTP session.
+	 * @param request HTTP request.
 	 * @return A new view (logged/settings).
 	 */
 	@RequestMapping(value = "/settings", method = RequestMethod.POST)
 	public ModelAndView submitSettingsPage(@ModelAttribute("settingsform") SettingsForm settingsForm, BindingResult result, 
-		SessionStatus status, HttpSession session) {
-		settingsValidator.validate(settingsForm, result);
-		if (result.hasErrors()) {
-			session.setAttribute("settings_ko", ""); //to display error message on client side
-			return new ModelAndView("logged/settings");
-		}
+		SessionStatus status, HttpServletRequest request) {
+		ModelAndView modelAndView;
+		HttpSession session = request.getSession();
 
-		userBo.updateSettings(getCurrentUser(), settingsForm);
-		status.setComplete();
-		session.setAttribute("settings_ok", ""); //to display confirmation message on client side
-		return new ModelAndView("redirectWithoutModel:settings");
+		//Delete
+		if (WebUtils.hasSubmitParameter(request, "_action_delete")) {
+			//TODO: Prevent CSRF
+			//mark the user as deletable
+			userBo.markAsDeletable(getCurrentUser());
+
+			//proceed logout
+			SecurityContextHolder.clearContext();
+			request.getSession().invalidate();
+
+			//drop cookies
+			Cookie[] cookies = request.getCookies();
+			for (Cookie cookie : cookies) {
+				cookie.setMaxAge(0);
+			}
+
+			//Redirect to confirmation page
+			modelAndView = new ModelAndView("redirectWithoutModel:account-deleted");
+		}
+		else { //Update settings
+			settingsValidator.validate(settingsForm, result);
+			if (result.hasErrors()) {
+				session.setAttribute("settings_ko", ""); //to display error message on client side
+				modelAndView = new ModelAndView("logged/settings");
+			}
+			else {
+				userBo.updateSettings(getCurrentUser(), settingsForm);
+				status.setComplete();
+				session.setAttribute("settings_ok", ""); //to display confirmation message on client side
+				modelAndView = new ModelAndView("redirectWithoutModel:settings");
+			}
+		}
+		return modelAndView;
 	}
 
 	/**
