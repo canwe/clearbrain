@@ -1,4 +1,4 @@
-package com.nilhcem.controller;
+package com.nilhcem.controller.dashboard;
 
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,20 +11,21 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.nilhcem.business.CategoryBo;
 import com.nilhcem.business.NoteBo;
 import com.nilhcem.business.SessionBo;
+import com.nilhcem.controller.AbstractController;
 import com.nilhcem.core.exception.CategoriesOrderException;
 import com.nilhcem.model.Category;
 import com.nilhcem.model.Note;
 
 /**
  * Spring MVC Controller class for Ajax requests from dashboard.
- * 
+ *
  * @author Nilhcem
  * @since 1.0
  */
 @Controller
 @PreAuthorize("hasRole('RIGHT_USER')")
 @RequestMapping("/dashboard-js")
-public final class DashboardControllerAjax extends AbstractController {
+public final class AjaxController extends AbstractController {
 	@Autowired
 	private CategoryBo categoryBo;
 	@Autowired

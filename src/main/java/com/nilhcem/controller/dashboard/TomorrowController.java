@@ -1,4 +1,4 @@
-package com.nilhcem.controller;
+package com.nilhcem.controller.dashboard;
 
 import java.util.List;
 import java.util.Map;
@@ -18,13 +18,13 @@ import com.nilhcem.model.Note;
  */
 @Controller
 @PreAuthorize("hasRole('RIGHT_USER')")
-@RequestMapping("/this_week")
-public final class DashboardWeekController extends AbstractDashboardController {
+@RequestMapping("/tomorrow")
+public final class TomorrowController extends AbstractDashboardController {
 	/**
 	 * Set the dashboard type to the super class
 	 */
-	public DashboardWeekController() {
-		super(DashboardDateEnum.THIS_WEEK);
+	public TomorrowController() {
+		super(DashboardDateEnum.TOMORROW);
 	}
 
 	/**
@@ -34,7 +34,7 @@ public final class DashboardWeekController extends AbstractDashboardController {
 	 */
 	@Override
 	public List<Note> populateNotesList() {
-		return noteBo.getNotesWeek(getCurrentUser());
+		return noteBo.getNotesTomorrow(getCurrentUser());
 	}
 
 	/**
@@ -44,6 +44,6 @@ public final class DashboardWeekController extends AbstractDashboardController {
 	 */
 	@Override
 	public Map<Long, Long> populateNotesCatList() {
-		return noteBo.getCatIdByNoteIdMapWeek(getCurrentUser());
+		return noteBo.getCatIdByNoteIdMapTomorrow(getCurrentUser());
 	}
 }

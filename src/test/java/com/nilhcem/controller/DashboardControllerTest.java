@@ -9,11 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.nilhcem.controller.dashboard.GlobalController;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:/applicationContext-test.xml", "classpath:/META-INF/spring/mvc/mvc-dispatcher-servlet.xml"})
 public class DashboardControllerTest {
 	@Autowired
-	private DashboardController controller;
+	private GlobalController controller;
 
 	@Test
 	public void shouldGetDashboardPage() {

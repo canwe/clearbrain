@@ -1,4 +1,4 @@
-package com.nilhcem.controller;
+package com.nilhcem.controller.dashboard;
 
 import java.util.List;
 import java.util.Map;
@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import com.nilhcem.business.CategoryBo;
 import com.nilhcem.business.NoteBo;
+import com.nilhcem.controller.AbstractController;
 import com.nilhcem.enums.DashboardDateEnum;
 import com.nilhcem.model.Category;
 import com.nilhcem.model.Note;
