@@ -13,9 +13,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.nilhcem.core.hibernate.TransactionalReadWrite;
 import com.nilhcem.core.test.TestUtils;
+import com.nilhcem.enums.DashboardDateEnum;
 import com.nilhcem.model.Note;
 import com.nilhcem.model.User;
-import com.nilhcem.model.enums.SessionDateEnum;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:/applicationContext-test.xml"})
@@ -53,7 +53,7 @@ public class NoteDaoTest {
 	@Rollback(true)
 	public void testNbTaskTodoHeader() {
 		User user = testUtils.getTestUser();
-		Map<SessionDateEnum, Long> map;
+		Map<DashboardDateEnum, Long> map;
 
 		//Create 1 note with a due date < yesterday
 		Note note = new Note();
@@ -65,34 +65,34 @@ public class NoteDaoTest {
 		note.setUser(user);
 		dao.save(note);
 		map = dao.getNbTaskTodoHeader(user);
-		assertEquals(Long.valueOf(1), (Long)map.get(SessionDateEnum.TODAY));
-		assertEquals(Long.valueOf(0), (Long)map.get(SessionDateEnum.TOMORROW));
-		assertEquals(Long.valueOf(0), (Long)map.get(SessionDateEnum.THIS_WEEK));
+		assertEquals(Long.valueOf(1), (Long)map.get(DashboardDateEnum.TODAY));
+		assertEquals(Long.valueOf(0), (Long)map.get(DashboardDateEnum.TOMORROW));
+		assertEquals(Long.valueOf(0), (Long)map.get(DashboardDateEnum.THIS_WEEK));
 
 		//Create 1 note with a due date today
 		note.setDueDate(today);
 		dao.update(note);
 		map = dao.getNbTaskTodoHeader(user);
-		assertEquals(Long.valueOf(1), (Long)map.get(SessionDateEnum.TODAY));
-		assertEquals(Long.valueOf(0), (Long)map.get(SessionDateEnum.TOMORROW));
-		assertEquals(Long.valueOf(1), (Long)map.get(SessionDateEnum.THIS_WEEK));
+		assertEquals(Long.valueOf(1), (Long)map.get(DashboardDateEnum.TODAY));
+		assertEquals(Long.valueOf(0), (Long)map.get(DashboardDateEnum.TOMORROW));
+		assertEquals(Long.valueOf(1), (Long)map.get(DashboardDateEnum.THIS_WEEK));
 
 		//Set this note as done
 		note.setResolvedDate(today);
 		dao.update(note);
 		map = dao.getNbTaskTodoHeader(user);
-		assertEquals(Long.valueOf(0), (Long)map.get(SessionDateEnum.TODAY));
-		assertEquals(Long.valueOf(0), (Long)map.get(SessionDateEnum.TOMORROW));
-		assertEquals(Long.valueOf(0), (Long)map.get(SessionDateEnum.THIS_WEEK));
+		assertEquals(Long.valueOf(0), (Long)map.get(DashboardDateEnum.TODAY));
+		assertEquals(Long.valueOf(0), (Long)map.get(DashboardDateEnum.TOMORROW));
+		assertEquals(Long.valueOf(0), (Long)map.get(DashboardDateEnum.THIS_WEEK));
 
 		//Create 1 note with a due date tomorrow
 		note.setResolvedDate(null);
 		note.setDueDate(tomorrow);
 		dao.update(note);
 		map = dao.getNbTaskTodoHeader(user);
-		assertEquals(Long.valueOf(0), (Long)map.get(SessionDateEnum.TODAY));
-		assertEquals(Long.valueOf(1), (Long)map.get(SessionDateEnum.TOMORROW));
-		assertEquals(Long.valueOf(1), (Long)map.get(SessionDateEnum.THIS_WEEK));
+		assertEquals(Long.valueOf(0), (Long)map.get(DashboardDateEnum.TODAY));
+		assertEquals(Long.valueOf(1), (Long)map.get(DashboardDateEnum.TOMORROW));
+		assertEquals(Long.valueOf(1), (Long)map.get(DashboardDateEnum.THIS_WEEK));
 
 		//Create 1 note with a due date in 6 days
 		Note note2 = new Note();
@@ -104,16 +104,16 @@ public class NoteDaoTest {
 		note2.setUser(user);
 		dao.save(note2);
 		map = dao.getNbTaskTodoHeader(user);
-		assertEquals(Long.valueOf(0), (Long)map.get(SessionDateEnum.TODAY));
-		assertEquals(Long.valueOf(1), (Long)map.get(SessionDateEnum.TOMORROW));
-		assertEquals(Long.valueOf(2), (Long)map.get(SessionDateEnum.THIS_WEEK));
+		assertEquals(Long.valueOf(0), (Long)map.get(DashboardDateEnum.TODAY));
+		assertEquals(Long.valueOf(1), (Long)map.get(DashboardDateEnum.TOMORROW));
+		assertEquals(Long.valueOf(2), (Long)map.get(DashboardDateEnum.THIS_WEEK));
 
 		//Create 1 note with a due date in 8 days
 		note.setDueDate(eightDaysAfter);
 		dao.update(note);
 		map = dao.getNbTaskTodoHeader(user);
-		assertEquals(Long.valueOf(0), (Long)map.get(SessionDateEnum.TODAY));
-		assertEquals(Long.valueOf(0), (Long)map.get(SessionDateEnum.TOMORROW));
-		assertEquals(Long.valueOf(1), (Long)map.get(SessionDateEnum.THIS_WEEK));
+		assertEquals(Long.valueOf(0), (Long)map.get(DashboardDateEnum.TODAY));
+		assertEquals(Long.valueOf(0), (Long)map.get(DashboardDateEnum.TOMORROW));
+		assertEquals(Long.valueOf(1), (Long)map.get(DashboardDateEnum.THIS_WEEK));
 	}
 }

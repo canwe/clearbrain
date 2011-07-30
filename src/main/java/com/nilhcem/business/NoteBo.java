@@ -3,6 +3,7 @@ package com.nilhcem.business;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import org.slf4j.Logger;
@@ -105,6 +106,80 @@ public class NoteBo {
 	}
 
 	/**
+	 * Find all the notes owned by user which should be done today.
+	 *
+	 * @param user Owner of the notes we are searching for.
+	 * @return List of notes.
+	 */
+	public List<Note> getNotesToday(User user) {
+		Calendar cal = Calendar.getInstance();
+		cal.clear(Calendar.HOUR);
+		cal.clear(Calendar.MINUTE);
+		cal.clear(Calendar.SECOND);
+		cal.clear(Calendar.MILLISECOND);
+		Date today = cal.getTime();
+		cal.add(Calendar.DAY_OF_YEAR, 1);
+		Date tomorrow = cal.getTime();
+
+		return dao.getNotesWithDueDateBetween(user, today, tomorrow);
+	}
+
+	/**
+	 * Find all the notes owned by user which should be done before today.
+	 *
+	 * @param user Owner of the notes we are searching for.
+	 * @return List of notes.
+	 */
+	public List<Note> getNotesMissed(User user) {
+		Calendar cal = Calendar.getInstance();
+		cal.clear(Calendar.HOUR);
+		cal.clear(Calendar.MINUTE);
+		cal.clear(Calendar.SECOND);
+		cal.clear(Calendar.MILLISECOND);
+		cal.add(Calendar.DAY_OF_YEAR, -1);
+		Date yesterday = cal.getTime();
+
+		return dao.getNotesWithDueDateBetween(user, null, yesterday);
+	}
+
+	/**
+	 * Find all the notes owned by user which should be done tomorrow.
+	 *
+	 * @param user Owner of the notes we are searching for.
+	 * @return List of notes.
+	 */
+	public List<Note> getNotesTomorrow(User user) {
+		Calendar cal = Calendar.getInstance();
+		cal.clear(Calendar.HOUR);
+		cal.clear(Calendar.MINUTE);
+		cal.clear(Calendar.SECOND);
+		cal.clear(Calendar.MILLISECOND);
+		cal.add(Calendar.DAY_OF_YEAR, 1);
+		Date tomorrow = cal.getTime();
+
+		return dao.getNotesWithDueDateBetween(user, tomorrow, tomorrow);
+	}
+
+	/**
+	 * Find all the notes owned by user which should be done this week.
+	 *
+	 * @param user Owner of the notes we are searching for.
+	 * @return List of notes.
+	 */
+	public List<Note> getNotesWeek(User user) {
+		Calendar cal = Calendar.getInstance();
+		cal.clear(Calendar.HOUR);
+		cal.clear(Calendar.MINUTE);
+		cal.clear(Calendar.SECOND);
+		cal.clear(Calendar.MILLISECOND);
+		Date today = cal.getTime();
+		cal.add(Calendar.DAY_OF_YEAR, 7);
+		Date endWeek = cal.getTime();
+
+		return dao.getNotesWithDueDateBetween(user, today, endWeek);
+	}
+
+	/**
 	 * Find a note from its {@code id}.
 	 *
 	 * @param user Owner of the note we are searching for.
@@ -122,7 +197,62 @@ public class NoteBo {
 	 * @return Associative array with key = noteId, value = catId.
 	 */
 	public Map<Long, Long> getCatIdByNoteIdMap(User user) {
-		return dao.getCatIdByNoteIdMap(user);
+		return dao.getCatIdByNoteIdMapDueDateBetween(user, null, null);
+	}
+
+	/**
+	 * Return a Map for knowing which note belong to which category for the Today page.
+	 *
+	 * @param user Owner of the notes we are searching for.
+	 * @return Associative array with key = noteId, value = catId.
+	 */
+	public Map<Long, Long> getCatIdByNoteIdMapToday(User user) {
+		Calendar cal = Calendar.getInstance();
+		cal.clear(Calendar.HOUR);
+		cal.clear(Calendar.MINUTE);
+		cal.clear(Calendar.SECOND);
+		cal.clear(Calendar.MILLISECOND);
+		cal.add(Calendar.DAY_OF_YEAR, 1);
+		Date tomorrow = cal.getTime();
+
+		return dao.getCatIdByNoteIdMapDueDateBetween(user, null, tomorrow);
+	}
+
+	/**
+	 * Return a Map for knowing which note belong to which category for the Tomorrow page.
+	 *
+	 * @param user Owner of the notes we are searching for.
+	 * @return Associative array with key = noteId, value = catId.
+	 */
+	public Map<Long, Long> getCatIdByNoteIdMapTomorrow(User user) {
+		Calendar cal = Calendar.getInstance();
+		cal.clear(Calendar.HOUR);
+		cal.clear(Calendar.MINUTE);
+		cal.clear(Calendar.SECOND);
+		cal.clear(Calendar.MILLISECOND);
+		cal.add(Calendar.DAY_OF_YEAR, 1);
+		Date tomorrow = cal.getTime();
+
+		return dao.getCatIdByNoteIdMapDueDateBetween(user, tomorrow, tomorrow);
+	}
+
+	/**
+	 * Return a Map for knowing which note belong to which category for the Today page.
+	 *
+	 * @param user Owner of the notes we are searching for.
+	 * @return Associative array with key = noteId, value = catId.
+	 */
+	public Map<Long, Long> getCatIdByNoteIdMapWeek(User user) {
+		Calendar cal = Calendar.getInstance();
+		cal.clear(Calendar.HOUR);
+		cal.clear(Calendar.MINUTE);
+		cal.clear(Calendar.SECOND);
+		cal.clear(Calendar.MILLISECOND);
+		Date today = cal.getTime();
+		cal.add(Calendar.DAY_OF_YEAR, 7);
+		Date endWeek = cal.getTime();
+
+		return dao.getCatIdByNoteIdMapDueDateBetween(user, today, endWeek);
 	}
 
 	/**

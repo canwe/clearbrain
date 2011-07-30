@@ -497,7 +497,7 @@ body {
 	top: -6px;
 }
 
-#no-note {
+.no-note {
 	color: #353A60;
 	font-style: italic;
 }

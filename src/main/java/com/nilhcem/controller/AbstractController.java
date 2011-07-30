@@ -13,7 +13,7 @@ import com.nilhcem.model.User;
 
 /**
  * Abstract Spring MVC Controller.
- * Provides some function to simplify i18n in JS and to get the current user.
+ * Provides some functions to simplify i18n in JS and to get the current user.
  * Every controller in this project should extends from it.
  *
  * @author Nilhcem

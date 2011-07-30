@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 import com.nilhcem.core.hibernate.TransactionalReadOnly;
 import com.nilhcem.core.spring.UserDetailsAdapter;
 import com.nilhcem.dao.NoteDao;
+import com.nilhcem.enums.DashboardDateEnum;
 import com.nilhcem.model.User;
-import com.nilhcem.model.enums.SessionDateEnum;
 
 /**
  * Business class handling processes to do when a user logs in:
@@ -47,9 +47,9 @@ public class SessionBo {
 		}
 
 		//Set the number of tasks to do for today/tomorrow/this week
-		Map<SessionDateEnum, Long> map = noteDao.getNbTaskTodoHeader(user);
-		session.setAttribute("today", map.get(SessionDateEnum.TODAY));
-		session.setAttribute("tomorrow", map.get(SessionDateEnum.TOMORROW));
-		session.setAttribute("week", map.get(SessionDateEnum.THIS_WEEK));
+		Map<DashboardDateEnum, Long> map = noteDao.getNbTaskTodoHeader(user);
+		session.setAttribute("today", map.get(DashboardDateEnum.TODAY));
+		session.setAttribute("tomorrow", map.get(DashboardDateEnum.TOMORROW));
+		session.setAttribute("week", map.get(DashboardDateEnum.THIS_WEEK));
 	}
 }

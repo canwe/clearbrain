@@ -11,20 +11,20 @@ import com.nilhcem.enums.DashboardDateEnum;
 import com.nilhcem.model.Note;
 
 /**
- * Spring MVC Controller class for displaying global dashboard.
+ * Spring MVC Controller class for displaying dashboard.
  *
  * @author Nilhcem
  * @since 1.0
  */
 @Controller
 @PreAuthorize("hasRole('RIGHT_USER')")
-@RequestMapping("/dashboard")
-public final class DashboardController extends AbstractDashboardController {
-	/** 
+@RequestMapping("/tomorrow")
+public final class DashboardTomorrowController extends AbstractDashboardController {
+	/**
 	 * Set the dashboard type to the super class
 	 */
-	public DashboardController() {
-		super(DashboardDateEnum.GLOBAL);
+	public DashboardTomorrowController() {
+		super(DashboardDateEnum.TOMORROW);
 	}
 
 	/**
@@ -34,7 +34,7 @@ public final class DashboardController extends AbstractDashboardController {
 	 */
 	@Override
 	public List<Note> populateNotesList() {
-		return noteBo.getNotes(getCurrentUser());
+		return noteBo.getNotesTomorrow(getCurrentUser());
 	}
 
 	/**
@@ -44,6 +44,6 @@ public final class DashboardController extends AbstractDashboardController {
 	 */
 	@Override
 	public Map<Long, Long> populateNotesCatList() {
-		return noteBo.getCatIdByNoteIdMap(getCurrentUser());
+		return noteBo.getCatIdByNoteIdMapTomorrow(getCurrentUser());
 	}
 }
