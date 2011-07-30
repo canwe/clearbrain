@@ -181,7 +181,7 @@ public class UserBoTest {
 
 		//Try again with another date < 3 days [should still failed]
 		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.DAY_OF_YEAR, -2);
+		cal.add(Calendar.DATE, -2);
 		user.setDeleteDate(cal.getTime());
 		userDao.update(user);
 		service.removeDeletableUsers();
@@ -190,7 +190,7 @@ public class UserBoTest {
 
 		//Try at last with a date >= 3 days
 		cal = Calendar.getInstance();
-		cal.add(Calendar.DAY_OF_YEAR, -3);
+		cal.add(Calendar.DATE, -3);
 		user.setDeleteDate(cal.getTime());
 		//...but with enable == true [should failed]
 		user.setEnabled(true);

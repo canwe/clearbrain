@@ -29,13 +29,13 @@ public final class TodayController extends AbstractDashboardController {
 	}
 
 	/**
-	 * Populate notes list.
+	 * Populate undone notes list.
 	 *
-	 * @return Users' notes.
+	 * @return Users' undone notes.
 	 */
 	@Override
-	public List<Note> populateNotesList() {
-		return noteBo.getNotesToday(getCurrentUser());
+	public List<Note> populateUndoneNotesList() {
+		return noteBo.getUndoneNotesToday(getCurrentUser());
 	}
 
 	/**
@@ -45,7 +45,17 @@ public final class TodayController extends AbstractDashboardController {
 	 */
 	@ModelAttribute(value="missedList")
 	public List<Note> populateMissedNotesList() {
-		return noteBo.getNotesMissed(getCurrentUser());
+		return noteBo.getUndoneNotesMissed(getCurrentUser());
+	}
+
+	/**
+	 * Populate done notes list.
+	 *
+	 * @return Users' done notes.
+	 */
+	@Override
+	public List<Note> populateDoneNotesList() {
+		return noteBo.getDoneNotesToday(getCurrentUser());
 	}
 
 	/**

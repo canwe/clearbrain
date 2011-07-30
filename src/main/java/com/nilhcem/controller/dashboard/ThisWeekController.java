@@ -28,13 +28,23 @@ public final class ThisWeekController extends AbstractDashboardController {
 	}
 
 	/**
-	 * Populate notes list.
+	 * Populate undone notes list.
 	 *
-	 * @return Users' notes.
+	 * @return Users' undone notes.
 	 */
 	@Override
-	public List<Note> populateNotesList() {
-		return noteBo.getNotesWeek(getCurrentUser());
+	public List<Note> populateUndoneNotesList() {
+		return noteBo.getUndoneNotesWeek(getCurrentUser());
+	}
+
+	/**
+	 * Populate done notes list.
+	 *
+	 * @return Users' done notes.
+	 */
+	@Override
+	public List<Note> populateDoneNotesList() {
+		return noteBo.getDoneNotesWeek(getCurrentUser());
 	}
 
 	/**

@@ -65,7 +65,7 @@
 		<div class="title"><spring:message code="dashboard.note.missedTitle" /></div><br />
 		<c:forEach items="${missedList}" var="cur">
 			<div id="note-${cur.id}" class="note">
-				<input type="checkbox"<c:if test="${cur.resolvedDate != null}"> checked="checked"</c:if> />
+				<input type="checkbox" />
 				<c:out value="${cur.name}" />
 				<span id="noteedit-${cur.id}" class="notes-edit">
 					<a href="<spring:url value="/note?id=${cur.id}" />"><img src="<spring:url value="/images/logged/edit.gif" />" /></a>
@@ -76,8 +76,9 @@
 		<br />
 	</c:if>
 
-	<c:if test="${typeDashboard != 'TODAY' || fn:length(missedList) == 0}">
-		<%-- Notes --%>
+	<%-- Undone notes --%>
+	<div <c:if test="${(fn:length(notesList) == 0 && fn:length(doneList) > 0) || (typeDashboard == 'TODAY' && fn:length(missedList) > 0)}">class="hide"</c:if>>
+		<%-- Title --%>
 		<div class="title">
 			<c:choose>
 				<c:when test="${typeDashboard == 'TODAY'}">
@@ -94,6 +95,7 @@
 				</c:otherwise>
 			</c:choose>
 		</div><br />
+		<%-- No note to do --%>
 		<div>
 			<c:if test="${fn:length(notesList) == 0}">
 				<c:if test="${typeDashboard == 'GLOBAL'}">
@@ -116,9 +118,10 @@
 					</div>
 				</c:if>
 			</c:if>
+			<%-- Undone notes list --%>
 			<c:forEach items="${notesList}" var="cur">
 				<div id="note-${cur.id}" class="note">
-					<input type="checkbox"<c:if test="${cur.resolvedDate != null}"> checked="checked"</c:if> />
+					<input type="checkbox" />
 					<c:out value="${cur.name}" />
 					<span id="noteedit-${cur.id}" class="notes-edit">
 						<a href="<spring:url value="/note?id=${cur.id}" />"><img src="<spring:url value="/images/logged/edit.gif" />" /></a>
@@ -127,7 +130,42 @@
 				</div>
 			</c:forEach>
 		</div>
-	</c:if>
+		<br /><br />
+	</div>
+
+	<%-- Done notes --%>
+	<div <c:if test="${fn:length(doneList) == 0}">class="hide"</c:if>>
+		<%-- Title --%>
+		<div class="title">
+			<c:choose>
+				<c:when test="${typeDashboard == 'TODAY'}">
+					<spring:message code="dashboard.note.doneTodayTitle" />
+				</c:when>
+				<c:when test="${typeDashboard == 'TOMORROW'}">
+					<spring:message code="dashboard.note.doneTomorrowTitle" />
+				</c:when>
+				<c:when test="${typeDashboard == 'THIS_WEEK'}">
+					<spring:message code="dashboard.note.doneWeekTitle" />
+				</c:when>
+				<c:otherwise>
+					<spring:message code="dashboard.note.doneTitle" />
+				</c:otherwise>
+			</c:choose>
+		</div><br />
+
+		<%-- Done notes list --%>
+		<c:forEach items="${doneList}" var="cur">
+			<div id="note-${cur.id}" class="note">
+				<input type="checkbox" checked="checked" />
+				<c:out value="${cur.name}" />
+				<span id="noteedit-${cur.id}" class="notes-edit">
+					<a href="<spring:url value="/note?id=${cur.id}" />"><img src="<spring:url value="/images/logged/edit.gif" />" /></a>
+				</span>
+				<div id="notecat-${cur.id}" class="note-category"></div>
+			</div>
+		</c:forEach>
+		<br />
+	</div>
 </div>
 
 <%-- Preload some images --%>

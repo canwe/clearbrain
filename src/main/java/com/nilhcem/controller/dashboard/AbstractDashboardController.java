@@ -59,12 +59,20 @@ public abstract class AbstractDashboardController extends AbstractController {
 	}
 
 	/**
-	 * Populate notes list.
+	 * Populate undone notes list.
 	 *
-	 * @return Users' notes.
+	 * @return Users' undone notes.
 	 */
 	@ModelAttribute(value="notesList")
-	public abstract List<Note> populateNotesList();
+	public abstract List<Note> populateUndoneNotesList();
+
+	/**
+	 * Populate done notes list.
+	 *
+	 * @return Users' done notes.
+	 */
+	@ModelAttribute(value="doneList")
+	public abstract List<Note> populateDoneNotesList();
 
 	/**
 	 * Populate JS array to know which note belong to which category.

@@ -33,18 +33,6 @@ public final class NoteDao extends AbstractHibernateDao<Note> {
 	}
 
 	/**
-	 * Find all the notes owned by {@code user}.
-	 *
-	 * @param user Owner of the notes we are searching for.
-	 * @return List of notes.
-	 */
-	public List<Note> getNotes(User user) {
-		Query query = query("FROM Note WHERE user=:user ORDER BY creationDate ASC")
-			.setParameter("user", user);
-		return list(query);
-	}
-
-	/**
 	 * Find a note from its {@code id}.
 	 *
 	 * @param user Owner of the note we are searching for.
@@ -74,9 +62,9 @@ public final class NoteDao extends AbstractHibernateDao<Note> {
 		cal.clear(Calendar.SECOND);
 		cal.clear(Calendar.MILLISECOND);
 		Date today = cal.getTime();
-		cal.add(Calendar.DAY_OF_YEAR, 1);
+		cal.add(Calendar.DATE, 1);
 		Date tomorrow = cal.getTime();
-		cal.add(Calendar.DAY_OF_YEAR, 6);
+		cal.add(Calendar.DATE, 6);
 		Date endWeek = cal.getTime();
 
 		//Nb tasks for today
@@ -112,7 +100,7 @@ public final class NoteDao extends AbstractHibernateDao<Note> {
 	 * @param to End of dueDate. Can be null
 	 * @return List of notes.
 	 */
-	public List<Note> getNotesWithDueDateBetween(User user, Date from, Date to) {
+	public List<Note> getUndoneNotes(User user, Date from, Date to) {
 		Criteria crit = criteria()
 				.add(Restrictions.eq("user", user))
 				.add(Restrictions.isNull("resolvedDate"))
@@ -122,6 +110,37 @@ public final class NoteDao extends AbstractHibernateDao<Note> {
 			crit.add(Restrictions.ge("dueDate", from));
 		if (to != null)
 			crit.add(Restrictions.le("dueDate", to));
+		return list(crit);
+	}
+
+	/**
+	 * Find all the done notes owned by {@code user} and sorted by creation date.
+	 *
+	 * @param user Owner of the notes we are searching for.
+	 * @param from Beginning of dueDate. Can be null.
+	 * @param to End of dueDate. Can be null
+	 * @param resolvedDate Date of resolved date. If null, then no specific resolved date (but still resolved)
+	 * @return List of notes.
+	 */
+	public List<Note> getDoneNotes(User user, Date from, Date to, Date resolvedDate) {
+		Criteria crit = criteria()
+				.add(Restrictions.eq("user", user))
+				.add(Restrictions.isNotNull("resolvedDate"))
+				.addOrder(Order.asc("creationDate"));
+
+		if (resolvedDate != null) {
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(resolvedDate);
+			cal.add(Calendar.DATE, 1);
+			crit.add(Restrictions.ge("resolvedDate", resolvedDate));
+			crit.add(Restrictions.lt("resolvedDate", cal.getTime()));
+		}
+		if (from != null) {
+			crit.add(Restrictions.ge("dueDate", from));
+		}
+		if (to != null) {
+			crit.add(Restrictions.le("dueDate", to));
+		}
 		return list(crit);
 	}
 

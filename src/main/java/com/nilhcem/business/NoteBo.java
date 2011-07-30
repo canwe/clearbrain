@@ -96,32 +96,30 @@ public class NoteBo {
 	}
 
 	/**
-	 * Find all the notes owned by user.
+	 * Find all the undone notes owned by {@code user} and sorted by creation date.
 	 *
 	 * @param user Owner of the notes we are searching for.
 	 * @return List of notes.
 	 */
-	public List<Note> getNotes(User user) {
-		return dao.getNotes(user);
+	public List<Note> getUndoneNotes(User user) {
+		return dao.getUndoneNotes(user, null, null);
 	}
 
 	/**
-	 * Find all the notes owned by user which should be done today.
+	 * Find all the undone notes owned by user which should be done today.
 	 *
 	 * @param user Owner of the notes we are searching for.
 	 * @return List of notes.
 	 */
-	public List<Note> getNotesToday(User user) {
+	public List<Note> getUndoneNotesToday(User user) {
 		Calendar cal = Calendar.getInstance();
 		cal.clear(Calendar.HOUR);
 		cal.clear(Calendar.MINUTE);
 		cal.clear(Calendar.SECOND);
 		cal.clear(Calendar.MILLISECOND);
 		Date today = cal.getTime();
-		cal.add(Calendar.DAY_OF_YEAR, 1);
-		Date tomorrow = cal.getTime();
 
-		return dao.getNotesWithDueDateBetween(user, today, tomorrow);
+		return dao.getUndoneNotes(user, today, today);
 	}
 
 	/**
@@ -130,16 +128,16 @@ public class NoteBo {
 	 * @param user Owner of the notes we are searching for.
 	 * @return List of notes.
 	 */
-	public List<Note> getNotesMissed(User user) {
+	public List<Note> getUndoneNotesMissed(User user) {
 		Calendar cal = Calendar.getInstance();
 		cal.clear(Calendar.HOUR);
 		cal.clear(Calendar.MINUTE);
 		cal.clear(Calendar.SECOND);
 		cal.clear(Calendar.MILLISECOND);
-		cal.add(Calendar.DAY_OF_YEAR, -1);
+		cal.add(Calendar.DATE, -1);
 		Date yesterday = cal.getTime();
 
-		return dao.getNotesWithDueDateBetween(user, null, yesterday);
+		return dao.getUndoneNotes(user, null, yesterday);
 	}
 
 	/**
@@ -148,16 +146,16 @@ public class NoteBo {
 	 * @param user Owner of the notes we are searching for.
 	 * @return List of notes.
 	 */
-	public List<Note> getNotesTomorrow(User user) {
+	public List<Note> getUndoneNotesTomorrow(User user) {
 		Calendar cal = Calendar.getInstance();
 		cal.clear(Calendar.HOUR);
 		cal.clear(Calendar.MINUTE);
 		cal.clear(Calendar.SECOND);
 		cal.clear(Calendar.MILLISECOND);
-		cal.add(Calendar.DAY_OF_YEAR, 1);
+		cal.add(Calendar.DATE, 1);
 		Date tomorrow = cal.getTime();
 
-		return dao.getNotesWithDueDateBetween(user, tomorrow, tomorrow);
+		return dao.getUndoneNotes(user, tomorrow, tomorrow);
 	}
 
 	/**
@@ -166,17 +164,81 @@ public class NoteBo {
 	 * @param user Owner of the notes we are searching for.
 	 * @return List of notes.
 	 */
-	public List<Note> getNotesWeek(User user) {
+	public List<Note> getUndoneNotesWeek(User user) {
 		Calendar cal = Calendar.getInstance();
 		cal.clear(Calendar.HOUR);
 		cal.clear(Calendar.MINUTE);
 		cal.clear(Calendar.SECOND);
 		cal.clear(Calendar.MILLISECOND);
 		Date today = cal.getTime();
-		cal.add(Calendar.DAY_OF_YEAR, 7);
+		cal.add(Calendar.DATE, 7);
 		Date endWeek = cal.getTime();
 
-		return dao.getNotesWithDueDateBetween(user, today, endWeek);
+		return dao.getUndoneNotes(user, today, endWeek);
+	}
+
+	/**
+	 * Find all the done notes owned by {@code user} and sorted by creation date.
+	 *
+	 * @param user Owner of the notes we are searching for.
+	 * @return List of notes.
+	 */
+	public List<Note> getDoneNotes(User user) {
+		return dao.getDoneNotes(user, null, null, null);
+	}
+
+	/**
+	 * Find all today's done notes owned by {@code user} and sorted by creation date.
+	 *
+	 * @param user Owner of the notes we are searching for.
+	 * @return List of notes.
+	 */
+	public List<Note> getDoneNotesToday(User user) {
+		Calendar cal = Calendar.getInstance();
+		cal.clear(Calendar.HOUR);
+		cal.clear(Calendar.MINUTE);
+		cal.clear(Calendar.SECOND);
+		cal.clear(Calendar.MILLISECOND);
+		Date today = cal.getTime();
+
+		return dao.getDoneNotes(user, null, today, today);
+	}
+
+	/**
+	 * Find all tomorrow's done notes owned by {@code user} and sorted by creation date.
+	 *
+	 * @param user Owner of the notes we are searching for.
+	 * @return List of notes.
+	 */
+	public List<Note> getDoneNotesTomorrow(User user) {
+		Calendar cal = Calendar.getInstance();
+		cal.clear(Calendar.HOUR);
+		cal.clear(Calendar.MINUTE);
+		cal.clear(Calendar.SECOND);
+		cal.clear(Calendar.MILLISECOND);
+		cal.add(Calendar.DATE, 1);
+		Date tomorrow = cal.getTime();
+
+		return dao.getDoneNotes(user, tomorrow, tomorrow, null);
+	}
+
+	/**
+	 * Find all the week's done notes owned by {@code user} and sorted by creation date.
+	 *
+	 * @param user Owner of the notes we are searching for.
+	 * @return List of notes.
+	 */
+	public List<Note> getDoneNotesWeek(User user) {
+		Calendar cal = Calendar.getInstance();
+		cal.clear(Calendar.HOUR);
+		cal.clear(Calendar.MINUTE);
+		cal.clear(Calendar.SECOND);
+		cal.clear(Calendar.MILLISECOND);
+		Date today = cal.getTime();
+		cal.add(Calendar.DATE, 7);
+		Date endWeek = cal.getTime();
+
+		return dao.getDoneNotes(user, today, endWeek, null);
 	}
 
 	/**
@@ -212,10 +274,9 @@ public class NoteBo {
 		cal.clear(Calendar.MINUTE);
 		cal.clear(Calendar.SECOND);
 		cal.clear(Calendar.MILLISECOND);
-		cal.add(Calendar.DAY_OF_YEAR, 1);
-		Date tomorrow = cal.getTime();
+		Date today = cal.getTime();
 
-		return dao.getCatIdByNoteIdMapDueDateBetween(user, null, tomorrow);
+		return dao.getCatIdByNoteIdMapDueDateBetween(user, null, today);
 	}
 
 	/**
@@ -230,7 +291,7 @@ public class NoteBo {
 		cal.clear(Calendar.MINUTE);
 		cal.clear(Calendar.SECOND);
 		cal.clear(Calendar.MILLISECOND);
-		cal.add(Calendar.DAY_OF_YEAR, 1);
+		cal.add(Calendar.DATE, 1);
 		Date tomorrow = cal.getTime();
 
 		return dao.getCatIdByNoteIdMapDueDateBetween(user, tomorrow, tomorrow);
@@ -249,7 +310,7 @@ public class NoteBo {
 		cal.clear(Calendar.SECOND);
 		cal.clear(Calendar.MILLISECOND);
 		Date today = cal.getTime();
-		cal.add(Calendar.DAY_OF_YEAR, 7);
+		cal.add(Calendar.DATE, 7);
 		Date endWeek = cal.getTime();
 
 		return dao.getCatIdByNoteIdMapDueDateBetween(user, today, endWeek);

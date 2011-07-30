@@ -28,13 +28,23 @@ public final class GlobalController extends AbstractDashboardController {
 	}
 
 	/**
-	 * Populate notes list.
+	 * Populate undone notes list.
 	 *
-	 * @return Users' notes.
+	 * @return Users' undone notes.
 	 */
 	@Override
-	public List<Note> populateNotesList() {
-		return noteBo.getNotes(getCurrentUser());
+	public List<Note> populateUndoneNotesList() {
+		return noteBo.getUndoneNotes(getCurrentUser());
+	}
+
+	/**
+	 * Populate done notes list.
+	 *
+	 * @return Users' done notes.
+	 */
+	@Override
+	public List<Note> populateDoneNotesList() {
+		return noteBo.getDoneNotes(getCurrentUser());
 	}
 
 	/**

@@ -44,7 +44,7 @@ public final class UserDao extends AbstractHibernateDao<User> {
 	 */
 	public List<User> getDeletableUsers() {
 		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.DAY_OF_YEAR, -3);
+		cal.add(Calendar.DATE, -3);
 		Date threeDaysAgo = cal.getTime();
 
 		Query query = query("FROM User WHERE enabled=:enabled AND deleteDate <= :deleteDate")

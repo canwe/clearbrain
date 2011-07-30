@@ -68,9 +68,9 @@ public class NoteBoTest {
 
 	private void testDeleteNote(User user, Long noteId, Long categoryId) {
 		categoryService.removeCategory(user, categoryId);
-		assertNull(service.getNotes(user).get(0).getCategory());
+		assertNull(service.getUndoneNotes(user).get(0).getCategory());
 		service.deleteNoteById(user, noteId);
-		assertTrue(service.getNotes(user).isEmpty());
+		assertTrue(service.getUndoneNotes(user).isEmpty());
 	}
 
 	private void testGetCatIdByNoteId(User user, Long noteId, Long expectedResult) {
@@ -86,7 +86,7 @@ public class NoteBoTest {
 		final SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 
 		User user = testUtils.getTestUser();
-		assertEquals(service.getNotes(user).size(), 0);
+		assertEquals(service.getUndoneNotes(user).size(), 0);
 		assertFalse(DUE_DATE_STR.equals(DUE_DATE_STR_2));
 		Note note = new Note();
 
@@ -100,8 +100,8 @@ public class NoteBoTest {
 		form.setDueDate(DUE_DATE_STR);
 		service.addEditNote(user, form);
 
-		assertEquals(service.getNotes(user).size(), 1);
-		Note insertedNote = service.getNotes(user).get(0);
+		assertEquals(service.getUndoneNotes(user).size(), 1);
+		Note insertedNote = service.getUndoneNotes(user).get(0);
 		Date createdDate = insertedNote.getCreationDate();
 		assertEquals(NoteBoTest.NOTE_NAME, insertedNote.getName());
 		assertEquals(DUE_DATE_STR, new SimpleDateFormat("MM/dd/yyyy").format(insertedNote.getDueDate()));
@@ -116,8 +116,8 @@ public class NoteBoTest {
 		form.setCategoryId(category.getId());
 		service.addEditNote(user, form);
 
-		assertEquals(service.getNotes(user).size(), 1);
-		insertedNote = service.getNotes(user).get(0);
+		assertEquals(service.getUndoneNotes(user).size(), 1);
+		insertedNote = service.getUndoneNotes(user).get(0);
 		assertEquals(NEW_NAME, insertedNote.getName());
 		assertEquals(category.getId(), insertedNote.getCategory().getId());
 		assertEquals(createdDate, insertedNote.getCreationDate()); //should not change
@@ -130,13 +130,13 @@ public class NoteBoTest {
 		form.setDueDate(DUE_DATE_STR_2);
 		service.addEditNote(user, form);
 
-		insertedNote = service.getNotes(user).get(0);
+		insertedNote = service.getUndoneNotes(user).get(0);
 		assertNull(insertedNote.getCategory());
 		assertEquals(DUE_DATE_STR_2, dateFormat.format(insertedNote.getDueDate()));
 
 		//Delete note
 		service.deleteNoteById(user, insertedNote.getId());
-		assertEquals(service.getNotes(user).size(), 0);
+		assertEquals(service.getUndoneNotes(user).size(), 0);
 	}
 
 	@Test

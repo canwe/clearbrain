@@ -38,13 +38,13 @@ public class NoteDaoTest {
 		cal.clear(Calendar.SECOND);
 		cal.clear(Calendar.MILLISECOND);
 		today = cal.getTime();
-		cal.add(Calendar.DAY_OF_YEAR, -3);
+		cal.add(Calendar.DATE, -3);
 		threeDaysAgo = cal.getTime();
-		cal.add(Calendar.DAY_OF_YEAR, +4);
+		cal.add(Calendar.DATE, +4);
 		tomorrow = cal.getTime();
-		cal.add(Calendar.DAY_OF_YEAR, +5);
+		cal.add(Calendar.DATE, +5);
 		sixDaysAfter = cal.getTime();
-		cal.add(Calendar.DAY_OF_YEAR, +3);
+		cal.add(Calendar.DATE, +3);
 		eightDaysAfter = cal.getTime();
     }
 
