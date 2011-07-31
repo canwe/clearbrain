@@ -2,36 +2,33 @@ package com.nilhcem.dao;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
 import com.nilhcem.core.hibernate.TransactionalReadOnly;
+import com.nilhcem.core.test.AbstractDbTest;
 import com.nilhcem.model.Right;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:/applicationContext-test.xml"})
 @TransactionalReadOnly
-public class RightDaoTest {
+public class RightDaoTest extends AbstractDbTest {
 	@Autowired
 	private RightDao dao;
 
 	@Test
-	public void shouldGetUserRight() {
+	public void testGetUserRight() {
 		Right userRight = dao.findByName(RightDao.RIGHT_USER);
 		assertNotNull(userRight);
 		assertEquals(RightDao.RIGHT_USER, userRight.getName());
 	}
 
 	@Test
-	public void shouldGetAdminRight() {
+	public void testGetAdminRight() {
 		Right adminRight = dao.findByName(RightDao.RIGHT_ADMIN);
 		assertNotNull(adminRight);
 		assertEquals(RightDao.RIGHT_ADMIN, adminRight.getName());
 	}
 
 	@Test
-	public void makeSureThatAdminAndUserAreNotEqual() {
+	public void testMakeSureThatAdminAndUserAreNotEqual() {
 		Right user = dao.findByName(RightDao.RIGHT_USER);
 		Right admin = dao.findByName(RightDao.RIGHT_ADMIN);
 		assertFalse(admin.getId().equals(user.getId()));

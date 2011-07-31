@@ -1,4 +1,4 @@
-1/ Use postgreSQL and create a database named "secondbrain"
+1/ Use postgreSQL and create a database named "secondbrain" and another one named "test"
 2/ Modify ~/src/main/resources/META-INF/database.properties
 3/ Don't forget to change rememberme.key in the database.properties file in a production environment. It is used for recognizing rememberme tokens
 4/ Launch mvn package

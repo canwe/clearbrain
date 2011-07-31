@@ -62,6 +62,7 @@ public class CategoryBo {
 	public List<Category> getSortedCategories(User user) {
 		//Get all categories in a HashMap
 		List<Category> allCategories = dao.getCategories(user);
+
 		Map<Long, Category> mapCategories = new HashMap<Long, Category>();
 		for (Category cat : allCategories) {
 			mapCategories.put(cat.getId(), cat);
@@ -79,7 +80,7 @@ public class CategoryBo {
 	}
 
 	/**
-	 * Add a category in database and update last user's category to modify 'next' field.
+	 * Add a category in database and link previous last category's next value to the new created one.
 	 *
 	 * @param user Owner of the category.
 	 * @param categoryName The name of the category we want to add.
@@ -95,7 +96,6 @@ public class CategoryBo {
 		//Add category
 		Category category = new Category();
 		category.setName(categoryName);
-		category.setDisplayed(true);
 		category.setUser(user);
 		category.setCreationDate(Calendar.getInstance().getTime());
 		dao.save(category);

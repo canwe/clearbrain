@@ -1,206 +1,255 @@
 package com.nilhcem.business;
 
 import static org.junit.Assert.*;
+
 import java.util.Calendar;
 import java.util.Date;
 import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.dao.SaltSource;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.nilhcem.core.hibernate.TransactionalReadWrite;
 import com.nilhcem.core.spring.UserDetailsAdapter;
+import com.nilhcem.core.test.AbstractDbTest;
 import com.nilhcem.dao.RightDao;
 import com.nilhcem.dao.UserDao;
 import com.nilhcem.form.SettingsForm;
 import com.nilhcem.model.User;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:/applicationContext-test.xml"})
-public class UserBoTest {
-	private static final String EMAIL = "###Test###@example.com";
+public class UserBoTest extends AbstractDbTest {
+	private static final Long ID = 42L;
 	private static final String PASSWORD = "myPassword";
-	private static final String LOCALE_FR = "fr_FR";
-	private static final String LOCALE_US = "en_US";
+	private static final Logger logger = LoggerFactory.getLogger(UserBoTest.class);
 
 	@Autowired
-	@Qualifier(value = "userBo")
-	private UserBo service;
-
-	@Autowired
-	private UserDao userDao;
-
+	private UserBo userBo;
 	@Autowired
 	private LanguageBo langBo;
-
 	@Autowired
-	private RightDao rightDao;
-
+	private QuickMemoBo memoBo;
+	@Autowired
+	private UserDao userDao;
 	@Autowired
 	private ShaPasswordEncoder passwordEncoder;
-
 	@Autowired
 	private SaltSource saltSource;
 
+	private User createUser(String email) {
+		User user = new User();
+		user.setEmail(email);
+		user.setPassword(UserBoTest.PASSWORD);
+		userBo.signUpUser(user, langBo.getLocaleFromCode(testUtils.LOCALE_FR));
+		return user;
+	}
+
 	@Test
 	@TransactionalReadWrite
-	@Rollback(true)
-	public void aUserCanSignUp() {
-		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.SECOND, -1);
-		Date before = cal.getTime();
-		createUser();
-		cal = Calendar.getInstance();
-		cal.add(Calendar.SECOND, 1);
-		Date after = cal.getTime();
-		checkIfUserIsSavedInDB(before, after);
-	}
+	public void testSignUp() {
+		final String email = "UserBoTest@testSignUp";
+		logger.debug("Create user");
+		Date before = testUtils.getDateBeforeTest();
+		User user = createUser(email);
+		Date after = testUtils.getDateAfterTest();
 
-	private void createUser() {
-		User user = new User();
-		user.setEmail(UserBoTest.EMAIL);
-		user.setPassword(UserBoTest.PASSWORD);
-		service.signUpUser(user, langBo.getLocalFromCode(UserBoTest.LOCALE_FR));
-	}
-
-	private User getUser() {
-		return service.findByEmail(UserBoTest.EMAIL.toUpperCase()); //emails are case-insensitive
-	}
-
-	private void checkIfUserIsSavedInDB(Date before, Date after) {
-		User userNull = service.findByEmail("");
-		assertNull(userNull);
-		User user = getUser();
+		// Check if user is saved in database
+		logger.debug("Check if a user is saved in database");
+		user = userBo.findByEmail(email);
 		assertNotNull(user);
-		assertEquals(UserBoTest.EMAIL, user.getEmail());
-		assertEquals(UserBoTest.LOCALE_FR, user.getLanguage().getCode());
+		assertTrue(user.isEnabled());
+		assertTrue(testUtils.checkDateBetween(user.getRegistrationDate(), before, after));
+		assertEquals(email, user.getEmail());
+		assertEquals(testUtils.LOCALE_FR, user.getLanguage().getCode());
 		assertNull(user.getDeleteDate());
+		assertNotNull(memoBo.getByUser(user));
 
-		//Check password
-		assertEquals(passwordEncoder.encodePassword(UserBoTest.PASSWORD, saltSource.getSalt(new UserDetailsAdapter(user))), user.getPassword());
-		aUserWhoSignsUpShouldHaveUserRight(user);
-		testDate(before, user.getRegistrationDate(), after);
-	}
-
-	private void aUserWhoSignsUpShouldHaveUserRight(User user) {
+		// Check right
+		logger.debug("Check user's rights");
 		assertNotNull(user.getRights());
 		assertEquals(1, user.getRights().size());
-		assertEquals(rightDao.findByName(RightDao.RIGHT_USER), user.getRights().get(0));
+		assertEquals(RightDao.RIGHT_USER, user.getRights().get(0).getName());
+
+		// Check password
+		assertEquals(passwordEncoder.encodePassword(UserBoTest.PASSWORD, saltSource.getSalt(new UserDetailsAdapter(user))), user.getPassword());
 	}
 
-	private void testDate(Date before, Date date, Date after) {
-		assertFalse(before.after(date));
-		assertFalse(after.before(date));
+	@Test
+	public void testFindByEmailEmpty() {
+		logger.debug("Find by empty email");
+		User user = userBo.findByEmail("");
+		assertNull(user);
 	}
 
 	@Test
 	@TransactionalReadWrite
-	public void updateAndDeleteUser() {
+	public void testFindByEmail() {
+		final String email = "UserBoTest@testFindByEmail";
+		testUtils.createTestUser(email);
+		logger.debug("Find by email");
+		User found = userBo.findByEmail(email);
+		assertNotNull(found);
+	}
+
+	@Test
+	@TransactionalReadWrite
+	public void testFindByEmailCaseInsensitive() {
+		User user = testUtils.createTestUser("UserBoTest@testFindByEmailCaseInsensitive");
+		logger.debug("Find by email (method should be case insensitive)");
+		String upperCase = user.getEmail().toUpperCase();
+		assertFalse(user.getEmail().equals(upperCase));
+		User found = userBo.findByEmail(upperCase);
+		assertNotNull(found);
+	}
+
+	//@Test
+	public void testAutoLoginAfterSignup() {
+		//TODO
+	}
+
+	//UNIT TEST
+	@Test
+	public void testHashPassword() {
+		User user = new User();
+		user.setId(UserBoTest.ID);
+		user.setEmail("UserBoTest@testHashPassword");
+		user.setPassword(UserBoTest.PASSWORD);
+		user.setEnabled(true);
+
+		String password = userBo.hashPassword(user, UserBoTest.PASSWORD);
+		logger.debug("Hashed password: {}", password);
+		assertEquals(64, password.length());
+	}
+
+	//UNIT TEST
+	@Test
+	public void testSaltPassword() {
+		User user = new User();
+		user.setId(UserBoTest.ID);
+		user.setEmail("UserBoTest@testSaltPassword");
+		user.setPassword(UserBoTest.PASSWORD);
+		user.setEnabled(true);
+
+		//Same password should not be the same for 2 different users
+		String password = userBo.hashPassword(user, UserBoTest.PASSWORD);
+		user.setId(user.getId() + 1);
+		String password2 = userBo.hashPassword(user, UserBoTest.PASSWORD);
+		logger.debug("Test salt password: != {}", password2);
+		assertFalse(password.equals(password2));
+	}
+
+	@Test
+	@TransactionalReadWrite
+	public void testUpdateSettingsWithoutUpdatingPassword() {
 		final String MY_NEW_PWD = "MY_NEW_PWD";
-		final String UNTAKEN_EMAIL = "$R)R#J(R@WQW@test";
 		assertFalse(UserBoTest.PASSWORD.equals(MY_NEW_PWD));
 
-		//Create user and settings
-		createUser();
+		//Create user
+		logger.debug("Test update settings: Create user");
+		User user = createUser("UserBoTest@testUpdateSettingsWithoutUpdatingPassword");
+		String previousPassword = user.getPassword();
+		String previousEmail = user.getEmail();
+		String previousLang = user.getLanguage().getCode();
+
+		//Create settings (update data)
 		SettingsForm settings = new SettingsForm();
-		settings.setEmail(UserBoTest.EMAIL);
+		settings.setEmail("UserBoTest@UntakenEmail"); //untaken email
 		settings.setNewPassword(MY_NEW_PWD);
-		settings.setLang(UserBoTest.LOCALE_US);
-
-		//Updates
-		updateWithoutEditingPassword(settings);
-		updateWithPasswordEdit(settings, MY_NEW_PWD);
-		updateLanguage(settings);
-		updateWithUntakenEmail(settings, UNTAKEN_EMAIL);
-
-		//Delete user
-		setAsDeletable(UNTAKEN_EMAIL);
-		deleteUser(UNTAKEN_EMAIL);
-	}
-
-	private void updateWithoutEditingPassword(SettingsForm settings) {
+		settings.setLang(testUtils.LOCALE_US);
 		settings.setEditPassword("no");
-		service.updateSettings(getUser(), settings);
-		User newUser = getUser();
-		assertEquals(service.hashPassword(newUser, UserBoTest.PASSWORD), newUser.getPassword());
+
+		//Update user
+		logger.debug("Test update settings: Update settings");
+		userBo.updateSettings(user, settings);
+		assertFalse(previousEmail.equals(user.getEmail()));
+		assertFalse(previousLang.equals(user.getLanguage().getCode()));
+		assertEquals(previousPassword, user.getPassword());
 	}
 
-	private void updateWithPasswordEdit(SettingsForm settings, String newPassword) {
+	@Test
+	@TransactionalReadWrite
+	public void testUpdateSettingsWithPasswordUpdate() {
+		final String MY_NEW_PWD = "MY_NEW_PWD";
+		assertFalse(UserBoTest.PASSWORD.equals(MY_NEW_PWD));
+
+		//Create user
+		logger.debug("Test update settings: Create user");
+		User user = createUser("UserBoTest@testUpdateSettingsWithPasswordUpdate");
+		String previousPassword = user.getPassword();
+
+		//Create settings (update data)
+		SettingsForm settings = new SettingsForm();
+		settings.setEmail(user.getEmail());
+		settings.setNewPassword(MY_NEW_PWD);
+		settings.setLang(testUtils.LOCALE_US);
 		settings.setEditPassword("yes");
-		service.updateSettings(getUser(), settings);
-		User newUser = getUser();
-		assertEquals(service.hashPassword(newUser, newPassword), newUser.getPassword());
+
+		//Update user
+		logger.debug("Test update settings: Update settings");
+		userBo.updateSettings(user, settings);
+		assertFalse(previousPassword.equals(user.getPassword()));
 	}
 
-	private void updateLanguage(SettingsForm settings) {
-		settings.setLang(UserBoTest.LOCALE_US);
-		service.updateSettings(getUser(), settings);
-		assertEquals(UserBoTest.LOCALE_US, getUser().getLanguage().getCode());
-
-		settings.setLang(UserBoTest.LOCALE_FR);
-		service.updateSettings(getUser(), settings);
-		assertEquals(UserBoTest.LOCALE_FR, getUser().getLanguage().getCode());
-	}
-
-	private void updateWithUntakenEmail(SettingsForm settings, String untakenEmail) {
-		assertNull(service.findByEmail(untakenEmail));
-		settings.setEmail(untakenEmail);
-		service.updateSettings(getUser(), settings);
-		assertNull(getUser());
-		assertNotNull(service.findByEmail(untakenEmail));
-	}
-
-	private void setAsDeletable(String email) {
-		User user = service.findByEmail(email);
+	@Test
+	@TransactionalReadWrite
+	public void testMarkAsDeletable() {
+		logger.debug("Test mark as deletable: Create user");
+		User user = createUser("UserBoTest@testMarkAsDeletable");
 		assertNull(user.getDeleteDate());
 		assertTrue(user.isEnabled());
 
 		//Mark as deletable
-		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.SECOND, -1);
-		Date before = cal.getTime();
-		service.markAsDeletable(user);
-		cal = Calendar.getInstance();
-		cal.add(Calendar.SECOND, 1);
-		Date after = cal.getTime();
+		logger.debug("Test mark as deletable: Mark as deletable");
+		Date before = testUtils.getDateBeforeTest();
+		userBo.markAsDeletable(user);
+		Date after = testUtils.getDateAfterTest();
 
 		//Check values
 		assertFalse(user.isEnabled());
-		testDate(before, user.getDeleteDate(), after);
+		assertTrue(testUtils.checkDateBetween(user.getDeleteDate(), before, after));
 	}
 
-	private void deleteUser(String email) {
+	@Test
+	@TransactionalReadWrite
+	public void testRemoveDeletableUsers() {
+		logger.debug("Test remove deletable user: Create user");
+		User user = createUser("UserBoTest@testRemoveDeletableUsers");
+		String email = user.getEmail();
+		assertNull(user.getDeleteDate());
+		assertTrue(user.isEnabled());
+
 		//Try to delete user (should failed since deleteDate < 3 days)
-		service.removeDeletableUsers();
-		User user = service.findByEmail(email);
+		logger.debug("Test remove deletable user: Try to delete user (1)");
+		userBo.removeDeletableUsers();
+		user = userBo.findByEmail(email);
 		assertNotNull(user);
 
-		//Try again with another date < 3 days [should still failed]
+		//Try again with another date < 3 days (should still failed)
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DATE, -2);
 		user.setDeleteDate(cal.getTime());
-		userDao.update(user);
-		service.removeDeletableUsers();
-		user = service.findByEmail(email);
+		logger.debug("Test remove deletable user: Try to delete user (2)");
+		userBo.removeDeletableUsers();
+		user = userBo.findByEmail(email);
 		assertNotNull(user);
 
-		//Try at last with a date >= 3 days
+		//Try at last with a date >= 3 days...but with enable == true (should failed)
 		cal = Calendar.getInstance();
 		cal.add(Calendar.DATE, -3);
 		user.setDeleteDate(cal.getTime());
-		//...but with enable == true [should failed]
 		user.setEnabled(true);
 		userDao.update(user);
+		logger.debug("Test remove deletable user: Try to delete user (3)");
+		userBo.removeDeletableUsers();
+		user = userBo.findByEmail(email);
 		assertNotNull(user);
 
-		//...and now with enable == false [should work]
+		//...and now with enable == false (should work)
 		user.setEnabled(false);
 		userDao.update(user);
-		service.removeDeletableUsers();
-		assertNull(service.findByEmail(email));
+		logger.debug("Test remove deletable user: Delete user");
+		userBo.removeDeletableUsers();
+		user = userBo.findByEmail(email);
+		assertNull(user);
 	}
 }

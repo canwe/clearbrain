@@ -1,77 +1,79 @@
 package com.nilhcem.business;
 
 import static org.junit.Assert.*;
+
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
+
 import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.nilhcem.core.hibernate.TransactionalReadWrite;
-import com.nilhcem.core.test.TestUtils;
-import com.nilhcem.dao.QuickMemoDao;
+import com.nilhcem.core.test.AbstractDbTest;
+import com.nilhcem.dao.UserDao;
 import com.nilhcem.model.QuickMemo;
 import com.nilhcem.model.User;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:/applicationContext-test.xml"})
-public class QuickMemoBoTest {
-	private final static String DEFAULT_CONTENT = "";
-	private final static String NEW_CONTENT = "Hey, this is my <br /> new content";
+public class QuickMemoBoTest extends AbstractDbTest {
+	private static final String DEFAULT_CONTENT = "";
+	private static final String NEW_CONTENT = "Hey, this is my <br /> new content";
+	private static final Logger logger = LoggerFactory.getLogger(QuickMemoBoTest.class);
 
 	@Autowired
-	private TestUtils testUtils;
+	private QuickMemoBo memoBo;
 	@Autowired
-	private QuickMemoBo service;
+	private LanguageBo langBo;
 	@Autowired
-	private QuickMemoDao dao;
+	private UserDao userDao;
 
 	@Test
-	public void aQuickMemoShouldBeCreatedWhenAUserIsCreated() {
-		User user = testUtils.getTestUser();
-		QuickMemo memo = service.getByUser(user);
+	@TransactionalReadWrite
+	public void testGetByUser() {
+		//A quick memo is created when a user is created
+		User user = testUtils.createTestUser("QuickMemoBoTest@testGetByUser");
+		logger.debug("Get by user");
+		QuickMemo memo = memoBo.getByUser(user);
 		assertNotNull(memo);
-		assertEquals(DEFAULT_CONTENT, memo.getContent());
+	}
+
+	@Test
+	@TransactionalReadWrite
+	public void testCreateQuickMemo() {
+		logger.debug("Create quick memo: Create user manually (without memo)");
+		User user = new User();
+		user.setEmail("QuickMemoBoTest@UntakenEmail");
+		user.setPassword("");
+		user.setLanguage(langBo.findByLocale(new Locale("en", "US")));
+		user.setRegistrationDate(Calendar.getInstance().getTime());
+		userDao.save(user);
+
+		logger.debug("Create quick memo: Create memo");
+		memoBo.createQuickMemo(user);
+		QuickMemo memo = memoBo.getByUser(user);
+		assertEquals(QuickMemoBoTest.DEFAULT_CONTENT, memo.getContent());
 		assertNull(memo.getSaveDate()); //save date should be null when a memo is created
+		assertEquals(user.getId(), memo.getUser().getId());
 	}
 
 	@Test
 	@TransactionalReadWrite
 	public void testUpdateMemo() {
-		//Get memo to check default values
-		User user = testUtils.getTestUser();
-		QuickMemo memo = service.getByUser(user);
-		assertFalse(NEW_CONTENT.equals(memo.getContent()));
+		User user = testUtils.createTestUser("QuickMemoBoTest@testUpdateMemo");
+		logger.debug("Update memo: Get memo");
+		QuickMemo memo = memoBo.getByUser(user);
+		assertFalse(QuickMemoBoTest.NEW_CONTENT.equals(memo.getContent()));
 
-		//Update memo and check date
-		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.SECOND, -1);
-		Date before = cal.getTime();
-		service.updateMemo(user, NEW_CONTENT);
-		cal = Calendar.getInstance();
-		cal.add(Calendar.SECOND, 1);
-		Date after = cal.getTime();
+		logger.debug("Update memo: Update memo");
+		Date before = testUtils.getDateBeforeTest();
+		memoBo.updateMemo(user,  QuickMemoBoTest.NEW_CONTENT);
+		Date after = testUtils.getDateAfterTest();
 
-		//Test updated memo values
-		QuickMemo updatedMemo = service.getByUser(user);
+		logger.debug("Update memo: Test updated values");
+		QuickMemo updatedMemo = memoBo.getByUser(user);
 		assertEquals(NEW_CONTENT, updatedMemo.getContent());
 		assertEquals(memo.getId(), updatedMemo.getId());
-		testSaveDate(before, updatedMemo.getSaveDate(), after);
-
-		//Set back default content
-		setBackDefaultValues(user);
-	}
-
-	private void testSaveDate(Date before, Date saveDate, Date after) {
-		assertFalse(before.after(saveDate));
-		assertFalse(after.before(saveDate));
-	}
-
-	private void setBackDefaultValues(User user) {
-		QuickMemo memo = service.getByUser(user);
-		memo.setSaveDate(null);
-		memo.setContent(DEFAULT_CONTENT);
-		dao.update(memo);
+		testUtils.checkDateBetween(updatedMemo.getSaveDate(), before, after);
 	}
 }

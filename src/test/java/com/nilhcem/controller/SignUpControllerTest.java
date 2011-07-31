@@ -4,24 +4,20 @@ import static org.junit.Assert.*;
 import java.util.Locale;
 import java.util.Map;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.bind.support.SimpleSessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 import com.nilhcem.core.hibernate.TransactionalReadWrite;
+import com.nilhcem.core.test.AbstractControllerTest;
 import com.nilhcem.form.SignUpForm;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:/applicationContext-test.xml", "classpath:/META-INF/spring/mvc/mvc-dispatcher-servlet.xml"})
-public class SignUpControllerTest {
+public class SignUpControllerTest extends AbstractControllerTest {
 	@Autowired
 	private SignUpController controller;
 	private final static String SIGNUP_PAGE = "front/signup";

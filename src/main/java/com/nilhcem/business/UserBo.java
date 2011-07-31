@@ -24,7 +24,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Service;
 
 /**
- * Business class for accessing {@code User} data.
+ * Service class providing methods to simplify {@code User} data management.
  *
  * @author Nilhcem
  * @since 1.0
@@ -50,9 +50,11 @@ public class UserBo {
 	private final Logger logger = LoggerFactory.getLogger(UserBo.class);
 
 	/**
-	 * Save a user in database and hash his password in SHA-256.
+	 * Register a user.
+	 * When a user subscribe on the website, this method should be called to save data,
+	 * and use Spring security features to hash and salt his password in SHA-256.
 	 *
-	 * @param user User we want to save.
+	 * @param user User who registered.
 	 * @param locale User's locale.
 	 */
 	@TransactionalReadWrite
@@ -74,7 +76,7 @@ public class UserBo {
 	}
 
 	/**
-	 * Find a user from his email.
+	 * Find a user from his email. This method is case insensitive.
 	 *
 	 * @param email Email of the User we are searching for.
 	 * @return User object, or null if not found.
@@ -106,10 +108,10 @@ public class UserBo {
 	}
 
 	/**
-	 * Hash and Salt a password.
+	 * Hash and Salt a password in SHA-256 using Spring Security features.
 	 *
 	 * @param user User object.
-	 * @param password The password we want to salt.
+	 * @param password The password we want to hash.
 	 * @return New hashed and salted password.
 	 */
 	public String hashPassword(User user, String password) {
@@ -120,6 +122,7 @@ public class UserBo {
 
 	/**
 	 * Update a {@code User} object from a SettingsForm object.
+	 * If settings.getEditPassword is equal to "no" (not equal to "yes"), do not update password.
 	 *
 	 * @param user User we need to update.
 	 * @param settings The settingsForm object which contains data to update.
@@ -127,7 +130,7 @@ public class UserBo {
 	@TransactionalReadWrite
 	public void updateSettings(User user, SettingsForm settings) {
 		user.setEmail(settings.getEmail());
-		user.setLanguage(langBo.findByLocale(langBo.getLocalFromCode(settings.getLang())));
+		user.setLanguage(langBo.findByLocale(langBo.getLocaleFromCode(settings.getLang())));
 		if (settings.getEditPassword().equals("yes")) {
 			user.setPassword(hashPassword(user, settings.getNewPassword()));
 		}
@@ -135,8 +138,8 @@ public class UserBo {
 	}
 
 	/**
-	 * Set a {@code User} as deletable by deactivating his account and setting a delete date.
-	 * A cron will then remove the user.
+	 * Set a {@code User} as "deletable" by deactivating his account and by setting a delete date.
+	 * A scheduler will then remove the user 3 days after.
 	 *
 	 * @param user User we need to delete.
 	 */
@@ -148,7 +151,7 @@ public class UserBo {
 	}
 
 	/**
-	 * Get all users which should be removed, and delete them
+	 * Get all users which should be removed (the one whose delete date >= 3 days), and delete them.
 	 */
 	@TransactionalReadWrite
 	public void removeDeletableUsers() {

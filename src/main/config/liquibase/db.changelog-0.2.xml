@@ -17,7 +17,7 @@
 			<column name="content" type="text">
 				<constraints nullable="false" />
 			</column>
-			<column name="save_date" type="timestamp" remarks="Save_date should be null when created, then should take the last saved date" >
+			<column name="save_date" type="timestamp" remarks="Save_date should be null when created, then should take the last saved date">
 				<constraints nullable="true" />
 			</column>
 			<column name="user_id" type="bigint">

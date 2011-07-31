@@ -18,6 +18,7 @@ import com.nilhcem.core.hibernate.AbstractHibernateDao;
 import com.nilhcem.enums.DashboardDateEnum;
 import com.nilhcem.model.Note;
 import com.nilhcem.model.User;
+import com.nilhcem.util.CalendarFacade;
 
 /**
  * DAO class for accessing {@code Note} data.
@@ -27,6 +28,9 @@ import com.nilhcem.model.User;
  */
 @Repository
 public final class NoteDao extends AbstractHibernateDao<Note> {
+	@Autowired
+	private CalendarFacade calendar;
+
 	@Autowired
 	public NoteDao(SessionFactory sessionFactory) {
 		super(Note.class, sessionFactory);
@@ -56,16 +60,9 @@ public final class NoteDao extends AbstractHibernateDao<Note> {
 	public Map<DashboardDateEnum, Long> getNbTaskTodoHeader(User user) {
 		//Set variables
 		Map<DashboardDateEnum, Long> map = new HashMap<DashboardDateEnum, Long>();
-		Calendar cal = Calendar.getInstance();
-		cal.clear(Calendar.HOUR);
-		cal.clear(Calendar.MINUTE);
-		cal.clear(Calendar.SECOND);
-		cal.clear(Calendar.MILLISECOND);
-		Date today = cal.getTime();
-		cal.add(Calendar.DATE, 1);
-		Date tomorrow = cal.getTime();
-		cal.add(Calendar.DATE, 6);
-		Date endWeek = cal.getTime();
+		Date today = calendar.getDateToday();
+		Date tomorrow = calendar.getDateTomorrow();
+		Date endWeek = calendar.getDateNextWeek();
 
 		//Nb tasks for today
 		Query query = query("SELECT COUNT(id) FROM Note WHERE user = :user AND resolvedDate IS NULL AND dueDate <= :today")

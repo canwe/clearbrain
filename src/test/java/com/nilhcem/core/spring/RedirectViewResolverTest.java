@@ -8,18 +8,21 @@ import org.springframework.web.servlet.view.RedirectView;
 public class RedirectViewResolverTest {
 	private final RedirectViewResolver resolver = new RedirectViewResolver();
 
+	//UNIT TEST
 	@Test
-	public void redirectViewResolverOrderShouldBeTheFirstOne() {
+	public void testRedirectViewResolverOrderShouldBeTheFirstOne() {
 		assertEquals(Integer.MIN_VALUE, resolver.getOrder());
 	}
 
+	//UNIT TEST
 	@Test
-	public void testWhenViewNameDoesntStartByRedirectPrefix() throws Exception {
+	public void testNullWhenViewNameDoesntStartByRedirectPrefix() throws Exception {
 		assertNull(resolver.resolveViewName("MyView", null));
 	}
 
+	//UNIT TEST
 	@Test
-	public void shoudRedirectWhenViewNameStartsByRedirectPrefix() throws Exception {
+	public void testRedirectWhenViewNameStartsByRedirectPrefix() throws Exception {
 		final String url = "my-view";
 		View myView = resolver.resolveViewName(RedirectViewResolver.REDIRECT_URL_PREFIX + url, null);
 		assertNotNull(myView);

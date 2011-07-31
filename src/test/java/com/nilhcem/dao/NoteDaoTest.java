@@ -6,20 +6,15 @@ import java.util.Date;
 import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.nilhcem.core.hibernate.TransactionalReadWrite;
+import com.nilhcem.core.test.AbstractDbTest;
 import com.nilhcem.core.test.TestUtils;
 import com.nilhcem.enums.DashboardDateEnum;
 import com.nilhcem.model.Note;
 import com.nilhcem.model.User;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:/applicationContext-test.xml"})
-public class NoteDaoTest {
+public class NoteDaoTest extends AbstractDbTest {
 	@Autowired
 	private NoteDao dao;
 	@Autowired
@@ -50,9 +45,8 @@ public class NoteDaoTest {
 
 	@Test
 	@TransactionalReadWrite
-	@Rollback(true)
 	public void testNbTaskTodoHeader() {
-		User user = testUtils.getTestUser();
+		User user = testUtils.createTestUser("NoteDaoTest@testNbTaskTodoHeader");
 		Map<DashboardDateEnum, Long> map;
 
 		//Create 1 note with a due date < yesterday

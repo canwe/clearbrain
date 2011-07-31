@@ -117,7 +117,6 @@
 			<column name="name" type="varchar(64)">
 				<constraints nullable="false" />
 			</column>
-			<column name="is_displayed" type="boolean" defaultValue="true" remarks="Users can choose to display or hide all the notes which belong to the specified category"/>
 			<column name="creation_date" type="timestamp">
 				<constraints nullable="false" />
 			</column>

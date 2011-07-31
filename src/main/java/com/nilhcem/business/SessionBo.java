@@ -42,7 +42,7 @@ public class SessionBo {
 
 		//Set locale
 		if (setLocale) {
-			Locale locale = langBo.getLocalFromCode(user.getLanguage().getCode());
+			Locale locale = langBo.getLocaleFromCode(user.getLanguage().getCode());
 			session.setAttribute("locale", locale);
 		}
 

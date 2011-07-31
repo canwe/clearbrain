@@ -17,6 +17,7 @@ import com.nilhcem.dao.NoteDao;
 import com.nilhcem.form.NoteForm;
 import com.nilhcem.model.Note;
 import com.nilhcem.model.User;
+import com.nilhcem.util.CalendarFacade;
 
 /**
  * Business class for accessing {@code Note} data.
@@ -31,6 +32,8 @@ public class NoteBo {
 	private NoteDao dao;
 	@Autowired
 	private CategoryDao catDao;
+	@Autowired
+	private CalendarFacade calendar;
 	private final Logger logger = LoggerFactory.getLogger(NoteBo.class);
 	private final SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 
@@ -49,7 +52,7 @@ public class NoteBo {
 		Note note = new Note();
 		note.setName(noteName);
 		note.setCategory((catId.equals(Long.valueOf(0l))) ? null : catDao.getById(user, catId));
-		note.setCreationDate(Calendar.getInstance().getTime());
+		note.setCreationDate(calendar.now());
 		note.setUser(user);
 		dao.save(note);
 
@@ -58,7 +61,7 @@ public class NoteBo {
 
 	/**
 	 * Add or edit (if form.note.id != null) a {@code Note} using a noteForm.
-	 * use form.getDueDate
+	 * If form.editDueDate == "yes", set also dueDate
 	 *
 	 * @param user Owner of the note.
 	 * @param form the form containing data to be saved.
@@ -82,7 +85,7 @@ public class NoteBo {
 		}
 
 		if (note.getId() == null) { //add
-			note.setCreationDate(Calendar.getInstance().getTime());
+			note.setCreationDate(calendar.now());
 			note.setUser(user);
 			dao.save(note);
 		}
@@ -112,13 +115,7 @@ public class NoteBo {
 	 * @return List of notes.
 	 */
 	public List<Note> getUndoneNotesToday(User user) {
-		Calendar cal = Calendar.getInstance();
-		cal.clear(Calendar.HOUR);
-		cal.clear(Calendar.MINUTE);
-		cal.clear(Calendar.SECOND);
-		cal.clear(Calendar.MILLISECOND);
-		Date today = cal.getTime();
-
+		Date today = calendar.getDateToday();
 		return dao.getUndoneNotes(user, today, today);
 	}
 
@@ -129,14 +126,7 @@ public class NoteBo {
 	 * @return List of notes.
 	 */
 	public List<Note> getUndoneNotesMissed(User user) {
-		Calendar cal = Calendar.getInstance();
-		cal.clear(Calendar.HOUR);
-		cal.clear(Calendar.MINUTE);
-		cal.clear(Calendar.SECOND);
-		cal.clear(Calendar.MILLISECOND);
-		cal.add(Calendar.DATE, -1);
-		Date yesterday = cal.getTime();
-
+		Date yesterday = calendar.getDateYesterday();
 		return dao.getUndoneNotes(user, null, yesterday);
 	}
 
@@ -147,14 +137,7 @@ public class NoteBo {
 	 * @return List of notes.
 	 */
 	public List<Note> getUndoneNotesTomorrow(User user) {
-		Calendar cal = Calendar.getInstance();
-		cal.clear(Calendar.HOUR);
-		cal.clear(Calendar.MINUTE);
-		cal.clear(Calendar.SECOND);
-		cal.clear(Calendar.MILLISECOND);
-		cal.add(Calendar.DATE, 1);
-		Date tomorrow = cal.getTime();
-
+		Date tomorrow = calendar.getDateTomorrow();
 		return dao.getUndoneNotes(user, tomorrow, tomorrow);
 	}
 
@@ -165,16 +148,7 @@ public class NoteBo {
 	 * @return List of notes.
 	 */
 	public List<Note> getUndoneNotesWeek(User user) {
-		Calendar cal = Calendar.getInstance();
-		cal.clear(Calendar.HOUR);
-		cal.clear(Calendar.MINUTE);
-		cal.clear(Calendar.SECOND);
-		cal.clear(Calendar.MILLISECOND);
-		Date today = cal.getTime();
-		cal.add(Calendar.DATE, 7);
-		Date endWeek = cal.getTime();
-
-		return dao.getUndoneNotes(user, today, endWeek);
+		return dao.getUndoneNotes(user, calendar.getDateToday(), calendar.getDateNextWeek());
 	}
 
 	/**
@@ -194,13 +168,7 @@ public class NoteBo {
 	 * @return List of notes.
 	 */
 	public List<Note> getDoneNotesToday(User user) {
-		Calendar cal = Calendar.getInstance();
-		cal.clear(Calendar.HOUR);
-		cal.clear(Calendar.MINUTE);
-		cal.clear(Calendar.SECOND);
-		cal.clear(Calendar.MILLISECOND);
-		Date today = cal.getTime();
-
+		Date today = calendar.getDateToday();
 		return dao.getDoneNotes(user, null, today, today);
 	}
 
@@ -211,14 +179,7 @@ public class NoteBo {
 	 * @return List of notes.
 	 */
 	public List<Note> getDoneNotesTomorrow(User user) {
-		Calendar cal = Calendar.getInstance();
-		cal.clear(Calendar.HOUR);
-		cal.clear(Calendar.MINUTE);
-		cal.clear(Calendar.SECOND);
-		cal.clear(Calendar.MILLISECOND);
-		cal.add(Calendar.DATE, 1);
-		Date tomorrow = cal.getTime();
-
+		Date tomorrow = calendar.getDateTomorrow();
 		return dao.getDoneNotes(user, tomorrow, tomorrow, null);
 	}
 
@@ -229,16 +190,7 @@ public class NoteBo {
 	 * @return List of notes.
 	 */
 	public List<Note> getDoneNotesWeek(User user) {
-		Calendar cal = Calendar.getInstance();
-		cal.clear(Calendar.HOUR);
-		cal.clear(Calendar.MINUTE);
-		cal.clear(Calendar.SECOND);
-		cal.clear(Calendar.MILLISECOND);
-		Date today = cal.getTime();
-		cal.add(Calendar.DATE, 7);
-		Date endWeek = cal.getTime();
-
-		return dao.getDoneNotes(user, today, endWeek, null);
+		return dao.getDoneNotes(user, calendar.getDateToday(), calendar.getDateNextWeek(), null);
 	}
 
 	/**
@@ -269,14 +221,7 @@ public class NoteBo {
 	 * @return Associative array with key = noteId, value = catId.
 	 */
 	public Map<Long, Long> getCatIdByNoteIdMapToday(User user) {
-		Calendar cal = Calendar.getInstance();
-		cal.clear(Calendar.HOUR);
-		cal.clear(Calendar.MINUTE);
-		cal.clear(Calendar.SECOND);
-		cal.clear(Calendar.MILLISECOND);
-		Date today = cal.getTime();
-
-		return dao.getCatIdByNoteIdMapDueDateBetween(user, null, today);
+		return dao.getCatIdByNoteIdMapDueDateBetween(user, null, calendar.getDateToday());
 	}
 
 	/**
@@ -286,14 +231,7 @@ public class NoteBo {
 	 * @return Associative array with key = noteId, value = catId.
 	 */
 	public Map<Long, Long> getCatIdByNoteIdMapTomorrow(User user) {
-		Calendar cal = Calendar.getInstance();
-		cal.clear(Calendar.HOUR);
-		cal.clear(Calendar.MINUTE);
-		cal.clear(Calendar.SECOND);
-		cal.clear(Calendar.MILLISECOND);
-		cal.add(Calendar.DATE, 1);
-		Date tomorrow = cal.getTime();
-
+		Date tomorrow = calendar.getDateTomorrow();
 		return dao.getCatIdByNoteIdMapDueDateBetween(user, tomorrow, tomorrow);
 	}
 
@@ -304,16 +242,7 @@ public class NoteBo {
 	 * @return Associative array with key = noteId, value = catId.
 	 */
 	public Map<Long, Long> getCatIdByNoteIdMapWeek(User user) {
-		Calendar cal = Calendar.getInstance();
-		cal.clear(Calendar.HOUR);
-		cal.clear(Calendar.MINUTE);
-		cal.clear(Calendar.SECOND);
-		cal.clear(Calendar.MILLISECOND);
-		Date today = cal.getTime();
-		cal.add(Calendar.DATE, 7);
-		Date endWeek = cal.getTime();
-
-		return dao.getCatIdByNoteIdMapDueDateBetween(user, today, endWeek);
+		return dao.getCatIdByNoteIdMapDueDateBetween(user, calendar.getDateToday(), calendar.getDateNextWeek());
 	}
 
 	/**

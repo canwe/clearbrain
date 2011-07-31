@@ -27,7 +27,6 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 public final class Category {
 	private Long id;
 	private String name;
-	private boolean displayed;
 	private Date creationDate;
 	private Category next;
 	private Long nextCategoryId;
@@ -59,14 +58,6 @@ public final class Category {
 	}
 	public void setCreationDate(Date creationDate) {
 		this.creationDate = creationDate;
-	}
-
-	@Column(name = "is_displayed")
-	public boolean isDisplayed() {
-		return this.displayed;
-	}
-	public void setDisplayed(boolean displayed) {
-		this.displayed = displayed;
 	}
 
 	@JsonIgnore

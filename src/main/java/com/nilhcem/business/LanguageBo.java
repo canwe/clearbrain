@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * Business class for accessing {@code Language} data.
+ * Service class providing methods to simplify {@code Language} data management.
  * 
  * @author Nilhcem
  * @since 1.0
@@ -40,7 +40,7 @@ public class LanguageBo {
 	 * @param code The String we need to convert.
 	 * @return A Locale object matching the String parameter.
 	 */
-	public Locale getLocalFromCode(String code) {
+	public Locale getLocaleFromCode(String code) {
 		if (code == null)
 			return null;
 		return new Locale(code.split("_")[0], code.split("_")[1]);

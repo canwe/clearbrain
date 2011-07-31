@@ -1,28 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<!-- Beans -->
+	<import resource="beans.xml" />
 
 	<!-- Database Configuration -->
-	<import resource="database/DataSource.xml" />
-	<import resource="database/Hibernate.xml" />
+	<import resource="database/dataSource.xml" />
+	<import resource="database/hibernate.xml" />
 
 	<!-- Scheduler -->
 	<import resource="scheduler/applicationContext-scheduler.xml" />
-
-	<!-- Auto scan the components: Allows to use @Autowire, @Required and @Qualifier annotations -->
-	<context:annotation-config />
-
-	<!-- Auto scan the components: Load everything (@Component, @Service...) except @Controllers -->
-	<context:component-scan base-package="com.nilhcem">
-		<context:include-filter type="regex" expression="com.nilhcem.business.*" />
-		<context:include-filter type="regex" expression="com.nilhcem.core.spring.RedirectViewResolver" />
-		<context:include-filter type="regex" expression="com.nilhcem.dao.*" />
-		<context:include-filter type="regex" expression="com.nilhcem.job.*" />
-		<context:include-filter type="regex" expression="com.nilhcem.utils.*" />
-		<context:include-filter type="regex" expression="com.nilhcem.validator.*" />
-	    <context:exclude-filter expression="org.springframework.stereotype.Controller" type="annotation"/>
-	</context:component-scan>
 </beans>
