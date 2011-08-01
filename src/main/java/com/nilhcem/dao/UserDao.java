@@ -18,6 +18,8 @@ import com.nilhcem.model.User;
  */
 @Repository
 public final class UserDao extends AbstractHibernateDao<User> {
+	private static final int DAYS_BEFORE_REMOVE_USER = 3;
+
 	@Autowired
 	public UserDao(SessionFactory sessionFactory) {
 		super(User.class, sessionFactory);
@@ -38,13 +40,13 @@ public final class UserDao extends AbstractHibernateDao<User> {
 
 	/**
 	 * Return every user which should be removed:
-	 * Those who have a deleteDate > 3 days
+	 * Those who have a deleteDate > 3 days.
 	 *
-	 * @return List of users which should be deleted
+	 * @return List of users which should be deleted.
 	 */
 	public List<User> getDeletableUsers() {
 		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.DATE, -3);
+		cal.add(Calendar.DATE, -DAYS_BEFORE_REMOVE_USER);
 		Date threeDaysAgo = cal.getTime();
 
 		Query query = query("FROM User WHERE enabled=:enabled AND deleteDate <= :deleteDate")

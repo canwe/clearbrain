@@ -75,7 +75,7 @@ public final class SettingsController extends AbstractController {
 	 * @return A new view (logged/settings).
 	 */
 	@RequestMapping(value = "/settings", method = RequestMethod.POST)
-	public ModelAndView submitSettingsPage(@ModelAttribute("settingsform") SettingsForm settingsForm, BindingResult result, 
+	public ModelAndView submitSettingsPage(@ModelAttribute("settingsform") SettingsForm settingsForm, BindingResult result,
 		SessionStatus status, HttpServletRequest request) {
 		ModelAndView modelAndView;
 		HttpSession session = request.getSession();
@@ -98,14 +98,12 @@ public final class SettingsController extends AbstractController {
 
 			//Redirect to confirmation page
 			modelAndView = new ModelAndView("redirectWithoutModel:account-deleted");
-		}
-		else { //Update settings
+		} else { //Update settings
 			settingsValidator.validate(settingsForm, result);
 			if (result.hasErrors()) {
 				session.setAttribute("settings_ko", ""); //to display error message on client side
 				modelAndView = new ModelAndView("logged/settings");
-			}
-			else {
+			} else {
 				userBo.updateSettings(getCurrentUser(), settingsForm);
 				status.setComplete();
 				session.setAttribute("settings_ok", ""); //to display confirmation message on client side
@@ -122,7 +120,8 @@ public final class SettingsController extends AbstractController {
 	 * @return true if available (or if the emailToCheck is the same as the currentEmail), false is not available.
 	 */
 	@RequestMapping(value = "/settings_check_email", method = RequestMethod.POST, params = { "emailToCheck" })
-	public @ResponseBody boolean checkEmailAvailability(@RequestParam(value = "emailToCheck", required = true) String email) {
+	@ResponseBody
+	public boolean checkEmailAvailability(@RequestParam(value = "emailToCheck", required = true) String email) {
 		User user = userBo.findByEmail(email);
 		return ((user == null) || (user.getEmail().equalsIgnoreCase(getCurrentUser().getEmail())));
 	}

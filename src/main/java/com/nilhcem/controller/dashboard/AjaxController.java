@@ -40,7 +40,8 @@ public final class AjaxController extends AbstractController {
 	 * @return The added category, or null if failed.
 	 */
 	@RequestMapping(method = RequestMethod.POST, params = { "addCat" })
-	public @ResponseBody Category addCategory(@RequestParam(value = "addCat", required = true) String name) {
+	@ResponseBody
+	public Category addCategory(@RequestParam(value = "addCat", required = true) String name) {
 		return categoryBo.addCategory(getCurrentUser(), name);
 	}
 
@@ -51,7 +52,8 @@ public final class AjaxController extends AbstractController {
 	 * @return true.
 	 */
 	@RequestMapping(method = RequestMethod.POST, params = { "rmCat" })
-	public @ResponseBody boolean removeCategory(@RequestParam(value = "rmCat", required = true) Long catId) {
+	@ResponseBody
+	public boolean removeCategory(@RequestParam(value = "rmCat", required = true) Long catId) {
 		categoryBo.removeCategory(getCurrentUser(), catId);
 		return true;
 	}
@@ -64,7 +66,8 @@ public final class AjaxController extends AbstractController {
 	 * @return true.
 	 */
 	@RequestMapping(method = RequestMethod.POST, params = { "rnmCat" })
-	public @ResponseBody boolean renameCategory(@RequestParam(value = "rnmCat", required = true) Long catId,
+	@ResponseBody
+	public boolean renameCategory(@RequestParam(value = "rnmCat", required = true) Long catId,
 		@RequestParam(value = "newName", required = true) String newName) {
 		categoryBo.renameCategory(getCurrentUser(), catId, newName);
 		return true;
@@ -76,9 +79,11 @@ public final class AjaxController extends AbstractController {
 	 * @param catId The category's id we need to update.
 	 * @param oldId The previous category (the new one will be before or after this one).
 	 * @param before The category will be before (== true) or after (== false) prevId.
+	 * @return true, or false if any error.
 	 */
 	@RequestMapping(method = RequestMethod.POST, params = { "updPos" })
-	public @ResponseBody boolean updatePosition(@RequestParam(value = "updPos", required = true) Long catId, 
+	@ResponseBody
+	public boolean updatePosition(@RequestParam(value = "updPos", required = true) Long catId,
 		@RequestParam(value = "prev", required = true) Long oldId,
 		@RequestParam(value = "before", required = true) boolean before) {
 		try {
@@ -97,7 +102,8 @@ public final class AjaxController extends AbstractController {
 	 * @return The added note.
 	 */
 	@RequestMapping(method = RequestMethod.POST, params = { "addNote" })
-	public @ResponseBody Note addNote(@RequestParam(value = "addNote", required = true) String name,
+	@ResponseBody
+	public Note addNote(@RequestParam(value = "addNote", required = true) String name,
 		@RequestParam(value = "catId", required = true) Long catId) {
 		return noteBo.addNote(getCurrentUser(), name, catId);
 	}
@@ -108,16 +114,18 @@ public final class AjaxController extends AbstractController {
 	 * @param noteId Id of the note we need to remove.
 	 * @param checked If <code>true</code> then mark the note as checked, other wise, mark it as unchecked.
 	 * @param session Http session.
+	 * @return the updated todo headers.
 	 */
 	@RequestMapping(method = RequestMethod.POST, params = { "checked" })
-	public @ResponseBody Long[] checkNote(@RequestParam(value = "noteId", required = true) Long noteId,
+	@ResponseBody
+	public Long[] checkNote(@RequestParam(value = "noteId", required = true) Long noteId,
 		@RequestParam(value = "checked", required = true) boolean checked, HttpSession session) {
 		Long[] todoHeaders = new Long[3];
 		noteBo.checkUncheckNote(getCurrentUser(), noteId, checked);
 		sessionBo.fillSession(false, session);
-		todoHeaders[0] = (Long)session.getAttribute("today");
-		todoHeaders[1] = (Long)session.getAttribute("tomorrow");
-		todoHeaders[2] = (Long)session.getAttribute("week");
+		todoHeaders[0] = (Long) session.getAttribute("today");
+		todoHeaders[1] = (Long) session.getAttribute("tomorrow");
+		todoHeaders[2] = (Long) session.getAttribute("week");
 		return todoHeaders;
 	}
 }

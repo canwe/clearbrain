@@ -21,7 +21,7 @@ import com.nilhcem.model.Note;
 @RequestMapping("/this_week")
 public final class ThisWeekController extends AbstractDashboardController {
 	/**
-	 * Set the dashboard type to the super class
+	 * Set the dashboard type to the super class.
 	 */
 	public ThisWeekController() {
 		super(DashboardDateEnum.THIS_WEEK);

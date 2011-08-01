@@ -41,8 +41,8 @@ public final class SettingsValidator implements Validator {
 	 */
 	@Override
 	public void validate(Object target, Errors errors) {
-		SettingsForm form = (SettingsForm)target;
-		User currentUser = ((UserDetailsAdapter)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getHibernateUser();
+		SettingsForm form = (SettingsForm) target;
+		User currentUser = ((UserDetailsAdapter) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getHibernateUser();
 
 		//Check password
 		if (form.getEditPassword().equals("yes")) {
@@ -65,15 +65,11 @@ public final class SettingsValidator implements Validator {
 		final Pattern pattern = Pattern.compile("\\S+@\\S+"); //if this change, see also SignUpValidator
 		Matcher matcher = pattern.matcher(form.getEmail());
 		if (matcher.find()) {
-			//Check if email has changed (compared to current email)
-			if (!form.getEmail().equalsIgnoreCase(currentUser.getEmail())) {
-				//Check email already registered
-				if (userBo.findByEmail(form.getEmail()) != null) {
-					errors.rejectValue("email", "settings.err.mailRegist");
-				}
+			//Check if email has changed (compared to current email) and email is already registered
+			if ((!form.getEmail().equalsIgnoreCase(currentUser.getEmail())) && (userBo.findByEmail(form.getEmail()) != null)) {
+				errors.rejectValue("email", "settings.err.mailRegist");
 			}
-		}
-		else {
+		} else {
 			errors.rejectValue("email", "settings.err.mail");
 		}
 	}

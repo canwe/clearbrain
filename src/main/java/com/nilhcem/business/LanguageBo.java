@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * Service class providing methods to simplify {@code Language} data management.
- * 
+ *
  * @author Nilhcem
  * @since 1.0
  */
@@ -41,8 +41,9 @@ public class LanguageBo {
 	 * @return A Locale object matching the String parameter.
 	 */
 	public Locale getLocaleFromCode(String code) {
-		if (code == null)
+		if (code == null) {
 			return null;
+		}
 		return new Locale(code.split("_")[0], code.split("_")[1]);
 	}
 }

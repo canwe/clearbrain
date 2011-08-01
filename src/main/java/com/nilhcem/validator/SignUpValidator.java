@@ -41,7 +41,7 @@ public final class SignUpValidator implements Validator {
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "user.password", "signup.err.pwd");
 
 		//Check password confirmation
-		SignUpForm signUpForm = (SignUpForm)target;
+		SignUpForm signUpForm = (SignUpForm) target;
 		if (!signUpForm.getUser().getPassword().equals(signUpForm.getPasswordConfirmation())) {
 			errors.rejectValue("passwordConfirmation", "signup.err.pwdConf");
 		}
@@ -54,8 +54,7 @@ public final class SignUpValidator implements Validator {
 			if (userBo.findByEmail(signUpForm.getUser().getEmail()) != null) {
 				errors.rejectValue("user.email", "signup.err.mailRegist");
 			}
-		}
-		else {
+		} else {
 			errors.rejectValue("user.email", "signup.err.mail");
 		}
 	}

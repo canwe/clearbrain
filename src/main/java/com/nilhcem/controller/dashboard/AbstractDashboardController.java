@@ -22,13 +22,14 @@ import com.nilhcem.model.Note;
  */
 public abstract class AbstractDashboardController extends AbstractController {
 	@Autowired
-	protected CategoryBo categoryBo;
+	/* package-private*/ CategoryBo categoryBo;
 	@Autowired
-	protected NoteBo noteBo;
-	protected DashboardDateEnum dashboardType;
+	/* package-private*/ NoteBo noteBo;
+	private DashboardDateEnum dashboardType;
 
 	/**
 	 * Define JS i18n keys and dashboard type.
+	 * @param type The type of the dashboard (see DashboardDateEnum).
 	 */
 	public AbstractDashboardController(DashboardDateEnum type) {
 		super();

@@ -38,7 +38,7 @@ public class SessionBo {
 	 */
 	@TransactionalReadOnly
 	public void fillSession(boolean setLocale, HttpSession session) {
-		User user = ((UserDetailsAdapter)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getHibernateUser();
+		User user = ((UserDetailsAdapter) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getHibernateUser();
 
 		//Set locale
 		if (setLocale) {

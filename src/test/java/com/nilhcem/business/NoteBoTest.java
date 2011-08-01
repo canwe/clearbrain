@@ -90,6 +90,27 @@ public class NoteBoTest extends AbstractDbTest {
 
 	@Test
 	@TransactionalReadWrite
+	public void testAddEditNotWithWrongDueDate() {
+		final String noteName = "Note name";
+		User user = testUtils.createTestUser("NoteBoTest@testAddEditNotWithWrongDueDate");
+		Note note = new Note();
+		note.setId(null);
+		note.setName(noteName);
+		NoteForm form = new NoteForm();
+		form.setCategoryId(zero);
+		form.setNote(note);
+		form.setEditDueDate("yes");
+		form.setDueDate("OMG");
+
+		logger.debug("test add edit note with wrong due date");
+		noteBo.addEditNote(user, form);
+
+		Note newNote = noteBo.getNoteById(user, note.getId());
+		assertNull(newNote.getDueDate());
+	}
+
+	@Test
+	@TransactionalReadWrite
 	public void testAddEditNoteAddCatAndDueDate() {
 		final String dueDateStr = "05/15/2088";
 		User user = testUtils.createTestUser("NoteBoTest@testAddEditNoteAddCatAndDueDate");

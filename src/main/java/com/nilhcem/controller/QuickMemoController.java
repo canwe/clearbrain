@@ -31,6 +31,7 @@ public final class QuickMemoController extends AbstractController {
 	 * Initialize quick memo form, giving it the QuickMemo model.
 	 *
 	 * @param model Model map.
+	 * @param locale User's locale.
 	 * @return the QuickMemo view.
 	 */
 	@RequestMapping(method = RequestMethod.GET)
@@ -41,8 +42,7 @@ public final class QuickMemoController extends AbstractController {
 		//If this is the first time a quick memo is opened, display default text
 		if (memo.getSaveDate() == null) {
 			memoForm.setInput(message.getMessage("memo.default.text", null, locale));
-		}
-		else {
+		} else {
 			memoForm.setInput(memo.getContent());
 		}
 		memoForm.setSaveDate(memo.getSaveDate());

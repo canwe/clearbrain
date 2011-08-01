@@ -21,7 +21,7 @@ import com.nilhcem.model.Note;
 @RequestMapping("/tomorrow")
 public final class TomorrowController extends AbstractDashboardController {
 	/**
-	 * Set the dashboard type to the super class
+	 * Set the dashboard type to the super class.
 	 */
 	public TomorrowController() {
 		super(DashboardDateEnum.TOMORROW);

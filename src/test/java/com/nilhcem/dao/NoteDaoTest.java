@@ -9,7 +9,6 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.nilhcem.core.hibernate.TransactionalReadWrite;
 import com.nilhcem.core.test.AbstractDbTest;
-import com.nilhcem.core.test.TestUtils;
 import com.nilhcem.enums.DashboardDateEnum;
 import com.nilhcem.model.Note;
 import com.nilhcem.model.User;
@@ -17,8 +16,6 @@ import com.nilhcem.model.User;
 public class NoteDaoTest extends AbstractDbTest {
 	@Autowired
 	private NoteDao dao;
-	@Autowired
-	private TestUtils testUtils;
 	private Date threeDaysAgo;
 	private Date today;
 	private Date tomorrow;

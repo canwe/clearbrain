@@ -22,7 +22,7 @@ import com.nilhcem.model.Note;
 @RequestMapping("/today")
 public final class TodayController extends AbstractDashboardController {
 	/**
-	 * Set the dashboard type to the super class
+	 * Set the dashboard type to the super class.
 	 */
 	public TodayController() {
 		super(DashboardDateEnum.TODAY);

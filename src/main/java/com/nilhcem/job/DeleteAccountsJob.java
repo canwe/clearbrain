@@ -15,13 +15,13 @@ import com.nilhcem.business.UserBo;
  */
 @Service
 public class DeleteAccountsJob {
-	private static final Logger logger = LoggerFactory.getLogger(DeleteAccountsJob.class);
+	private final Logger logger = LoggerFactory.getLogger(DeleteAccountsJob.class);
 
 	@Autowired
-	UserBo userBo;
+	private UserBo userBo;
 
 	/**
-	 * Delete accounts which should be deleted every day at midnight
+	 * Delete accounts which should be deleted every day at midnight.
 	 */
 	@Scheduled(cron = "0 0 0 * * ?")
 	public void deleteAccounts() {

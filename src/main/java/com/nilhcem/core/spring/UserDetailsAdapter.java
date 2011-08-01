@@ -45,7 +45,7 @@ public final class UserDetailsAdapter extends org.springframework.security.core.
 	}
 
 	/**
-	 * Used to salt password using id
+	 * Used to salt password using id.
 	 *
 	 * @return User's id.
 	 */
@@ -67,21 +67,24 @@ public final class UserDetailsAdapter extends org.springframework.security.core.
      * same {@code id} value.
      * <p>
      * In other words, the objects are equal if they have the same id, representing the same principal.
+     * @param obj The object we need to compare.
+     * @return true if objects are equal.
      */
 	@Override
-	public boolean equals(Object rhs) {
-		if (this == rhs) {
-			if (rhs instanceof UserDetailsAdapter) {
-				UserDetailsAdapter otherRhs = (UserDetailsAdapter)rhs;
-				return (id == null ? otherRhs.getId() == null : id.equals(otherRhs.getId()));
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			if (obj instanceof UserDetailsAdapter) {
+				UserDetailsAdapter otherObj = (UserDetailsAdapter) obj;
+				return (id == null ? otherObj.getId() == null : id.equals(otherObj.getId()));
 			}
-			return super.equals(rhs);
+			return super.equals(obj);
 		}
 		return false;
 	}
 
 	/**
 	 * Returns the hashcode of the {@code id}.
+	 * @return the hashcode of the object.
 	 */
 	@Override
 	public int hashCode() {

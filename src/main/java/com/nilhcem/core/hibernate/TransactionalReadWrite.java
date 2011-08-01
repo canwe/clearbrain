@@ -14,8 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Nilhcem
  * @since 1.0
  */
-@Target({ElementType.METHOD, ElementType.TYPE})
+@Target({ ElementType.METHOD, ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-@Transactional(readOnly=false, rollbackFor=Exception.class, propagation=Propagation.REQUIRED)
+@Transactional(readOnly = false, rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
 public @interface TransactionalReadWrite {
 }

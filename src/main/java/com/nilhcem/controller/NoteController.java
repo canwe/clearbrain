@@ -26,6 +26,7 @@ import org.springframework.web.util.WebUtils;
 import com.nilhcem.business.CategoryBo;
 import com.nilhcem.business.NoteBo;
 import com.nilhcem.business.SessionBo;
+import com.nilhcem.core.exception.NoNoteFoundException;
 import com.nilhcem.form.NoteForm;
 import com.nilhcem.model.Category;
 import com.nilhcem.model.Note;
@@ -80,8 +81,9 @@ public final class NoteController extends AbstractController {
 		if (noteId != null) {
 			try {
 				note = noteBo.getNoteById(getCurrentUser(), noteId);
-				if (note == null)
-					throw new Exception(); //TODO: throw custom exception
+				if (note == null) {
+					throw new NoNoteFoundException(noteId);
+				}
 
 				//Category
 				form.setCategoryId((note.getCategory() == null) ? 0L : note.getCategory().getId());
@@ -93,13 +95,11 @@ public final class NoteController extends AbstractController {
 					SimpleDateFormat dateFormatStr = new SimpleDateFormat(message.getMessage("note.caldate.formatjava", null, locale), locale);
 					form.setDueDateStr(dateFormatStr.format(note.getDueDate())); //user experience
 				}
-			}
-			catch (Exception e) {
+			} catch (NoNoteFoundException e) {
 				logger.error("", e);
 				return "redirectWithoutModel:note";
 			}
-		}
-		else {
+		} else {
 			note = new Note();
 		}
 		form.setNote(note);
@@ -115,7 +115,7 @@ public final class NoteController extends AbstractController {
 	/**
 	 * Populate categories list.
 	 *
-	 * @param Locale User's locale
+	 * @param locale User's locale
 	 * @return Users' categories.
 	 */
 	@ModelAttribute(value="categoriesList")
@@ -152,14 +152,12 @@ public final class NoteController extends AbstractController {
 			noteBo.deleteNoteById(getCurrentUser(), noteForm.getNote().getId());
 			sessionBo.fillSession(false, session);
 			modelAndView = new ModelAndView("redirectWithoutModel:dashboard");
-		}
-		else { //Add / Edit
+		} else { //Add / Edit
 			noteValidator.validate(noteForm, result);
 			if (result.hasErrors()) {
 				session.setAttribute("note_ko", ""); //to display error message on client side
 				modelAndView = new ModelAndView("logged/note");
-			}
-			else {
+			} else {
 				Long noteId = noteForm.getNote().getId();
 				noteBo.addEditNote(getCurrentUser(), noteForm);
 				status.setComplete();

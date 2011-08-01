@@ -117,7 +117,7 @@ public abstract class AbstractHibernateDao<E> {
 	 */
 	@SuppressWarnings("unchecked")
 	protected final E uniqueResult(Criteria criteria) {
-		return (E)criteria.uniqueResult();
+		return (E) criteria.uniqueResult();
 	}
 
 	/**
@@ -129,7 +129,7 @@ public abstract class AbstractHibernateDao<E> {
 	 */
 	@SuppressWarnings("unchecked")
 	protected final E uniqueResult(Query query) {
-		return (E)query.uniqueResult();
+		return (E) query.uniqueResult();
 	}
 
 	/**
@@ -141,7 +141,7 @@ public abstract class AbstractHibernateDao<E> {
 	 */
 	@SuppressWarnings("unchecked")
 	protected final E get(Serializable id) {
-		return (E)currentSession().get(entityClass, id);
+		return (E) currentSession().get(entityClass, id);
 	}
 
 	/**

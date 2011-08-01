@@ -6,7 +6,7 @@ package com.nilhcem.enums;
  *
  * @see NoteDao.getNbTaskTodoHeader
  * @see AbstractDashboardController
- * @author nilhcem
+ * @author Nilhcem
  * @since 1.0
  */
 public enum DashboardDateEnum {

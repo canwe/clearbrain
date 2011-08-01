@@ -172,8 +172,7 @@ public class CategoryBo {
 				dao.update(prevOfOldCat);
 			}
 			curCat.setNext(oldCat);
-		}
-		else {
+		} else {
 			curCat.setNext(oldCat.getNext());
 			oldCat.setNext(curCat);
 			dao.update(oldCat);

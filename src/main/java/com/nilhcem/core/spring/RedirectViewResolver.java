@@ -15,7 +15,7 @@ import org.springframework.web.servlet.view.RedirectView;
  */
 public final class RedirectViewResolver implements ViewResolver, Ordered {
     // Have a highest priority by default
-    private int order = Integer.MIN_VALUE; 
+    private int order = Integer.MIN_VALUE;
 
     // Uses this prefix to avoid interference with the default behaviour
     public static final String REDIRECT_URL_PREFIX = "redirectWithoutModel:";

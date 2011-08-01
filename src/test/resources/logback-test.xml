@@ -9,6 +9,9 @@
 	<logger name="org.hibernate.SQL" level="WARN" /> <!-- DEBUG to show SQL -->
 	<logger name="com.nilhcem" level="WARN" />
 
+	<!-- For test coverage -->
+	<logger name="com.nilhcem.business.CategoryBo" level="DEBUG" />
+
 	<root level="WARN">
 		<appender-ref ref="STDOUT" />
 	</root>

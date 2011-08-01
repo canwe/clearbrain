@@ -100,8 +100,7 @@ public class UserBo {
 			Authentication authentication = authenticationManager.authenticate(token);
 			logger.debug("Logging in with [{}]", authentication.getPrincipal());
 			SecurityContextHolder.getContext().setAuthentication(authentication);
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			SecurityContextHolder.getContext().setAuthentication(null);
 			logger.error("Failure in autoLogin", e);
 		}

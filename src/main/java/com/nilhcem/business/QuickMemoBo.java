@@ -31,14 +31,13 @@ public class QuickMemoBo {
 	 * @return QuickMemo.
 	 */
 	public QuickMemo getByUser(User user) {
-		QuickMemo memo = dao.getByUser(user);
-		return memo;
+		return dao.getByUser(user);
 	}
 
 	/**
-	 * Create a QuickMemo
+	 * Create a QuickMemo.
 	 *
-	 * @param user User of the memo
+	 * @param user User of the memo.
 	 */
 	@TransactionalReadWrite
 	public void createQuickMemo(User user) {

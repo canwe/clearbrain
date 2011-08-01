@@ -3,7 +3,6 @@ package com.nilhcem.controller;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,7 +30,7 @@ public abstract class AbstractController {
 	 * @return Current user.
 	 */
 	protected final User getCurrentUser() {
-		return ((UserDetailsAdapter)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getHibernateUser();
+		return ((UserDetailsAdapter) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getHibernateUser();
 	}
 
 	/**
@@ -42,14 +41,14 @@ public abstract class AbstractController {
 	 * @param i18nJsRemoveStr Regex substring to remove from the keys (to transfer less data)
 	 */
 	protected final void setI18nJsValues(String[] i18nJs, String i18nJsRemoveStr) {
-		this.i18nJs = i18nJs;
+		this.i18nJs = i18nJs.clone();
 		this.i18nJsRemoveStr = i18nJsRemoveStr;
 	}
 
 	/**
 	 * Inject localized strings into Javascript.
 	 *
-	 * @param Locale User's locale.
+	 * @param locale User's locale.
 	 * @return A map of i18n string for Javascript.
 	 * @throws Exception.
 	 */

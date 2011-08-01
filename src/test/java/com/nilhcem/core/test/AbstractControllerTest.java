@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * Initialize database before running controller tests.
  * Every controller test class using database should extend this abstract class.
  *
- * @author nilhcem
+ * @author Nilhcem
  * @since 1.0
  */
 @RunWith(SpringJUnit4ClassRunner.class)

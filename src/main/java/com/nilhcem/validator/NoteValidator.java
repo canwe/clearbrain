@@ -35,7 +35,7 @@ public final class NoteValidator implements Validator {
 	 */
 	@Override
 	public void validate(Object target, Errors errors) {
-		NoteForm form = (NoteForm)target;
+		NoteForm form = (NoteForm) target;
 
 		//Check name
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "note.name", "note.err.name");
@@ -44,8 +44,7 @@ public final class NoteValidator implements Validator {
 		if (form.getEditDueDate().equals("yes")) {
 			try {
 				dateFormat.parse(form.getDueDate());
-			}
-			catch (ParseException e) {
+			} catch (ParseException e) {
 				errors.rejectValue("dueDate", "note.err.duedate");
 			}
 		}

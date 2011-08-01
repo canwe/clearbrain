@@ -69,14 +69,14 @@ public final class NoteDao extends AbstractHibernateDao<Note> {
 			.setParameter("user", user)
 			.setParameter("today", today)
 			.setMaxResults(1);
-		map.put(DashboardDateEnum.TODAY, (Long)query.uniqueResult());
+		map.put(DashboardDateEnum.TODAY, (Long) query.uniqueResult());
 
 		//Nb tasks for tomorrow
 		query = query("SELECT COUNT(id) FROM Note WHERE user = :user AND resolvedDate IS NULL AND dueDate = :tomorrow")
 			.setParameter("user", user)
 			.setParameter("tomorrow", tomorrow)
 			.setMaxResults(1);
-		map.put(DashboardDateEnum.TOMORROW, (Long)query.uniqueResult());
+		map.put(DashboardDateEnum.TOMORROW, (Long) query.uniqueResult());
 
 		//Nb tasks for this week
 		query = query("SELECT COUNT(id) FROM Note WHERE user = :user AND resolvedDate IS NULL AND dueDate >= :today AND dueDate <= :endWeek")
@@ -84,7 +84,7 @@ public final class NoteDao extends AbstractHibernateDao<Note> {
 			.setParameter("today", today)
 			.setParameter("endWeek", endWeek)
 			.setMaxResults(1);
-		map.put(DashboardDateEnum.THIS_WEEK, (Long)query.uniqueResult());
+		map.put(DashboardDateEnum.THIS_WEEK, (Long) query.uniqueResult());
 
 		return map;
 	}
@@ -103,10 +103,12 @@ public final class NoteDao extends AbstractHibernateDao<Note> {
 				.add(Restrictions.isNull("resolvedDate"))
 				.addOrder(Order.asc("creationDate"));
 
-		if (from != null)
+		if (from != null) {
 			crit.add(Restrictions.ge("dueDate", from));
-		if (to != null)
+		}
+		if (to != null) {
 			crit.add(Restrictions.le("dueDate", to));
+		}
 		return list(crit);
 	}
 
@@ -156,15 +158,17 @@ public final class NoteDao extends AbstractHibernateDao<Note> {
 					.add(Projections.property("category.id")))
 				.add(Restrictions.eq("user", user));
 
-		if (from != null)
+		if (from != null) {
 			crit.add(Restrictions.ge("dueDate", from));
-		if (to != null)
+		}
+		if (to != null) {
 			crit.add(Restrictions.le("dueDate", to));
+		}
 
 		Map<Long, Long> map = new HashMap<Long, Long>();
 		List<Object[]> result = listObjectArray(crit);
 		for (Object[] res : result) {
-			map.put((Long)res[0], (res[1] == null ? 0L : (Long)res[1]));
+			map.put((Long) res[0], (res[1] == null ? 0L : (Long) res[1]));
 		}
 		return map;
 	}

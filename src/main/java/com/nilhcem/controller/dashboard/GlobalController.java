@@ -21,7 +21,7 @@ import com.nilhcem.model.Note;
 @RequestMapping("/dashboard")
 public final class GlobalController extends AbstractDashboardController {
 	/**
-	 * Set the dashboard type to the super class
+	 * Set the dashboard type to the super class.
 	 */
 	public GlobalController() {
 		super(DashboardDateEnum.GLOBAL);

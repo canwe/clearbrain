@@ -5,7 +5,6 @@ import java.util.Locale;
 import java.util.Map;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import com.nilhcem.core.test.AbstractControllerTest;
 
 public class SettingsControllerTest extends AbstractControllerTest {

@@ -4,7 +4,6 @@ import com.nilhcem.business.UserBo;
 import com.nilhcem.core.hibernate.TransactionalReadOnly;
 import com.nilhcem.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -30,7 +29,7 @@ public class HibernateUserDetailsService implements UserDetailsService {
 	 * @return UserDetails object which contains the user's data (login/password/enabled/authorities).
 	 * @throws UsernameNotFoundException if we can't find the user from the database.
 	 */
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException {
+	public UserDetails loadUserByUsername(String username) {
 		User user = userBo.findByEmail(username);
 		if (user == null) {
 			throw new UsernameNotFoundException("user not found");

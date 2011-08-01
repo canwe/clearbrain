@@ -35,7 +35,7 @@ public final class SignUpController extends AbstractController {
 	 */
 	public SignUpController() {
 		super();
-		final String[] i18nJs = {"signup.err.pwd", "signup.err.pwdConf", "signup.err.mailRegist", "signup.err.mail", 
+		final String[] i18nJs = {"signup.err.pwd", "signup.err.pwdConf", "signup.err.mailRegist", "signup.err.mail",
 			"signup.ok.mail", "signup.ok.pwd", "signup.ok.pwdConf"};
 		super.setI18nJsValues(i18nJs, "^signup\\.");
 	}
@@ -93,7 +93,8 @@ public final class SignUpController extends AbstractController {
 	 * @return true if available, false is not available.
 	 */
 	@RequestMapping(value = "/signup", method = RequestMethod.POST, params = { "emailToCheck" })
-	public @ResponseBody boolean checkEmailAvailability(@RequestParam(value = "emailToCheck", required = true) String email) {
+	@ResponseBody
+	public boolean checkEmailAvailability(@RequestParam(value = "emailToCheck", required = true) String email) {
 		return (userBo.findByEmail(email) == null);
 	}
 }

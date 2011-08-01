@@ -78,8 +78,7 @@ public class NoteBo {
 		if (form.getEditDueDate().equals("yes")) {
 			try {
 				note.setDueDate(dateFormat.parse(form.getDueDate()));
-			}
-			catch (ParseException e) {
+			} catch (ParseException e) {
 				logger.error("", e);
 			}
 		}
@@ -88,8 +87,7 @@ public class NoteBo {
 			note.setCreationDate(calendar.now());
 			note.setUser(user);
 			dao.save(note);
-		}
-		else { //edit
+		} else { //edit
 			Note realNote = dao.getById(user, note.getId());
 			realNote.setName(note.getName());
 			realNote.setCategory(note.getCategory());
@@ -271,8 +269,7 @@ public class NoteBo {
 		Note note = getNoteById(user, noteId);
 		if (checked) {
 			note.setResolvedDate(Calendar.getInstance().getTime());
-		}
-		else {
+		} else {
 			note.setResolvedDate(null);
 		}
 		dao.update(note);
