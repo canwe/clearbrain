@@ -5,14 +5,17 @@ import static org.junit.Assert.*;
 import java.util.Calendar;
 import java.util.Date;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.security.authentication.dao.SaltSource;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextImpl;
+
 import com.nilhcem.core.hibernate.TransactionalReadWrite;
 import com.nilhcem.core.spring.UserDetailsAdapter;
-import com.nilhcem.core.test.AbstractDbTest;
+import com.nilhcem.core.test.abstr.AbstractDbTest;
 import com.nilhcem.dao.RightDao;
 import com.nilhcem.dao.UserDao;
 import com.nilhcem.form.SettingsForm;
@@ -21,7 +24,6 @@ import com.nilhcem.model.User;
 public class UserBoTest extends AbstractDbTest {
 	private static final Long ID = 42L;
 	private static final String PASSWORD = "myPassword";
-	private static final Logger logger = LoggerFactory.getLogger(UserBoTest.class);
 
 	@Autowired
 	private UserBo userBo;
@@ -48,13 +50,13 @@ public class UserBoTest extends AbstractDbTest {
 	@TransactionalReadWrite
 	public void testSignUp() {
 		final String email = "UserBoTest@testSignUp";
-		logger.debug("Create user");
+
+		// Create a user.
 		Date before = testUtils.getDateBeforeTest();
 		User user = createUser(email);
 		Date after = testUtils.getDateAfterTest();
 
-		// Check if user is saved in database
-		logger.debug("Check if a user is saved in database");
+		// Check if user is saved in database.
 		user = userBo.findByEmail(email);
 		assertNotNull(user);
 		assertTrue(user.isEnabled());
@@ -64,19 +66,17 @@ public class UserBoTest extends AbstractDbTest {
 		assertNull(user.getDeleteDate());
 		assertNotNull(memoBo.getByUser(user));
 
-		// Check right
-		logger.debug("Check user's rights");
+		// Check user's rights.
 		assertNotNull(user.getRights());
 		assertEquals(1, user.getRights().size());
 		assertEquals(RightDao.RIGHT_USER, user.getRights().get(0).getName());
 
-		// Check password
+		// Check password.
 		assertEquals(passwordEncoder.encodePassword(UserBoTest.PASSWORD, saltSource.getSalt(new UserDetailsAdapter(user))), user.getPassword());
 	}
 
 	@Test
 	public void testFindByEmailEmpty() {
-		logger.debug("Find by empty email");
 		User user = userBo.findByEmail("");
 		assertNull(user);
 	}
@@ -86,7 +86,7 @@ public class UserBoTest extends AbstractDbTest {
 	public void testFindByEmail() {
 		final String email = "UserBoTest@testFindByEmail";
 		testUtils.createTestUser(email);
-		logger.debug("Find by email");
+
 		User found = userBo.findByEmail(email);
 		assertNotNull(found);
 	}
@@ -95,19 +95,72 @@ public class UserBoTest extends AbstractDbTest {
 	@TransactionalReadWrite
 	public void testFindByEmailCaseInsensitive() {
 		User user = testUtils.createTestUser("UserBoTest@testFindByEmailCaseInsensitive");
-		logger.debug("Find by email (method should be case insensitive)");
+
 		String upperCase = user.getEmail().toUpperCase();
 		assertFalse(user.getEmail().equals(upperCase));
 		User found = userBo.findByEmail(upperCase);
 		assertNotNull(found);
 	}
 
-	//@Test
-	public void testAutoLoginAfterSignup() {
-		//TODO
+	@Test
+	@TransactionalReadWrite
+	public void testAutoLoginAfterSignupWithDisabledUser() {
+		User user = testUtils.createTestUser("UserBoTest@testAutoLoginAfterSignupWithDisabledUser");
+
+		// Create a security context.
+		SecurityContext securityContext = new SecurityContextImpl();
+		SecurityContextHolder.setContext(securityContext);
+
+		// Create an HTTP request.
+		MockHttpServletRequest request = new MockHttpServletRequest();
+
+		// Call autologin.
+		userBo.autoLoginAfterSignup(user.getEmail(), "", request);
+		assertNull(securityContext.getAuthentication());
 	}
 
-	//UNIT TEST
+	@Test
+	@TransactionalReadWrite
+	public void testAutoLoginAfterSignupWithWrongPassword() {
+		final String password = "P@$$#0RD.~";
+		User user = testUtils.createTestUser("UserBoTest@testAutoLoginAfterSignupWithWrongPassword");
+		user.setPassword(userBo.hashPassword(user, password));
+		userDao.update(user);
+
+		// Create a security context.
+		SecurityContext securityContext = new SecurityContextImpl();
+		SecurityContextHolder.setContext(securityContext);
+
+		// Create an HTTP request.
+		MockHttpServletRequest request = new MockHttpServletRequest();
+
+		// Call autologin.
+		userBo.autoLoginAfterSignup(user.getEmail(), password.toLowerCase(), request);
+		assertNull(securityContext.getAuthentication());
+	}
+
+	@Test
+	@TransactionalReadWrite
+	public void testAutoLoginAfterSignup() {
+		final String password = "P@$$#0RD.~";
+		User user = testUtils.createTestUser("UserBoTest@testAutoLoginAfterSignup");
+		user.setEnabled(true);
+		user.setPassword(userBo.hashPassword(user, password));
+		userDao.update(user);
+
+		// Create a security context.
+		SecurityContext securityContext = new SecurityContextImpl();
+		SecurityContextHolder.setContext(securityContext);
+
+		// Create an HTTP request.
+		MockHttpServletRequest request = new MockHttpServletRequest();
+
+		// Call autologin.
+		userBo.autoLoginAfterSignup(user.getEmail(), password, request);
+		assertNotNull(securityContext.getAuthentication());
+		assertEquals(user.getEmail(), securityContext.getAuthentication().getName());
+	}
+
 	@Test
 	public void testHashPassword() {
 		User user = new User();
@@ -117,11 +170,9 @@ public class UserBoTest extends AbstractDbTest {
 		user.setEnabled(true);
 
 		String password = userBo.hashPassword(user, UserBoTest.PASSWORD);
-		logger.debug("Hashed password: {}", password);
 		assertEquals(64, password.length());
 	}
 
-	//UNIT TEST
 	@Test
 	public void testSaltPassword() {
 		User user = new User();
@@ -130,11 +181,10 @@ public class UserBoTest extends AbstractDbTest {
 		user.setPassword(UserBoTest.PASSWORD);
 		user.setEnabled(true);
 
-		//Same password should not be the same for 2 different users
+		// Same password should not be the same for 2 different users.
 		String password = userBo.hashPassword(user, UserBoTest.PASSWORD);
 		user.setId(user.getId() + 1);
 		String password2 = userBo.hashPassword(user, UserBoTest.PASSWORD);
-		logger.debug("Test salt password: != {}", password2);
 		assertFalse(password.equals(password2));
 	}
 
@@ -144,22 +194,20 @@ public class UserBoTest extends AbstractDbTest {
 		final String MY_NEW_PWD = "MY_NEW_PWD";
 		assertFalse(UserBoTest.PASSWORD.equals(MY_NEW_PWD));
 
-		//Create user
-		logger.debug("Test update settings: Create user");
+		// Create a user.
 		User user = createUser("UserBoTest@testUpdateSettingsWithoutUpdatingPassword");
 		String previousPassword = user.getPassword();
 		String previousEmail = user.getEmail();
 		String previousLang = user.getLanguage().getCode();
 
-		//Create settings (update data)
+		// Create settings (update data).
 		SettingsForm settings = new SettingsForm();
-		settings.setEmail("UserBoTest@UntakenEmail"); //untaken email
+		settings.setEmail("UserBoTest@UntakenEmail"); // untaken email
 		settings.setNewPassword(MY_NEW_PWD);
 		settings.setLang(testUtils.LOCALE_US);
 		settings.setEditPassword("no");
 
-		//Update user
-		logger.debug("Test update settings: Update settings");
+		// Update settings.
 		userBo.updateSettings(user, settings);
 		assertFalse(previousEmail.equals(user.getEmail()));
 		assertFalse(previousLang.equals(user.getLanguage().getCode()));
@@ -172,20 +220,18 @@ public class UserBoTest extends AbstractDbTest {
 		final String MY_NEW_PWD = "MY_NEW_PWD";
 		assertFalse(UserBoTest.PASSWORD.equals(MY_NEW_PWD));
 
-		//Create user
-		logger.debug("Test update settings: Create user");
+		// Create a user.
 		User user = createUser("UserBoTest@testUpdateSettingsWithPasswordUpdate");
 		String previousPassword = user.getPassword();
 
-		//Create settings (update data)
+		// Create settings (update data).
 		SettingsForm settings = new SettingsForm();
 		settings.setEmail(user.getEmail());
 		settings.setNewPassword(MY_NEW_PWD);
 		settings.setLang(testUtils.LOCALE_US);
 		settings.setEditPassword("yes");
 
-		//Update user
-		logger.debug("Test update settings: Update settings");
+		// Update settings.
 		userBo.updateSettings(user, settings);
 		assertFalse(previousPassword.equals(user.getPassword()));
 	}
@@ -193,18 +239,17 @@ public class UserBoTest extends AbstractDbTest {
 	@Test
 	@TransactionalReadWrite
 	public void testMarkAsDeletable() {
-		logger.debug("Test mark as deletable: Create user");
+		// Create a user.
 		User user = createUser("UserBoTest@testMarkAsDeletable");
 		assertNull(user.getDeleteDate());
 		assertTrue(user.isEnabled());
 
-		//Mark as deletable
-		logger.debug("Test mark as deletable: Mark as deletable");
+		// Mark as deletable.
 		Date before = testUtils.getDateBeforeTest();
 		userBo.markAsDeletable(user);
 		Date after = testUtils.getDateAfterTest();
 
-		//Check values
+		// Check values.
 		assertFalse(user.isEnabled());
 		assertTrue(testUtils.checkDateBetween(user.getDeleteDate(), before, after));
 	}
@@ -212,42 +257,38 @@ public class UserBoTest extends AbstractDbTest {
 	@Test
 	@TransactionalReadWrite
 	public void testRemoveDeletableUsers() {
-		logger.debug("Test remove deletable user: Create user");
+		// Create a user.
 		User user = createUser("UserBoTest@testRemoveDeletableUsers");
 		String email = user.getEmail();
 		assertNull(user.getDeleteDate());
 		assertTrue(user.isEnabled());
 
-		//Try to delete user (should failed since deleteDate < 3 days)
-		logger.debug("Test remove deletable user: Try to delete user (1)");
+		// Try to delete user (should failed since deleteDate < 3 days).
 		userBo.removeDeletableUsers();
 		user = userBo.findByEmail(email);
 		assertNotNull(user);
 
-		//Try again with another date < 3 days (should still failed)
+		// Try again with another date < 3 days (should still failed).
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DATE, -2);
 		user.setDeleteDate(cal.getTime());
-		logger.debug("Test remove deletable user: Try to delete user (2)");
 		userBo.removeDeletableUsers();
 		user = userBo.findByEmail(email);
 		assertNotNull(user);
 
-		//Try at last with a date >= 3 days...but with enable == true (should failed)
+		// Try at last with a date >= 3 days...but with enable == true (should failed).
 		cal = Calendar.getInstance();
 		cal.add(Calendar.DATE, -3);
 		user.setDeleteDate(cal.getTime());
 		user.setEnabled(true);
 		userDao.update(user);
-		logger.debug("Test remove deletable user: Try to delete user (3)");
 		userBo.removeDeletableUsers();
 		user = userBo.findByEmail(email);
 		assertNotNull(user);
 
-		//...and now with enable == false (should work)
+		// ...and now with enable == false (should work).
 		user.setEnabled(false);
 		userDao.update(user);
-		logger.debug("Test remove deletable user: Delete user");
 		userBo.removeDeletableUsers();
 		user = userBo.findByEmail(email);
 		assertNull(user);

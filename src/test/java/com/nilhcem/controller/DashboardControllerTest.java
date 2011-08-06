@@ -6,7 +6,7 @@ import java.util.Map;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.nilhcem.controller.dashboard.GlobalController;
-import com.nilhcem.core.test.AbstractControllerTest;
+import com.nilhcem.core.test.abstr.AbstractControllerTest;
 
 public class DashboardControllerTest extends AbstractControllerTest {
 	@Autowired

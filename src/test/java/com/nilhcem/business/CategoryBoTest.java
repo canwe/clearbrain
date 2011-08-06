@@ -9,20 +9,17 @@ import java.util.List;
 import liquibase.exception.LiquibaseException;
 
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.nilhcem.core.exception.CategoriesOrderException;
 import com.nilhcem.core.hibernate.TransactionalReadWrite;
-import com.nilhcem.core.test.AbstractDbTest;
+import com.nilhcem.core.test.abstr.AbstractDbTest;
 import com.nilhcem.model.Category;
 import com.nilhcem.model.Note;
 import com.nilhcem.model.User;
 
 public class CategoryBoTest extends AbstractDbTest {
 	private static final String[] CATEGORIES = new String[] {"1", "2", "3", "4", "5"};
-	private static final Logger logger = LoggerFactory.getLogger(CategoryBoTest.class);
 
 	@Autowired
 	private CategoryBo categoryBo;
@@ -43,7 +40,7 @@ public class CategoryBoTest extends AbstractDbTest {
 		final String categoryName = "CategoryName";
 		User user = testUtils.createTestUser("CategoryBoTest@testAddCategory");
 
-		logger.debug("Add category: Add first category");
+		// Add first category.
 		Date before = testUtils.getDateBeforeTest();
 		Category category = categoryBo.addCategory(user, categoryName);
 		Date after = testUtils.getDateAfterTest();
@@ -51,7 +48,7 @@ public class CategoryBoTest extends AbstractDbTest {
 		assertEquals(categoryName, category.getName());
 		assertTrue(testUtils.checkDateBetween(category.getCreationDate(), before, after));
 
-		logger.debug("Add category: Check next field is properly set");
+		// Check if next field is properly set.
 		Category category2 = categoryBo.addCategory(user, "cat2");
 		assertNotNull(category.getNext());
 		assertSame(category2, category.getNext());
@@ -62,7 +59,8 @@ public class CategoryBoTest extends AbstractDbTest {
 		User user = testUtils.createTestUserNewPropagation("CategoryBoTest@testRemoveCategory");
 		addCategories(user);
 		List<Category> cats = categoryBo.getSortedCategories(user);
-		logger.debug("Remove categories");
+
+		// Remove categories.
 		categoryBo.removeCategory(user, cats.get(3).getId());
 		checkIfCategoriesAreProperlyAddedAndSorted(user, new String[] {"1", "2", "3", "5"});
 		categoryBo.removeCategory(user, cats.get(1).getId());
@@ -92,10 +90,11 @@ public class CategoryBoTest extends AbstractDbTest {
 		final String categoryName = "CategoryName";
 		final String newName = "NewName";
 		User user = testUtils.createTestUser("CategoryBoTest@testRenameCategory");
-		logger.debug("Rename category: Create category");
+
+		// Create a category.
 		Category category = categoryBo.addCategory(user, categoryName);
 
-		logger.debug("Rename category: Rename category");
+		// Rename the category.
 		assertFalse(categoryName.equals(newName));
 		assertEquals(categoryName, category.getName());
 		categoryBo.renameCategory(user, category.getId(), newName);
@@ -109,7 +108,7 @@ public class CategoryBoTest extends AbstractDbTest {
 		addCategories(user);
 		List<Category> cats = categoryBo.getSortedCategories(user);
 
-		logger.debug("Update position");
+		// Update position.
 		categoryBo.updatePosition(user, cats.get(1).getId(), cats.get(0).getId(), true);
 		checkIfCategoriesAreProperlyAddedAndSorted(user, new String[] {"2", "1", "3", "4", "5"});
 		categoryBo.updatePosition(user, cats.get(1).getId(), cats.get(4).getId(), false);
@@ -125,14 +124,14 @@ public class CategoryBoTest extends AbstractDbTest {
 	}
 
 	private void addCategories(User user) {
-		logger.debug("Add categories");
+		// Add categories.
 		for (String category : CategoryBoTest.CATEGORIES) {
 			categoryBo.addCategory(user, category);
 		}
 	}
 
 	private void checkIfCategoriesAreProperlyAddedAndSorted(User user, String[] expectedOrder) {
-		logger.debug("Check if categories are properly added and sorted");
+		// Check if categories are properly added and sorted.
 		List<Category> sortedCategories = categoryBo.getSortedCategories(user);
 		assertEquals(expectedOrder.length, sortedCategories.size());
 		

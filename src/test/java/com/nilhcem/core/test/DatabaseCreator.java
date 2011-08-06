@@ -26,7 +26,7 @@ public class DatabaseCreator {
 		if (!DatabaseCreator.databaseInitialized) {
 			Connection conn = dataSource.getConnection();
 			Liquibase liquibase = new Liquibase(LIQUIBASE_FILE, new FileSystemResourceAccessor(), new JdbcConnection(conn));
-			liquibase.dropAll(); //drop all data before launching unit tests
+			liquibase.dropAll(); // Drop all data before launching unit tests.
 			liquibase.update("");
 			conn.close();
 			DatabaseCreator.databaseInitialized = true;

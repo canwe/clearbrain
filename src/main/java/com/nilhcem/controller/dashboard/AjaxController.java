@@ -1,6 +1,9 @@
 package com.nilhcem.controller.dashboard;
 
 import javax.servlet.http.HttpSession;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -32,6 +35,7 @@ public final class AjaxController extends AbstractController {
 	private NoteBo noteBo;
 	@Autowired
 	private SessionBo sessionBo;
+	private final Logger logger = LoggerFactory.getLogger(AjaxController.class);
 
 	/**
 	 * Add a category.
@@ -89,6 +93,7 @@ public final class AjaxController extends AbstractController {
 		try {
 			categoryBo.updatePosition(getCurrentUser(), catId, oldId, before);
 		} catch (CategoriesOrderException e) {
+			logger.error(e.getMessage());
 			return false;
 		}
 		return true;

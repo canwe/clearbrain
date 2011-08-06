@@ -14,7 +14,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.bind.support.SimpleSessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 import com.nilhcem.core.hibernate.TransactionalReadWrite;
-import com.nilhcem.core.test.AbstractControllerTest;
+import com.nilhcem.core.test.abstr.AbstractControllerTest;
 import com.nilhcem.form.SignUpForm;
 
 public class SignUpControllerTest extends AbstractControllerTest {
@@ -73,7 +73,7 @@ public class SignUpControllerTest extends AbstractControllerTest {
 		ModelAndView modelAndView = getModelAndViewSignUpPage(email, PASSWORD, PASSWORD);
 		assertEquals("redirectWithoutModel:signup-completed", modelAndView.getViewName());
 		assertNotNull(modelAndView.getModel());
-		checkEmailAvailabilityShouldReturnFalse(email);
+		assertFalse(controller.checkEmailAvailability(email));
 	}
 
 	@Test
@@ -83,11 +83,7 @@ public class SignUpControllerTest extends AbstractControllerTest {
 
 	@Test
 	public void checkEmailAvailabilityShouldReturnTrue() {
-		assertTrue(controller.checkEmailAvailability("###@###.###")); // this email should not be taken by anybody
-	}
-
-	public void checkEmailAvailabilityShouldReturnFalse(String email) {
-		assertFalse(controller.checkEmailAvailability(email));
+		assertTrue(controller.checkEmailAvailability("###@###.###")); // This email should not be taken by anybody.
 	}
 
 	@Test

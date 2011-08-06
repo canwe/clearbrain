@@ -5,7 +5,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.nilhcem.core.hibernate.TransactionalReadOnly;
-import com.nilhcem.core.test.AbstractDbTest;
+import com.nilhcem.core.test.abstr.AbstractDbTest;
 import com.nilhcem.model.Right;
 
 @TransactionalReadOnly

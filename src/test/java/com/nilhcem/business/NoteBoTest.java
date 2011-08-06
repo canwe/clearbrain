@@ -7,12 +7,10 @@ import java.util.Date;
 import java.util.Map;
 
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.nilhcem.core.hibernate.TransactionalReadWrite;
-import com.nilhcem.core.test.AbstractDbTest;
+import com.nilhcem.core.test.abstr.AbstractDbTest;
 import com.nilhcem.form.NoteForm;
 import com.nilhcem.model.Category;
 import com.nilhcem.model.Note;
@@ -22,7 +20,6 @@ import com.nilhcem.util.CalendarFacade;
 public class NoteBoTest extends AbstractDbTest {
 	private static final Long zero = Long.valueOf(0l);
 	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-	private static final Logger logger = LoggerFactory.getLogger(NoteBoTest.class);
 
 	@Autowired
 	private NoteBo noteBo;
@@ -36,7 +33,8 @@ public class NoteBoTest extends AbstractDbTest {
 	public void testAddNoteWithoutCategory() {
 		final String noteName = "My Note";
 		User user = testUtils.createTestUser("NoteBoTest@testAddNoteWithoutCategory");
-		logger.debug("Add note with no category");
+
+		// Add note with no category.
 		Date before = testUtils.getDateBeforeTest();
 		Note note = noteBo.addNote(user, noteName, zero);
 		Date after = testUtils.getDateAfterTest();
@@ -53,9 +51,11 @@ public class NoteBoTest extends AbstractDbTest {
 	public void testAddNoteWithCategory() {
 		final String categoryName = "My Category";
 		User user = testUtils.createTestUser("NoteBoTest@testAddNoteWithCategory");
-		logger.debug("Test add note with category: Add category");
+
+		// Add a category.
 		Category category = categoryBo.addCategory(user, categoryName);
-		logger.debug("Test add note with category: Add note");
+
+		// Add a note.
 		Note note = noteBo.addNote(user, "Note name", category.getId());
 		Note newNote = noteBo.getNoteById(user, note.getId());
 		assertEquals(category.getId(), newNote.getCategory().getId());
@@ -75,7 +75,7 @@ public class NoteBoTest extends AbstractDbTest {
 		form.setEditDueDate("no");
 		form.setDueDate("05/15/2088");
 
-		logger.debug("test add edit note (add) : Add note");
+		// Add a note.
 		Date before = testUtils.getDateBeforeTest();
 		noteBo.addEditNote(user, form);
 		Date after = testUtils.getDateAfterTest();
@@ -102,9 +102,8 @@ public class NoteBoTest extends AbstractDbTest {
 		form.setEditDueDate("yes");
 		form.setDueDate("OMG");
 
-		logger.debug("test add edit note with wrong due date");
+		// Add/Edit a note with a wrong due date.
 		noteBo.addEditNote(user, form);
-
 		Note newNote = noteBo.getNoteById(user, note.getId());
 		assertNull(newNote.getDueDate());
 	}
@@ -114,7 +113,8 @@ public class NoteBoTest extends AbstractDbTest {
 	public void testAddEditNoteAddCatAndDueDate() {
 		final String dueDateStr = "05/15/2088";
 		User user = testUtils.createTestUser("NoteBoTest@testAddEditNoteAddCatAndDueDate");
-		logger.debug("Add/edit note (add cat and due date): Add category");
+
+		// Add a category.
 		Category category = categoryBo.addCategory(user, "My category");
 
 		Note note = new Note();
@@ -126,7 +126,7 @@ public class NoteBoTest extends AbstractDbTest {
 		form.setEditDueDate("yes");
 		form.setDueDate(dueDateStr);
 
-		logger.debug("Add/edit note (add cat and due date): Add note");
+		// Add a note.
 		noteBo.addEditNote(user, form);
 
 		Note newNote = noteBo.getNoteById(user, note.getId());
@@ -143,11 +143,11 @@ public class NoteBoTest extends AbstractDbTest {
 		assertFalse(noteName.equals(noteNewName));
 		User user = testUtils.createTestUser("NoteBoTest@testAddEditNoteEdit");
 
-		logger.debug("Add/edit note (edit): Add note");
+		// Add a note.
 		Note note = noteBo.addNote(user, noteName, zero);
 		Date creationDate = note.getCreationDate();
 
-		logger.debug("Add/edit note (edit): Add category");
+		// Add a category.
 		Category category = categoryBo.addCategory(user, "My category");
 
 		NoteForm form = new NoteForm();
@@ -157,7 +157,7 @@ public class NoteBoTest extends AbstractDbTest {
 		form.setEditDueDate("yes");
 		form.setDueDate(dueDateStr);
 
-		logger.debug("Add/edit note (edit): Edit note");
+		// Edit a note.
 		noteBo.addEditNote(user, form);
 
 		Note editedNote = noteBo.getNoteById(user, note.getId());
@@ -318,7 +318,7 @@ public class NoteBoTest extends AbstractDbTest {
 		User user = testUtils.createTestUser("NoteBoTest@testGetNoteById");
 		assertNull(noteBo.getNoteById(user, 42L));
 
-		logger.debug("Get note by id: Add note");
+		// Add a note.
 		Note note = noteBo.addNote(user, "NoteName", 0L);
 		assertEquals(note.getId(), noteBo.getNoteById(user, note.getId()).getId());
 	}
@@ -427,11 +427,11 @@ public class NoteBoTest extends AbstractDbTest {
 		User user = testUtils.createTestUser("NoteBoTest@testDeleteNoteById");
 		noteBo.deleteNoteById(user, 42L);
 
-		logger.debug("Delete note by id: Add note");
+		// Add a note.
 		Note note = noteBo.addNote(user, "Note", 0L);
 		Long idNote = note.getId();
 
-		logger.debug("Delete note by id: Delete note");
+		// Delete a note.
 		noteBo.deleteNoteById(user, idNote);
 		assertNull(noteBo.getNoteById(user, idNote));
 	}
@@ -440,19 +440,18 @@ public class NoteBoTest extends AbstractDbTest {
 	@TransactionalReadWrite
 	public void testCheckUncheckNote() {
 		User user = testUtils.createTestUser("NoteBoTest@testCheckUncheckNote");
-		//TODO
 
-		logger.debug("Check/Uncheck note: Add note");
+		// Add a note.
 		Note note = noteBo.addNote(user, "name", 0L);
 
-		logger.debug("Check/Uncheck note: Test check note");
+		// Check a note.
 		Date before = testUtils.getDateBeforeTest();
 		noteBo.checkUncheckNote(user, note.getId(), true);
 		Date after = testUtils.getDateAfterTest();
 		assertNotNull(note.getResolvedDate());
 		assertTrue(testUtils.checkDateBetween(note.getResolvedDate(), before, after));
 
-		logger.debug("Check/Uncheck note: Test uncheck note");
+		// Uncheck a note.
 		noteBo.checkUncheckNote(user, note.getId(), false);
 		assertNull(note.getResolvedDate());
 	}
@@ -476,7 +475,7 @@ public class NoteBoTest extends AbstractDbTest {
 			form.setDueDate(dueDateStr);
 		}
 
-		logger.debug("create note");
+		// Add a note.
 		noteBo.addEditNote(user, form);
 		if (checked) {
 			noteBo.checkUncheckNote(user, note.getId(), true);

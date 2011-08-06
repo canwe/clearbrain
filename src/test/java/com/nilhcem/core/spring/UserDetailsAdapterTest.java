@@ -23,7 +23,6 @@ public class UserDetailsAdapterTest {
 		user.getRights().add(right);
     }
 
-    //UNIT TEST
 	@Test
 	public void testConversionUserIntoUserDetails() {
 		UserDetailsAdapter userDetails = new UserDetailsAdapter(user);

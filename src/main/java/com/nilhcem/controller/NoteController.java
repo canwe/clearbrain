@@ -77,7 +77,7 @@ public final class NoteController extends AbstractController {
 		Note note = null;
 		NoteForm form = new NoteForm();
 
-		//Check if we edit a note, or we add a new one. If we edit a note, check that the id is correct.
+		// Check if we edit a note, or we add a new one. If we edit a note, check that the id is correct.
 		if (noteId != null) {
 			try {
 				note = noteBo.getNoteById(getCurrentUser(), noteId);
@@ -85,15 +85,15 @@ public final class NoteController extends AbstractController {
 					throw new NoNoteFoundException(noteId);
 				}
 
-				//Category
+				// Category.
 				form.setCategoryId((note.getCategory() == null) ? 0L : note.getCategory().getId());
 
-				//Due date
+				// Due date.
 				if (note.getDueDate() != null) {
 					form.setEditDueDate("yes");
-					form.setDueDate(dateFormat.format(note.getDueDate())); //real one
+					form.setDueDate(dateFormat.format(note.getDueDate())); // Real date data.
 					SimpleDateFormat dateFormatStr = new SimpleDateFormat(message.getMessage("note.caldate.formatjava", null, locale), locale);
-					form.setDueDateStr(dateFormatStr.format(note.getDueDate())); //user experience
+					form.setDueDateStr(dateFormatStr.format(note.getDueDate())); // For user experience (display date in a better way).
 				}
 			} catch (NoNoteFoundException e) {
 				logger.error("", e);
@@ -122,7 +122,7 @@ public final class NoteController extends AbstractController {
 	public Map<Long, String> populateCategories(Locale locale) {
 		Map<Long, String> map = new LinkedHashMap<Long, String>();
 
-		//Put unclassified category
+		// Put unclassified category.
 		map.put(0L, message.getMessage("note.cat.unclassified", null, locale));
 		List<Category> categories = categoryBo.getSortedCategories(getCurrentUser());
 		for (Category category : categories) {
@@ -146,13 +146,13 @@ public final class NoteController extends AbstractController {
 		ModelAndView modelAndView;
 		HttpSession session = request.getSession();
 
-		//Delete
+		// Delete.
 		if (WebUtils.hasSubmitParameter(request, "_action_delete")) {
-			//TODO: Prevent CSRF
+			// TODO: Prevent CSRF.
 			noteBo.deleteNoteById(getCurrentUser(), noteForm.getNote().getId());
 			sessionBo.fillSession(false, session);
 			modelAndView = new ModelAndView("redirectWithoutModel:dashboard");
-		} else { //Add / Edit
+		} else { // Add / Edit.
 			noteValidator.validate(noteForm, result);
 			if (result.hasErrors()) {
 				session.setAttribute("note_ko", ""); //to display error message on client side

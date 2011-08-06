@@ -58,7 +58,7 @@ public final class QuickMemoController extends AbstractController {
 	 * @return A new view (logged/quick-memo).
 	 */
 	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView submitSignUpPage(@ModelAttribute("memoform") QuickMemoForm memoForm, SessionStatus status) {
+	public ModelAndView submitQuickMemoPage(@ModelAttribute("memoform") QuickMemoForm memoForm, SessionStatus status) {
 		status.setComplete();
 		quickMemoBo.updateMemo(getCurrentUser(), memoForm.getInput());
 		return new ModelAndView("redirectWithoutModel:quick_memo");

@@ -1,4 +1,4 @@
-package com.nilhcem.core.test;
+package com.nilhcem.core.test.abstr;
 
 import java.sql.SQLException;
 
@@ -9,6 +9,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import com.nilhcem.core.test.DatabaseCreator;
+import com.nilhcem.core.test.TestUtils;
 
 /**
  * Initialize database before running controller tests.
@@ -22,6 +25,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public abstract class AbstractControllerTest {
 	@Autowired
 	private DatabaseCreator dbCreator;
+	@Autowired
+	protected TestUtils testUtils;
 
     @Before
     public void setUp() throws SQLException, LiquibaseException {
