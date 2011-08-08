@@ -64,14 +64,10 @@
 	<c:if test="${fn:length(missedList) > 0}">
 		<div class="title"><spring:message code="dashboard.note.missedTitle" /></div><br />
 		<c:forEach items="${missedList}" var="cur">
-			<div id="note-${cur.id}" class="note">
-				<input type="checkbox" />
-				<c:out value="${cur.name}" />
-				<span id="noteedit-${cur.id}" class="notes-edit">
-					<a href="<spring:url value="/note?id=${cur.id}" />"><img src="<spring:url value="/images/logged/edit.gif" />" /></a>
-				</span>
-				<div id="notecat-${cur.id}" class="note-category"></div>
-			</div>
+			<c:import url="/WEB-INF/views/logged/dashboard-notes.jsp">
+				<c:param name="id">${cur.id}</c:param>
+				<c:param name="name">${cur.name}</c:param>
+			</c:import>
 		</c:forEach>
 		<br />
 	</c:if>
@@ -120,14 +116,10 @@
 			</c:if>
 			<%-- Undone notes list --%>
 			<c:forEach items="${notesList}" var="cur">
-				<div id="note-${cur.id}" class="note">
-					<input type="checkbox" />
-					<c:out value="${cur.name}" />
-					<span id="noteedit-${cur.id}" class="notes-edit">
-						<a href="<spring:url value="/note?id=${cur.id}" />"><img src="<spring:url value="/images/logged/edit.gif" />" /></a>
-					</span>
-					<div id="notecat-${cur.id}" class="note-category"></div>
-				</div>
+				<c:import url="/WEB-INF/views/logged/dashboard-notes.jsp">
+					<c:param name="id">${cur.id}</c:param>
+					<c:param name="name">${cur.name}</c:param>
+				</c:import>
 			</c:forEach>
 		</div>
 		<br /><br />
@@ -155,14 +147,11 @@
 
 		<%-- Done notes list --%>
 		<c:forEach items="${doneList}" var="cur">
-			<div id="note-${cur.id}" class="note">
-				<input type="checkbox" checked="checked" />
-				<c:out value="${cur.name}" />
-				<span id="noteedit-${cur.id}" class="notes-edit">
-					<a href="<spring:url value="/note?id=${cur.id}" />"><img src="<spring:url value="/images/logged/edit.gif" />" /></a>
-				</span>
-				<div id="notecat-${cur.id}" class="note-category"></div>
-			</div>
+			<c:import url="/WEB-INF/views/logged/dashboard-notes.jsp">
+				<c:param name="id">${cur.id}</c:param>
+				<c:param name="name">${cur.name}</c:param>
+				<c:param name="checked">true</c:param>
+			</c:import>
 		</c:forEach>
 		<br />
 	</div>

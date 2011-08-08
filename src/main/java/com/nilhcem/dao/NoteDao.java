@@ -1,6 +1,5 @@
 package com.nilhcem.dao;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -128,11 +127,8 @@ public final class NoteDao extends AbstractHibernateDao<Note> {
 				.addOrder(Order.asc("creationDate"));
 
 		if (resolvedDate != null) {
-			Calendar cal = Calendar.getInstance();
-			cal.setTime(resolvedDate);
-			cal.add(Calendar.DATE, 1);
 			crit.add(Restrictions.ge("resolvedDate", resolvedDate));
-			crit.add(Restrictions.lt("resolvedDate", cal.getTime()));
+			crit.add(Restrictions.lt("resolvedDate", calendar.getDateAfter(resolvedDate)));
 		}
 		if (from != null) {
 			crit.add(Restrictions.ge("dueDate", from));

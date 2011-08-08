@@ -15,7 +15,7 @@ import com.nilhcem.model.User;
 public class SignUpValidatorTest extends AbstractValidatorTest {
 	@Autowired
 	private SignUpValidator validator;
-	private final String password = "Password";
+	private static final String PASSWORD = "Password";
 
 	@Override
 	@Test
@@ -55,13 +55,13 @@ public class SignUpValidatorTest extends AbstractValidatorTest {
 		SignUpForm form = new SignUpForm();
 		User user = new User();
 		user.setEmail(email); // email is already taken.
-		user.setPassword(password);
+		user.setPassword(SignUpValidatorTest.PASSWORD);
 		form.setUser(user);
-		form.setPasswordConfirmation(password);
+		form.setPasswordConfirmation(SignUpValidatorTest.PASSWORD);
 
 		// Create HTTP request.
 		MockHttpServletRequest request = new MockHttpServletRequest("post", "url");
-		request.addParameter("user.password", password);
+		request.addParameter("user.password", SignUpValidatorTest.PASSWORD);
 
 		// Validate data.
 		BindingResult result = getBindingResult(form, request);
@@ -75,13 +75,13 @@ public class SignUpValidatorTest extends AbstractValidatorTest {
 		SignUpForm form = new SignUpForm();
 		User user = new User();
 		user.setEmail("new@email");
-		user.setPassword(password);
+		user.setPassword(SignUpValidatorTest.PASSWORD);
 		form.setUser(user);
-		form.setPasswordConfirmation(password);
+		form.setPasswordConfirmation(SignUpValidatorTest.PASSWORD);
 
 		// Create HTTP request.
 		MockHttpServletRequest request = new MockHttpServletRequest("post", "url");
-		request.addParameter("user.password", password);
+		request.addParameter("user.password", SignUpValidatorTest.PASSWORD);
 
 		// Validate data.
 		BindingResult result = getBindingResult(form, request);

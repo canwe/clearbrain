@@ -45,7 +45,7 @@ public class NoteControllerTest extends AbstractControllerTest {
 	@Autowired
 	protected MessageSource message;
 	private final Locale localeEn = new Locale("en", "US");
-	private final String requestUrl = "/note";
+	private static final String REQUEST_URL= "/note";
 
 	@Test
 	public void testJavascriptLocales() {
@@ -145,7 +145,7 @@ public class NoteControllerTest extends AbstractControllerTest {
 		WebDataBinder binder = new WebDataBinder(noteForm, "noteform");
 
 		if (request == null) {
-			request = new MockHttpServletRequest("post", requestUrl);
+			request = new MockHttpServletRequest("post", NoteControllerTest.REQUEST_URL);
 		}
 
 		if (parameters != null) {
@@ -178,7 +178,7 @@ public class NoteControllerTest extends AbstractControllerTest {
 	@Test
 	public void testAddEditNoteWithError() {
 		// Create request and session.
-		MockHttpServletRequest request = new MockHttpServletRequest("post", requestUrl);
+		MockHttpServletRequest request = new MockHttpServletRequest("post", NoteControllerTest.REQUEST_URL);
 		MockHttpSession session = new MockHttpSession();
 		request.setSession(session);
 
@@ -201,7 +201,7 @@ public class NoteControllerTest extends AbstractControllerTest {
 		User user = testUtils.createAuthenticatedTestUser("NoteControllerTest@testAddNote");
 
 		// Create request and session.
-		MockHttpServletRequest request = new MockHttpServletRequest("post", requestUrl);
+		MockHttpServletRequest request = new MockHttpServletRequest("post", NoteControllerTest.REQUEST_URL);
 		MockHttpSession session = new MockHttpSession();
 		request.setSession(session);
 
@@ -233,7 +233,7 @@ public class NoteControllerTest extends AbstractControllerTest {
 		note.setName(newNoteName);
 
 		// Create request and session.
-		MockHttpServletRequest request = new MockHttpServletRequest("post", requestUrl);
+		MockHttpServletRequest request = new MockHttpServletRequest("post", NoteControllerTest.REQUEST_URL);
 		MockHttpSession session = new MockHttpSession();
 		request.setSession(session);
 

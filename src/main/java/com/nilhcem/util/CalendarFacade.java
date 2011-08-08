@@ -19,10 +19,10 @@ public class CalendarFacade {
 	 */
 	private Calendar getCalendarDateToday() {
 		Calendar cal = Calendar.getInstance();
-		cal.clear(Calendar.HOUR);
-		cal.clear(Calendar.MINUTE);
-		cal.clear(Calendar.SECOND);
-		cal.clear(Calendar.MILLISECOND);
+		cal.set(Calendar.HOUR, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);
 		return cal;
 	}
 
@@ -82,5 +82,17 @@ public class CalendarFacade {
 	 */
 	public Date now() {
 		return Calendar.getInstance().getTime();
+	}
+
+	/**
+	 * Get the date after the one in parameter.
+	 * @param date Date as reference. Will return the date after this one.
+	 * @return A new {@code Date} object set 1 day after the date in parameter.
+	 */
+	public Date getDateAfter(Date date) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.add(Calendar.DATE, 1);
+		return cal.getTime();
 	}
 }
