@@ -1,0 +1,43 @@
+// Variables
+@dark-blue: #395972;
+@footer-height: 3.5em;
+@login-bgcolor: #6689A3;
+@loginbox-radius: 12px;
+@side-padding: 5px;
+
+// Mixins
+.white-link-not-underlined() {
+	color: #FFF;
+	text-decoration: none;
+}
+
+.rounded-corners(@radius) {
+	border-radius: @radius;
+	-moz-border-radius: @radius;
+	-webkit-border-radius: @radius;
+}
+
+// Common classes
+.main-box {
+	background-color: #FFF;
+	border: 1px solid #D0D0D0;
+	padding: 30px 0;
+}
+
+.success-block, .error-block {
+	background-position: 2% 54%;
+	background-repeat: no-repeat;
+	display: block;
+	height: 2em;
+	margin-right: 15px;
+	padding-left: 25px;
+	padding-top: 1px;
+}
+
+.error-block {
+	background-image: url('../../images/front/cross.png');
+}
+
+.success-block {
+	background-image: url('./../blueprint/plugins/buttons/icons/tick.png');
+}

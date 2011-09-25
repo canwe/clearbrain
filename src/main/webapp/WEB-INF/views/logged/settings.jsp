@@ -1,5 +1,5 @@
 <%@include file="/WEB-INF/views/logged/header.jsp"%>
-<script type="text/javascript" src="<spring:url value="/js/logged/settings.js" />"></script>
+<script type="text/javascript" src="<spring:url value="/wro/settings.js" />"></script>
 
 <form:form method="POST" commandName="settingsform" class="inline">
 	<form:hidden id="current-email" path="currentEmail" />
@@ -105,11 +105,15 @@
 		</div>
 		<div class="span-14 last">
 			<form:radiobutton id="lang1" path="lang" value="en_US"/>
-				<img src="<spring:url value="/images/lang/en_US.png" />" title="English (United States)" alt="EN" />
-				<label for="lang1">English (United States)</label><br />
+				<label for="lang1">
+					<img src="<spring:url value="/images/front/lang/en_US.png" />" title="English (United States)" alt="EN" />
+					English (United States)
+				</label><br />
 			<form:radiobutton id="lang2" path="lang" value="fr_FR"/>
-				<img src="<spring:url value="/images/lang/fr_FR.png" />" title="Fran&ccedil;ais (France)" alt="FR" />
-				<label for="lang2">Fran&ccedil;ais (France)</label>
+				<label for="lang2">
+					<img src="<spring:url value="/images/front/lang/fr_FR.png" />" title="Fran&ccedil;ais (France)" alt="FR" />
+					Fran&ccedil;ais (France)
+				</label>
 		</div>
 	</div>
 

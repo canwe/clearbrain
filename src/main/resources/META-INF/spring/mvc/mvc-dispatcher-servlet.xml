@@ -8,8 +8,8 @@
         http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
-	<!-- Auto scan the components: Load @Controllers only -->
-	<context:component-scan base-package="com.nilhcem" use-default-filters="false">
+	<!-- Auto scans the components: Load @Controllers only -->
+	<context:component-scan base-package="com.nilhcem.clearbrain" use-default-filters="false">
 	    <context:include-filter expression="org.springframework.stereotype.Controller" type="annotation"/>
 	</context:component-scan>
 
@@ -32,8 +32,8 @@
 			</list>
 		</property>
 	</bean>
-	<!-- Custom locale resolver to automatically get the right locale when a user logs in (depending on his profile information) -->
-	<bean id="localeResolver" class="com.nilhcem.core.spring.CustomLocaleResolver">
+	<!-- Automatically gets the right locale when a user logs in (depending on his profile information) -->
+	<bean id="localeResolver" class="com.nilhcem.clearbrain.core.spring.CustomLocaleResolver">
 		<property name="defaultLocale" value="en_US" />
 	</bean>
 	<mvc:interceptors>
@@ -42,7 +42,8 @@
 	    </bean>
 	</mvc:interceptors>
 
-	<!-- Exclude folders from being mapped by Spring MVC -->
+	<!-- Excludes folders from being mapped by Spring MVC -->
+	<mvc:resources mapping="/wro/**" location="/wro/" />
 	<mvc:resources mapping="/css/**" location="/css/" />
 	<mvc:resources mapping="/images/**" location="/images/" />
 	<mvc:resources mapping="/js/**" location="/js/" />
@@ -50,8 +51,9 @@
 	<!-- Forwards requests to some views -->
 	<mvc:view-controller path="/" view-name="front/welcome" />
 	<mvc:view-controller path="/login" view-name="front/login" />
-	<mvc:view-controller path="/account-deleted" view-name="front/accountDeleted" />
+	<mvc:view-controller path="/account-deleted" view-name="front/account-deleted" />
+	<mvc:view-controller path="/help" view-name="logged/help" />
 	<!-- TODO
-	<mvc:view-controller path="/access-denied" view-name="AccessDenied" />
+	<mvc:view-controller path="/access-denied" view-name="access-denied" />
 	 -->
 </beans>

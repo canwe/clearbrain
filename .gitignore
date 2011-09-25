@@ -8,11 +8,14 @@ target/*
 # Ignore reports folder
 reports/*
 
-# Ignore specs folder
-specs/*
+# Ignore indexes folder
+indexes/*
 
 # Ignore webapp's META-INF folder
 src/main/webapp/META-INF/*
+
+# Ignore webapp's WRO generated files
+src/main/webapp/wro/*
 
 # Ignore eclipse files
 .classpath

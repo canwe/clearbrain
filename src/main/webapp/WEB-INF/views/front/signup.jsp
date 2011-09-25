@@ -2,13 +2,13 @@
 <br /><br /><br />
 
 <div class="main-box span-24 last">
-	<div id="signup-container" class="prepend-3 span-21 last">
-		<h2><img src="<spring:url value="/images/front/tick-grey.png" htmlEscape="true" />" alt="" /> <spring:message code="signup.title" /></h2>
+	<div class="signup-container prepend-3 span-21 last">
+		<h2><img src="<spring:url value="/images/front/tick-grey.png" />" alt="" /> <spring:message code="signup.title" /></h2>
 		<h3 class="alt"><spring:message code="signup.subtitle" /></h3>
 	</div>
 
 	<form:form method="POST" commandName="signupform" class="inline">
-		<div class="prepend-5 span-19 last signup-line-height">
+		<div class="signup-line-height prepend-5 span-19 last">
 			<div class="span-5">
 				<label for="email"><spring:message code="signup.mainEmail" /></label>
 			</div>

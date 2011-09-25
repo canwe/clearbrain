@@ -76,17 +76,39 @@ body {
 
 #m-today span {
 	background-color: #DD4600;
-	margin-left: 33px;
 }
 
 #m-tomorrow span {
 	background-color: #4E39AD;
-	margin-left: 57px;
 }
 
 #m-week span {
 	background-color: #9D9EB2;
+}
+
+/* Patch for coordinates depending on user language */
+.m-today-notif-en_US, .m-today-notif-zh_CN {
+	margin-left: 33px;
+}
+
+.m-today-notif-fr_FR {
+	margin-left: 63px;
+}
+
+.m-tomorrow-notif-en_US, .m-tomorrow-notif-zh_CN {
 	margin-left: 57px;
+}
+
+.m-tomorrow-notif-fr_FR {
+	margin-left: 41px;
+}
+
+.m-week-notif-en_US, .m-week-notif-zh_CN {
+	margin-left: 57px;
+}
+
+.m-week-notif-fr_FR {
+	margin-left: 79px;
 }
 
 .m-dropdown {
@@ -497,7 +519,7 @@ body {
 	top: -6px;
 }
 
-.no-note {
+.no-data {
 	color: #353A60;
 	font-style: italic;
 }
@@ -537,7 +559,7 @@ body {
 
 
 /*** Quick memo ***/
-.hiddenClass {
+.hidden-class {
 	visibility: hidden;
 }
 
@@ -564,4 +586,66 @@ body {
     font-style: italic;
     margin-top: 31px;
     text-align: center;
+}
+
+
+/*** Search ***/
+#search-form {
+	line-height: 1.5;
+}
+
+#search-form h3 {
+	margin-bottom: 15px;
+}
+
+#search-form #search {
+	height: 24px;
+	padding: 0 4px;
+	width: 100%;
+}
+
+#search-form button {
+	color: #205791;
+	margin: 6px;
+	padding: 3px 5px;
+}
+
+.search-note {
+	width: 775px;
+}
+
+
+/*** Statistics ***/
+#chart-div {
+	height: 400px;
+	margin: 0 auto;
+	padding-top: 18px;
+	width: 800px;
+}
+
+#chart-no-data {
+    padding-top: 18px;
+    text-align: center;
+}
+
+
+/*** Help ***/
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+    background: url("../images/logged/bg-header.png") !important;
+}
+
+#accordion h3 {
+	font-weight: bold;
+	margin-bottom: 4px;
+	padding: 7px;
+}
+
+#accordion span {
+	display: inline;
+	float: left;
+}
+
+.ui-accordion-content {
+	margin: -5px 0 4px;
+	padding: 4px 14px;
 }

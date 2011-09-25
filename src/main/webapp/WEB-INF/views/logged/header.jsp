@@ -10,26 +10,20 @@
 <head>
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<link rel="stylesheet" href="<spring:url value="/css/blueprint/screen.css" />" media="screen, projection" />
 	<link rel="stylesheet" href="<spring:url value="/css/blueprint/print.css" />" type="text/css" media="print" />
 	<!--[if lt IE 8]>
 	<link rel="stylesheet" href="<spring:url value="/css/blueprint/ie.css" />" type="text/css" media="screen, projection" />
 	<![endif]-->
-    <link rel="stylesheet" href="<spring:url value="/css/blueprint/plugins/fancy-type/screen.css" />" type="text/css" media="screen, projection" />
-    <link rel="stylesheet" href="<spring:url value="/css/blueprint/plugins/buttons/screen.css" />" type="text/css" media="screen, projection" />
-	<link rel="stylesheet" href="<spring:url value="/css/logged.css" />" type="text/css" media="screen, projection" />
-	<script type="text/javascript" src="<spring:url value="/js/jquery-1.6.2.min.js" />"></script>
-	<script type="text/javascript" src="<spring:url value="/js/jquery-ui-1.8.14.custom.min.js" />"></script>
-	<script type="text/javascript" src="<spring:url value="/js/jquery-clearfield.min.js" />"></script>
-	<script type="text/javascript" src="<spring:url value="/js/core.js" />"></script>
+	<link rel="stylesheet" href="<spring:url value="/wro/logged.css" />" type="text/css" media="screen, projection" />
+	<script type="text/javascript" src="<spring:url value="/wro/logged.js" />"></script>
+
 	<script type="text/javascript">
-	jQuery(function($){$('#m-notes-container, #m-profile-container').hover(function(){$(this).find('.dropdown').removeClass("hide-forced");},function(){$(this).find('.dropdown').addClass("hide-forced");});$('#m-notes-container, #m-profile-container').find('.dropdown').live('hover', function(event){event.stopPropagation();});});
 	<c:if test="${i18nJS != null && not empty i18nJS}">
 		var i18n = new Array();
 		<c:forEach var="entry" items="${i18nJS}">i18n["${entry.key}"]="${entry.value}";</c:forEach>
 	</c:if>
 	</script>
-	<title>~S2NDBRN logged~</title>
+	<title>~ClearBrain logged~</title>
 </head>
 
 <body>
@@ -40,19 +34,19 @@
 				<div id="logo"><a href="<spring:url value="/dashboard" />">ClearBrain</a></div>
 				<a id="m-today" class="m-datebox" href="<spring:url value="/today" />">
 					<spring:message code="header.menu.today" />
-					<span <c:if test="${sessionScope.today == null || sessionScope.today == '0'}"> class="hide-forced"</c:if>>
+					<span class="m-today-notif-${sessionScope.locale}<c:if test="${sessionScope.today == null || sessionScope.today == '0'}"> hide-forced</c:if>">
 						${sessionScope.today}
 					</span>
 				</a>
 				<a id="m-tomorrow" class="m-datebox" href="<spring:url value="/tomorrow" />">
 					<spring:message code="header.menu.tomorrow" />
-					<span <c:if test="${sessionScope.tomorrow == null || sessionScope.tomorrow == '0'}"> class="hide-forced"</c:if>>
+					<span class="m-tomorrow-notif-${sessionScope.locale}<c:if test="${sessionScope.tomorrow == null || sessionScope.tomorrow == '0'}"> hide-forced</c:if>">
 						${sessionScope.tomorrow}
 					</span>
 				</a>
 				<a id="m-week" class="m-datebox" href="<spring:url value="/this_week" />">
 					<spring:message code="header.menu.week" />
-					<span <c:if test="${sessionScope.week == null || sessionScope.week == '0'}"> class="hide-forced"</c:if>>
+					<span class="m-week-notif-${sessionScope.locale}<c:if test="${sessionScope.week == null || sessionScope.week == '0'}"> hide-forced</c:if>">
 						${sessionScope.week}
 					</span>
 				</a>
@@ -70,14 +64,19 @@
 								</a>
 							</li>
 							<li>
-								<a id="m-stats" href="javascript:alert('TODO');"><spring:message code="header.menu.stats" /></a>
+								<a id="m-stats" href="<spring:url value="/statistics" />">
+									<spring:message code="header.menu.stats" />
+								</a>
 							</li>
 							<li>
-								<a id="m-help" href="javascript:alert('TODO');"><spring:message code="header.menu.help" /></a>
+								<a id="m-help" href="<spring:url value="/help" />">
+									<spring:message code="header.menu.help" />
+								</a>
 							</li>
 							<li>
 								<a id="m-logout" href="<spring:url value="/j_spring_security_logout" />">
-								<spring:message code="header.menu.logout" /></a>
+									<spring:message code="header.menu.logout" />
+								</a>
 							</li>
 						</ul>
 					</div>
@@ -95,7 +94,7 @@
 								<a id="m-memo" href="<spring:url value="/quick_memo" />"><spring:message code="header.menu.memo" /></a>
 							</li>
 							<li>
-								<a id="m-search" href="javascript:alert('TODO');"><spring:message code="header.menu.search" /></a>
+								<a id="m-search" href="<spring:url value="/search" />"><spring:message code="header.menu.search" /></a>
 							</li>
 						</ul>
 					</div>

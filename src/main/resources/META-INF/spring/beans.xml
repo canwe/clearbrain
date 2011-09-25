@@ -9,13 +9,13 @@
 	<context:annotation-config />
 
 	<!-- Auto scan the components: Load everything (@Component, @Service...) except @Controllers -->
-	<context:component-scan base-package="com.nilhcem">
-		<context:include-filter type="regex" expression="com.nilhcem.business.*" />
-		<context:include-filter type="regex" expression="com.nilhcem.core.spring.RedirectViewResolver" />
-		<context:include-filter type="regex" expression="com.nilhcem.dao.*" />
-		<context:include-filter type="regex" expression="com.nilhcem.job.*" />
-		<context:include-filter type="regex" expression="com.nilhcem.util.*" />
-		<context:include-filter type="regex" expression="com.nilhcem.validator.*" />
+	<context:component-scan base-package="com.nilhcem.clearbrain">
+		<context:include-filter type="regex" expression="com.nilhcem.clearbrain.business.*" />
+		<context:include-filter type="regex" expression="com.nilhcem.clearbrain.core.spring.RedirectViewResolver" />
+		<context:include-filter type="regex" expression="com.nilhcem.clearbrain.dao.*" />
+		<context:include-filter type="regex" expression="com.nilhcem.clearbrain.job.*" />
+		<context:include-filter type="regex" expression="com.nilhcem.clearbrain.util.*" />
+		<context:include-filter type="regex" expression="com.nilhcem.clearbrain.validator.*" />
 	    <context:exclude-filter expression="org.springframework.stereotype.Controller" type="annotation"/>
 	</context:component-scan>
 </beans>

@@ -4,11 +4,11 @@ function toggleLogin() {
 	var loginContainer = $('#login-container');
 
 	loginContainer.toggle();
-	if (loginContainer.is(':visible')) //focus on email when clicking
+	if (loginContainer.is(':visible')) // focus on email when clicking.
 		$('#j_username_t').focus();
 }
 
-//Hide login modal pop up if visible and if a user clicks outside this pop up
+// Hides login modal pop up if visible and if a user clicks outside this pop up.
 $(document).ready(function() {
 	$('html').click(function() {
 		var loginContainer = $('#login-container');
@@ -20,11 +20,23 @@ $(document).ready(function() {
 	};
 	$('#header').find('.login').click(stopPropagation);
 	$('#login-container').click(stopPropagation);
+
+	// When clicking on the "Login" link in the top right area
+	$('#login-bt').click(function() {
+		toggleLogin();
+		return false;
+	});
+
+	// Image slider
+	$('#slider').nivoSlider({
+		effect: 'fade',
+		pauseTime: 8000
+	});
 });
 
 
 /*** Signup ***/
-//Check if email is valid
+// Checks if email is valid.
 function checkEmail() {
 	var emailCheck = $('#email-check');
 
@@ -34,7 +46,7 @@ function checkEmail() {
 		return ;
 	}
 
-	//Use Ajax to check if email is available
+	// Uses Ajax to check if email is available.
 	emailCheck.html('<img src="images/front/loading-circle.gif" />');
 	$.post('signup', {
 		emailToCheck : $('#email').val()
@@ -47,7 +59,7 @@ function checkEmail() {
 	});
 }
 
-//Check if password is not empty. If rules change for password: modify also logged/settings.js
+// Checks if password is not empty. If rules change for password: modify also logged/settings.js.
 function checkPassword() {
 	var passwordCheck = $('#password-check')
 	reinitErrors('#password-error', passwordCheck);
@@ -60,7 +72,7 @@ function checkPassword() {
 		checkPasswordConfirmation();
 }
 
-//Check password confirmation
+// Checks password confirmation.
 function checkPasswordConfirmation() {
 	var passwordConfirmCheck = $('#password-confirm-check');
 	reinitErrors('#password-confirm-error', passwordConfirmCheck);

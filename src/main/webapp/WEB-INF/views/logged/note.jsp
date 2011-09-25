@@ -1,11 +1,13 @@
 <%@include file="/WEB-INF/views/logged/header.jsp"%>
-<script type="text/javascript" src="<spring:url value="/js/logged/note.js" />"></script>
 
-<%-- Import Jquery UI Datepicker CSS + JS (i18n) --%>
-<link rel="stylesheet" href="<spring:url value="/css/jquery.ui.css" />" type="text/css" media="screen, projection" />
+<%-- JS --%>
 <spring:message code="note.calendar.locale" var="jslocale" />
+<c:if test="${empty jslocale}">
+	<c:set var="jslocale" value="en" />
+</c:if>
+<script src="<spring:url value="/wro/note-${jslocale}.js" />"></script>
+
 <c:if test="${!empty jslocale}">
-	<script src="<spring:url value="/js/jquery-ui.datepicker-${jslocale}.js" />"></script>
 </c:if>
 
 <%-- Check if this is a save or an update --%>

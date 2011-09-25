@@ -1,27 +1,26 @@
-/*** Quick memo ***/
-var editor, //CLEditor
-	saved; //Flag to know if memo was saved.
+var editor, // CLEditor.
+	saved; // Flag to know if the memo was saved.
 
 jQuery(function($) {
 	editor = $('#input').cleditor({width: '946px', height: '100%'})[0].focus();
     $(window).resize();
-    $('#cleditor-container').removeClass('hiddenClass');
+    $('#cleditor-container').removeClass('hidden-class');
     editor.updateFrame();
     $('#content').click();
     saved = true;
 
-    //Set flag to specify the memo content has changed, to prevent exit without saving
+    // Sets a flag to specify the memo content has changed, to prevent exit without saving.
     editor.change(function() {
 		saved = false;
     });
 
-    //Set flag to specify when the form is submit, content is saved
+    // Sets a flag to specify when the form is submit, content is saved.
     $('#memoform').submit(function() {
 		saved = true;
     });
 });
 
-//Auto resize
+// Auto resize.
 $(window).resize(function() {
 	var $win = $(window);
 	$('#cleditor-container')
@@ -31,7 +30,7 @@ $(window).resize(function() {
 	editor.refresh();
 });
 
-//Alert when leaving if memo was modified
+// Alert when leaving if the memo was modified.
 $(window).bind('beforeunload', function(){
 	if (saved == false) {
 		return false;

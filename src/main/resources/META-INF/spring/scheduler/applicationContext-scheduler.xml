@@ -11,5 +11,4 @@
 	<task:scheduler id="taskScheduler"/>
 	<task:executor id="taskExecutor" pool-size="3" />
 	<task:annotation-driven executor="taskExecutor" scheduler="taskScheduler"/>
-
 </beans>

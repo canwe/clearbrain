@@ -10,15 +10,15 @@
 
 	<!-- Database Configuration -->
 	<import resource="classpath:/dataSource-test.xml" />
-	<import resource="classpath:/META-INF/spring/database/hibernate.xml" />
+	<import resource="classpath:/hibernate-test.xml" />
 
-	<!-- Spring security -->
+	<!-- Spring Security -->
 	<import resource="classpath:/META-INF/spring/security/applicationContext-security.xml" />
 
 	<!-- Declare some beans for simplify unit testing -->
-	<bean id="databaseCreator" class="com.nilhcem.core.test.DatabaseCreator" scope="singleton" />
-	<bean id="testUtils" class="com.nilhcem.core.test.TestUtils" />
+	<bean id="databaseCreator" class="com.nilhcem.clearbrain.core.test.DatabaseCreator" scope="singleton" />
+	<bean id="testUtils" class="com.nilhcem.clearbrain.core.test.TestUtils" />
 
-	<!-- Avoid cobertura errors -->
+	<!-- Avoid Cobertura errors -->
 	<aop:config proxy-target-class="true"/>
 </beans>

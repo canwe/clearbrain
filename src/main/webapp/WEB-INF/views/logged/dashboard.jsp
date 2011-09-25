@@ -1,5 +1,5 @@
 <%@include file="/WEB-INF/views/logged/header.jsp"%>
-<script type="text/javascript" src="<spring:url value="/js/logged/dashboard.js" />" ></script>
+<script type="text/javascript" src="<spring:url value="/wro/dashboard.js" />" ></script>
 
 <%-- Create an array to keep links between a note and a category --%>
 <script type="text/javascript">
@@ -95,10 +95,10 @@
 		<div>
 			<c:if test="${fn:length(notesList) == 0}">
 				<c:if test="${typeDashboard == 'GLOBAL'}">
-					<div class="no-note"><spring:message code="dashboard.note.nothing" /></div>
+					<div class="no-data"><spring:message code="dashboard.note.nothing" /></div>
 				</c:if>
 				<c:if test="${typeDashboard != 'GLOBAL'}">
-					<div class="no-note">
+					<div class="no-data">
 						<c:choose>
 							<c:when test="${typeDashboard == 'TODAY'}">
 								<spring:message code="dashboard.note.nothingToday" />

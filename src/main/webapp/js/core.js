@@ -8,15 +8,15 @@ jQuery.fn.isBlank = function() {
 
 
 /*** Form validation ***/
-//Check if email is valid (see RFC822)
-//There is no 'advanced' email regex check there because it's most of the time not a good idea to use a regular expression to validate email.
-//Instead we should better proceed using an 'email confirmation' check
+// Checks if a email is valid (see RFC822).
+// There is no 'advanced' email regex check there because it's most of the time not a good idea to use a regular expression to validate email.
+// Instead we should better proceed using an 'email confirmation' check.
 function emailIsValid(email) {
 	var filter=/\S+@\S+/;
 	return filter.test(email);
 }
 
-//Display error or success message in the right of the screen
+// Displays error or success message in the right of the screen.
 function displayRightMsg(elem, msg, success) {
 	if (success) {
 		elem.addClass('success');
@@ -28,7 +28,7 @@ function displayRightMsg(elem, msg, success) {
 	elem.html(msg);
 }
 
-//Clear page removing eventual previous errors
+// Clears page removing eventual previous errors.
 function reinitErrors(springSpan, errorElem) {
 	if ($(springSpan).exists())
 		$(springSpan).remove();

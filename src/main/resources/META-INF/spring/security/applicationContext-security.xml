@@ -7,7 +7,7 @@
         http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd">
 
 	<!-- Custom UserDetailsService for authenticating using Hibernate -->
-	<bean id="hibernateUserDetailsService" class="com.nilhcem.core.spring.HibernateUserDetailsService" />
+	<bean id="hibernateUserDetailsService" class="com.nilhcem.clearbrain.core.spring.HibernateUserDetailsService" />
 
 	<!--  RememberMeAuthenticationProvider for authenticating using a remember-me token -->
 	<bean id="rememberMeAuthenticationProvider" class="org.springframework.security.authentication.RememberMeAuthenticationProvider">
@@ -40,7 +40,7 @@
 	</bean>
 
 	<!-- Custom UsernamePasswordAuthenticationFilter for logging after successful authentication -->
-	<bean id="loginFilter" class="com.nilhcem.core.spring.LogAuthenticationFilter">
+	<bean id="loginFilter" class="com.nilhcem.clearbrain.core.spring.LogAuthenticationFilter">
 		<property name="rememberMeServices" ref="rememberMeServices" />
 		<property name="authenticationManager" ref="authenticationManager" />
 		<property name="authenticationFailureHandler">
@@ -67,7 +67,7 @@
 	</bean>
 
 	<!-- Custom RememberMeAuthenticationFilter for logging after successful authentication through 'remember me' -->
-	<bean id="rememberMeFilter" class="com.nilhcem.core.spring.LogRememberMeAuthenticationFilter">
+	<bean id="rememberMeFilter" class="com.nilhcem.clearbrain.core.spring.LogRememberMeAuthenticationFilter">
 		<property name="rememberMeServices" ref="rememberMeServices" />
 		<property name="authenticationManager" ref="authenticationManager" />
 	</bean>
@@ -91,6 +91,7 @@
 		<sec:custom-filter position="REMEMBER_ME_FILTER" ref="rememberMeFilter" />
 		<sec:custom-filter position="LOGOUT_FILTER" ref="logoutFilter" />
 
+		<sec:intercept-url pattern="/wro/**" filters="none" />
 		<sec:intercept-url pattern="/css/**" filters="none" />
 		<sec:intercept-url pattern="/images/**" filters="none" />
 		<sec:intercept-url pattern="/js/**" filters="none" />

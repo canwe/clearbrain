@@ -1,12 +1,8 @@
 <%@include file="/WEB-INF/views/logged/header.jsp"%>
-<script type="text/javascript" src="<spring:url value="/js/logged/quick-memo.js" />" ></script>
-
-<%--CLEditor includes --%>
-<script type="text/javascript" src="<spring:url value="/js/jquery-cleditor.min.js" />"></script>
-<link rel="stylesheet" href="<spring:url value="/css/jquery.cleditor.css" />" type="text/css" />
+<script type="text/javascript" src="<spring:url value="/wro/quick-memo.js" />" ></script>
 
 <form:form method="POST" commandName="memoform" class="inline">
-	<div id="cleditor-container" class="hiddenClass">
+	<div id="cleditor-container" class="hidden-class">
 		<%-- Quick memo --%>
 		<form:textarea id="input" path="input"/>
 
