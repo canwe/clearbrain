@@ -4,10 +4,12 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@taglib prefix="decorator" uri="http://www.opensymphony.com/sitemesh/decorator" %>
 
 <!DOCTYPE html>
 <html>
 <head>
+	<title>Clearbrain - <decorator:title default="Logged" /></title>
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<link rel="stylesheet" href="<spring:url value="/css/blueprint/print.css" />" type="text/css" media="print" />
@@ -23,7 +25,7 @@
 		<c:forEach var="entry" items="${i18nJS}">i18n["${entry.key}"]="${entry.value}";</c:forEach>
 	</c:if>
 	</script>
-	<title>~ClearBrain logged~</title>
+	<decorator:head />
 </head>
 
 <body>
@@ -105,3 +107,7 @@
 
 	<div id="content" class="container">
 		<div id="blank">&nbsp;</div>
+		<decorator:body />
+		</div>
+	</body>
+</html>

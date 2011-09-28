@@ -8,12 +8,11 @@
 		<group-ref>common</group-ref>
 		<group-ref>nivoslider</group-ref>
 		<css>/css/front/core.less</css>
-		<css>/css/front/header.less</css>
+		<css>/css/front/template.less</css>
 		<css>/css/front/account-deleted.less</css>
 		<css>/css/front/login.less</css>
 		<css>/css/front/signup.less</css>
 		<css>/css/front/welcome.less</css>
-		<css>/css/front/footer.less</css>
 		<js>/js/front.js</js>
 	</group>
 

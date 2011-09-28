@@ -1,9 +1,9 @@
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@taglib prefix="decorator" uri="http://www.opensymphony.com/sitemesh/decorator" %>
 <%@taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <!DOCTYPE html>
@@ -24,7 +24,8 @@
 			<c:forEach var="entry" items="${i18nJS}">i18n["${entry.key}"]="${entry.value}";</c:forEach>
 		</script>
 	</c:if>
-    <title>ClearBrain</title>
+    <title>ClearBrain - <decorator:title default="Front" /></title>
+    <decorator:head />
 </head>
 
 <body>
@@ -34,7 +35,7 @@
 				<div class="logo left"><a href="<spring:url value="/" />">ClearBrain</a></div>
 				<div class="login-bt-container right">
 					<%-- If user is logged in, display dashboard link --%>
-					<sec:authorize access="hasRole('RIGHT_USER')">
+					<sec:authorize ifAnyGranted="RIGHT_USER">
 						<a href="<spring:url value="/dashboard" />"><sec:authentication property="principal.username" /></a>
 					</sec:authorize>
 
@@ -66,11 +67,26 @@
 				<div class="right">
 					<spring:message code="header.dateFormat" var="dateFormat" />
 					<c:set var="today" value="<%=new java.util.Date()%>" />
-  					<fmt:formatDate value="${today}" pattern="${dateFormat}" />
-  				</div>
+					<fmt:formatDate value="${today}" pattern="${dateFormat}" />
+				</div>
 			</div>
 			<div class="language-container right">
 				<a href="?lang=en_US"><img src="<spring:url value="/images/front/lang/en_US.png" />" title="English (United States)" alt="EN" /></a>&nbsp;
 				<a href="?lang=fr_FR"><img src="<spring:url value="/images/front/lang/fr_FR.png" />" title="Fran&ccedil;ais (France)" alt="FR" /></a>
 			</div>
 			<div class="container">
+			<decorator:body />
+			</div>
+			<br />
+		</div>
+		<div id="footer">
+			2011 - <spring:message code="footer.sourceCodeSoon" /><br />
+			<span class="caps">
+				<a href="<spring:url value="/" />"><spring:message code="footer.home" /></a> |
+				<a href="<spring:url value="/login" />"><spring:message code="footer.signIn" /></a> |
+				<a href="<spring:url value="/signup" />"><spring:message code="footer.signUp" /></a>
+			</span>
+		</div>
+	</div>
+	</body>
+</html>

@@ -1,4 +1,11 @@
-<%@include file="/WEB-INF/views/front/header.jsp"%>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<html>
+<head>
+	<meta name="decorator" content="front" />
+</head>
+
+<body>
 <br /><br /><br />
 <div class="main-box span-24 last">
 	<div class="prepend-3 span-20 append-1 last">
@@ -21,4 +28,5 @@
 		</h4>
 	</div>
 </div>
-<%@include file="/WEB-INF/views/front/footer.jsp"%>
+</body>
+</html>
