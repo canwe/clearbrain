@@ -80,7 +80,7 @@
 			<br />
 		</div>
 		<div id="footer">
-			2011 - <spring:message code="footer.sourceCodeSoon" /><br />
+			2011 - <spring:message code="footer.forkmeon" /> <a href="https://github.com/Nilhcem/clearbrain">GitHub</a><br />
 			<span class="caps">
 				<a href="<spring:url value="/" />"><spring:message code="footer.home" /></a> |
 				<a href="<spring:url value="/login" />"><spring:message code="footer.signIn" /></a> |
