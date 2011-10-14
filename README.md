@@ -13,3 +13,8 @@ Test it
 * Launch mvn package
 * Put the .war file from the target folder in your application server
 * You should add the mime type text/css for .less files in your application server configuration.
+
+Screenshot
+----------
+
+<img src="http://nilhcem.github.com/screenshots/clearbrain.png" width="840" height="380" />
