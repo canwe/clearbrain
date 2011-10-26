@@ -6,7 +6,7 @@
 <html>
 <head>
 	<meta name="decorator" content="logged" />
-	<script type="text/javascript" src="<spring:url value="/wro/search.js" />" ></script>
+	<script type="text/javascript" src="<spring:url value="/js/logged/todo.js" />" ></script>
 </head>
 
 <body>

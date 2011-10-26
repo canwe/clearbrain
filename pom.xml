@@ -14,7 +14,6 @@
 		<org.liquibase.version>2.0.3</org.liquibase.version>
 		<org.slf4j.version>1.6.3</org.slf4j.version>
 		<org.springframework.version>3.0.5.RELEASE</org.springframework.version> <!-- 3.0.6 has bug when directed to logout-success-url (null) -->
-		<ro.isdc.wro4j.version>1.4.1</ro.isdc.wro4j.version>
 	</properties>
 
 	<dependencies>
@@ -188,18 +187,6 @@
 			<version>${org.liquibase.version}</version>
 			<scope>test</scope>
 		</dependency>
-
-		<!-- Web Resource Optimizer 4 Java -->
-		<dependency>
-			<groupId>ro.isdc.wro4j</groupId>
-			<artifactId>wro4j-core</artifactId>
-			<version>${ro.isdc.wro4j.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>ro.isdc.wro4j</groupId>
-			<artifactId>wro4j-extensions</artifactId>
-			<version>${ro.isdc.wro4j.version}</version>
-		</dependency>
 	</dependencies>
 
 	<repositories>
@@ -257,25 +244,6 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
-
-			<!-- WRO4J in build time. -->
-			<plugin>
-				<groupId>ro.isdc.wro4j</groupId>
-				<artifactId>wro4j-maven-plugin</artifactId>
-				<version>${ro.isdc.wro4j.version}</version>
-				<executions>
-					<execution>
-						<phase>compile</phase>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<destinationFolder>${basedir}/src/main/webapp/wro/</destinationFolder>
-					<wroManagerFactory>ro.isdc.wro.maven.plugin.manager.factory.ConfigurableWroManagerFactory</wroManagerFactory>
-				</configuration>
 			</plugin>
 
 			<!-- Create a site using mvn site -->

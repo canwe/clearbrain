@@ -6,7 +6,8 @@
 <html>
 <head>
 	<meta name="decorator" content="logged" />
-	<script type="text/javascript" src="<spring:url value="/wro/dashboard.js" />" ></script>
+	<script type="text/javascript" src="<spring:url value="/js/logged/dashboard.js" />" ></script>
+	<script type="text/javascript" src="<spring:url value="/js/logged/todo.js" />" ></script>
 
 	<%-- Create an array to keep links between a note and a category --%>
 	<script type="text/javascript">

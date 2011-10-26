@@ -43,7 +43,6 @@
 	</mvc:interceptors>
 
 	<!-- Excludes folders from being mapped by Spring MVC -->
-	<mvc:resources mapping="/wro/**" location="/wro/" />
 	<mvc:resources mapping="/css/**" location="/css/" />
 	<mvc:resources mapping="/images/**" location="/images/" />
 	<mvc:resources mapping="/js/**" location="/js/" />

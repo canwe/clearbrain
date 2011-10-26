@@ -91,7 +91,6 @@
 		<sec:custom-filter position="REMEMBER_ME_FILTER" ref="rememberMeFilter" />
 		<sec:custom-filter position="LOGOUT_FILTER" ref="logoutFilter" />
 
-		<sec:intercept-url pattern="/wro/**" filters="none" />
 		<sec:intercept-url pattern="/css/**" filters="none" />
 		<sec:intercept-url pattern="/images/**" filters="none" />
 		<sec:intercept-url pattern="/js/**" filters="none" />

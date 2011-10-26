@@ -6,7 +6,8 @@
 <html>
 <head>
 	<meta name="decorator" content="logged" />
-	<script type="text/javascript" src="<spring:url value="/wro/quick-memo.js" />" ></script>
+	<script type="text/javascript" src="<spring:url value="/js/jquery/cleditor/cleditor-1.3.0.min.js" />" ></script>
+	<script type="text/javascript" src="<spring:url value="/js/logged/quick-memo.js" />" ></script>
 </head>
 
 <body>

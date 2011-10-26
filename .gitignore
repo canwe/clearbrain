@@ -14,9 +14,6 @@ indexes/*
 # Ignore webapp's META-INF folder
 src/main/webapp/META-INF/*
 
-# Ignore webapp's WRO generated files
-src/main/webapp/wro/*
-
 # Ignore eclipse files
 .classpath
 .pmd

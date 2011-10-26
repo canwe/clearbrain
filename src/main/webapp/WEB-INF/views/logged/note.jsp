@@ -5,12 +5,11 @@
 <html>
 <head>
 	<meta name="decorator" content="logged" />
-	<%-- JS --%>
+	<script src="<spring:url value="/js/logged/note.js" />"></script>
 	<spring:message code="note.calendar.locale" var="jslocale" />
-	<c:if test="${empty jslocale}">
-		<c:set var="jslocale" value="en" />
+	<c:if test="${!empty jslocale}">
+		<script src="<spring:url value="/js/jquery/ui/jquery-ui.datepicker-${jslocale}.js" />"></script>
 	</c:if>
-	<script src="<spring:url value="/wro/note-${jslocale}.js" />"></script>
 </head>
 
 <body>

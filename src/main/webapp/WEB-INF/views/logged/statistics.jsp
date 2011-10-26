@@ -4,7 +4,9 @@
 <html>
 <head>
 	<meta name="decorator" content="logged" />
-	<script type="text/javascript" src="<spring:url value="/wro/statistics.js" />" ></script>
+	<script type="text/javascript" src="<spring:url value="/js/jquery/highcharts/highcharts-2.1.6.js" />" ></script>
+	<script type="text/javascript" src="<spring:url value="/js/jquery/highcharts/exporting.js" />" ></script>
+	<script type="text/javascript" src="<spring:url value="/js/logged/statistics.js" />" ></script>
 
 	<%-- Creates arrays containing chart's data and determines start date of the chart --%>
 	<c:if test="${created != null && not empty created && done != null && not empty done}">

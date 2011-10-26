@@ -15,8 +15,18 @@
     <!--[if lt IE 8]>
 	<link rel="stylesheet" href="<spring:url value="/css/blueprint/ie.css" />" type="text/css" media="screen, projection" />
     <![endif]-->
-	<link rel="stylesheet" href="<spring:url value="/wro/front.css" />" type="text/css" media="screen, projection" />
-	<script type="text/javascript" src="<spring:url value="/wro/front.js" />"></script>
+
+	<link rel="stylesheet" href="<spring:url value="/css/blueprint/screen.css" />" type="text/css" media="screen, projection" />
+	<link rel="stylesheet" href="<spring:url value="/css/blueprint/plugins/fancy-type/screen.css" />" type="text/css" media="screen, projection" />
+	<link rel="stylesheet" href="<spring:url value="/css/blueprint/plugins/buttons/screen.css" />" type="text/css" media="screen, projection" />
+	<link rel="stylesheet" href="<spring:url value="/css/jquery/nivo-slider.css" />" type="text/css" media="screen, projection" />
+	<link rel="stylesheet" href="<spring:url value="/css/jquery/nivo-slider-theme.css" />" type="text/css" media="screen, projection" />
+	<link rel="stylesheet" href="<spring:url value="/css/front.css" />" type="text/css" media="screen, projection" />
+
+	<script type="text/javascript" src="<spring:url value="/js/jquery/jquery-1.6.3.min.js" />"></script>
+	<script type="text/javascript" src="<spring:url value="/js/jquery/nivo_slider/nivo_slider-2.6.min.js" />"></script>
+	<script type="text/javascript" src="<spring:url value="/js/core.js" />"></script>
+	<script type="text/javascript" src="<spring:url value="/js/front.js" />"></script>
 
 	<c:if test="${i18nJS != null && not empty i18nJS}">
 		<script type="text/javascript">

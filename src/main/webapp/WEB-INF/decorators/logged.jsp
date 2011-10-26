@@ -16,8 +16,18 @@
 	<!--[if lt IE 8]>
 	<link rel="stylesheet" href="<spring:url value="/css/blueprint/ie.css" />" type="text/css" media="screen, projection" />
 	<![endif]-->
-	<link rel="stylesheet" href="<spring:url value="/wro/logged.css" />" type="text/css" media="screen, projection" />
-	<script type="text/javascript" src="<spring:url value="/wro/logged.js" />"></script>
+	<link rel="stylesheet" href="<spring:url value="/css/blueprint/screen.css" />" type="text/css" media="screen, projection" />
+	<link rel="stylesheet" href="<spring:url value="/css/blueprint/plugins/fancy-type/screen.css" />" type="text/css" media="screen, projection" />
+	<link rel="stylesheet" href="<spring:url value="/css/blueprint/plugins/buttons/screen.css" />" type="text/css" media="screen, projection" />
+	<link rel="stylesheet" href="<spring:url value="/css/jquery/jquery-ui.css" />" type="text/css" media="screen, projection" />
+	<link rel="stylesheet" href="<spring:url value="/css/jquery/cleditor.css" />" type="text/css" media="screen, projection" />
+	<link rel="stylesheet" href="<spring:url value="/css/logged.css" />" type="text/css" media="screen, projection" />
+
+	<script type="text/javascript" src="<spring:url value="/js/jquery/jquery-1.6.3.min.js" />"></script>
+	<script type="text/javascript" src="<spring:url value="/js/jquery/ui/jquery-ui-1.8.16.custom.min.js" />"></script>
+	<script type="text/javascript" src="<spring:url value="/js/jquery/clearfield/clearfield-1.1.min.js" />"></script>
+	<script type="text/javascript" src="<spring:url value="/js/core.js" />"></script>
+	<script type="text/javascript" src="<spring:url value="/js/logged/menu.js" />"></script>
 
 	<script type="text/javascript">
 	<c:if test="${i18nJS != null && not empty i18nJS}">
@@ -26,6 +36,7 @@
 	</c:if>
 	</script>
 	<decorator:head />
+	<script type="text/javascript" src="<spring:url value="/js/less/less-1.1.3.min.js" />"></script>
 </head>
 
 <body>
