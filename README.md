@@ -12,7 +12,6 @@ Test it
 * Don't forget to change rememberme.key in the database.properties file in a production environment. It is used for recognizing rememberme tokens
 * Launch mvn package
 * Put the .war file from the target folder in your application server
-* You should add the mime type text/css for .less files in your application server configuration.
 
 Screenshot
 ----------
