@@ -52,7 +52,7 @@
 				<label for="name"><spring:message code="note.description" /></label>
 			</div>
 			<div class="span-7">
-				<form:input id="name" path="note.name" cssClass="forms-input-size" />
+				<form:input id="name" path="note.name" cssClass="forms-input-size" maxlength="255" />
 			</div>
 			<div class="span-8 last">
 				<div id="name-check" class="hide">&nbsp;</div>

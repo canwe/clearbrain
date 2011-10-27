@@ -31,7 +31,7 @@
 			<ul id="categories" class="pointer">
 				<c:forEach items="${categoriesList}" var="cur">
 					<li id="cat-${cur.id}" class="category">
-						<span id="catname-${cur.id}"><c:out value="${cur.name}" /></span>
+						<span id="catname-${cur.id}" class="category-name"><c:out value="${cur.name}" /></span>
 						<span id="catcount-${cur.id}" class="category-count"></span>
 						<span id="catmenu-${cur.id}" class="category-menus">
 							<img id="catrnm-${cur.id}" src="<spring:url value="/images/logged/cat-edit.gif" />" />
@@ -55,7 +55,7 @@
 		<%-- Categories edition container --%>
 		<div id="categories-edit-container" class="hide">
 			<b><spring:message code="dashboard.cat.insert" /></b><br />
-			<input id="catadd-name" type="text" class="category" /><br />
+			<input id="catadd-name" type="text" class="category" maxlength="64" /><br />
 			<i><spring:message code="dashboard.cat.insert.help" /></i><br />
 			<a id="categories-endedit">
 				<spring:message code="dashboard.cat.finEdit" /> <img src="<spring:url value="/images/logged/grey-tick.png" />" />
@@ -67,7 +67,7 @@
 	<%-- Right --%>
 	<div id="notes-container" class="span-17 last">
 		<div id="insert-note-container" class="top-frames">
-			<input id="quick-add-task" class="clearField clearFieldBlurred" type="text" value="<spring:message code="dashboard.note.quickInsert" />" />
+			<input id="quick-add-task" class="clearField clearFieldBlurred" type="text" value="<spring:message code="dashboard.note.quickInsert" />" maxlength="255" />
 		</div><br /><br />
 
 		<%-- Missed notes --%>

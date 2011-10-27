@@ -399,6 +399,15 @@ body {
 	border-color: #898FB2;
 }
 
+.category-name {
+	display: block;
+	float: left;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	width: 190px;
+}
+
 .category-count {
 	color: #353A60;
 	float: right;
@@ -492,8 +501,11 @@ body {
 	cursor: pointer;
 	height: 18px;
 	margin: 0 3px 10px;
+	overflow: hidden;
 	padding: 5px;
+    text-overflow: ellipsis;
 	width: 630px;
+    white-space: nowrap;
 }
 
 .notes-edit {
@@ -516,7 +528,7 @@ body {
 	padding: 0 6px;
 	position: relative;
 	right: -6px;
-	top: -6px;
+	top: -27px;
 }
 
 .no-data {

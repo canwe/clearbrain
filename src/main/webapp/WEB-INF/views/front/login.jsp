@@ -29,7 +29,7 @@
 					<label for="j_username"><spring:message code="login.mainEmail" /></label>
 				</div>
 				<div class="span-15 last">
-					<input type="text" name="j_username" id="j_username" <c:if test="${!empty prevLogin}">value="<c:out value='${prevLogin}' escapeXml='false' />"</c:if> class="signup-input-size" />
+					<input type="text" name="j_username" id="j_username" <c:if test="${!empty prevLogin}">value="<c:out value='${prevLogin}' escapeXml='false' />"</c:if> class="signup-input-size" maxlength="254" />
 				</div>
 			</div>
 

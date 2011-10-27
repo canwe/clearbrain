@@ -41,7 +41,7 @@
 				<label for="email"><spring:message code="settings.main.email" /></label>
 			</div>
 			<div class="span-6">
-				<form:input id="email" path="email" cssClass="forms-input-size" />
+				<form:input id="email" path="email" cssClass="forms-input-size" maxlength="254" />
 			</div>
 			<div class="span-8 last">
 				<div id="email-check" class="hide">&nbsp;</div>

@@ -21,7 +21,7 @@
 					<label for="email"><spring:message code="signup.mainEmail" /></label>
 				</div>
 				<div class="span-6">
-					<form:input id="email" path="user.email" onchange="checkEmail();" cssClass="signup-input-size" />
+					<form:input id="email" path="user.email" onchange="checkEmail();" cssClass="signup-input-size" maxlength="254" />
 				</div>
 				<div class="span-8 last">
 					<div id="email-check" class="hide">&nbsp;</div>

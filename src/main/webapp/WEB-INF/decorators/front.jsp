@@ -59,7 +59,7 @@
 				<form method="post" action="<c:url value='/j_spring_security_check'/>">
 					<div>
 						<label for="j_username_t"><spring:message code="login.email" /></label><br />
-						<input id="j_username_t" type="text" name="j_username" />
+						<input id="j_username_t" type="text" name="j_username" maxlength="254" />
 					</div>
 					<div>
 						<label for="j_password_t"><spring:message code="login.password" /></label><br />
