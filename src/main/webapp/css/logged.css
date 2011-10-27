@@ -636,16 +636,4 @@ body {
 
 #accordion h3 {
 	font-weight: bold;
-	margin-bottom: 4px;
-	padding: 7px;
-}
-
-#accordion span {
-	display: inline;
-	float: left;
-}
-
-.ui-accordion-content {
-	margin: -5px 0 4px;
-	padding: 4px 14px;
 }
