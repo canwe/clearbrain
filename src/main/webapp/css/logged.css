@@ -508,6 +508,11 @@ body {
     white-space: nowrap;
 }
 
+.note-strikethrough {
+	color: #606060;
+	text-decoration: line-through;
+}
+
 .notes-edit {
 	display: none;
 	float: right;

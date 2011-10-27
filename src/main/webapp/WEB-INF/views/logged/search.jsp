@@ -43,7 +43,9 @@
 					<c:forEach items="${notes}" var="cur">
 						<div id="note-${cur.id}" class="note search-note">
 							<input type="checkbox" <c:if test="${cur.resolvedDate != null}">checked="checked"</c:if> />
-							<c:out value="${cur.name}" />
+							<span id="notecontent-${cur.id}" <c:if test="${cur.resolvedDate != null}">class="note-strikethrough"</c:if>>
+								<c:out value="${cur.name}" />
+							</span>
 							<span id="noteedit-${cur.id}" class="notes-edit">
 								<a href="<spring:url value="/note?id=${cur.id}" />"><img src="<spring:url value="/images/logged/edit.gif" />" /></a>
 							</span>

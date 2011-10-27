@@ -5,7 +5,9 @@
 <%-- Display a note using to parameters sent from dashboard.jsp --%>
 <div id="note-${param.id}" class="note">
 	<input type="checkbox" <c:if test="${param.checked}">checked="checked"</c:if> />
-	<c:out value="${param.name}" />
+	<span id="notecontent-${param.id}" <c:if test="${param.checked}">class="note-strikethrough"</c:if>>
+		<c:out value="${param.name}" />
+	</span>
 	<span id="noteedit-${param.id}" class="notes-edit">
 		<a href="<spring:url value="/note?id=${param.id}" />"><img src="<spring:url value="/images/logged/edit.gif" />" /></a>
 	</span>
