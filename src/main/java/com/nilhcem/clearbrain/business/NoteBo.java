@@ -271,7 +271,11 @@ public /*no final*/ class NoteBo {
 	 * @return a map where the {@code key} is the note's id, and the {@code value} is the category's id.
 	 */
 	public Map<Long, Long> getCatIdByNoteIdMapToday(User user) {
-		return dao.getCatIdByNoteIdMapDueDateBetween(user, null, calendar.getDateTodayWithoutTime());
+		Map<Long, Long> map = dao.getCatIdByNoteIdMapDueDateBetween(user, null, calendar.getDateTodayWithoutTime());
+		Map<Long, Long> resolvedTodayMap = dao.getCatIdByNoteIdMapResolvedToday(user);
+
+		map.putAll(resolvedTodayMap);
+		return map;
 	}
 
 	/**

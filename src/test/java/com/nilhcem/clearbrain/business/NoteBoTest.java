@@ -382,14 +382,16 @@ public class NoteBoTest extends AbstractDbTest {
 		Note noteC = createNote(user, true, dts(cal.getDateTodayWithoutTime()), catA.getId());
 		Note noteD = createNote(user, false, dts(cal.getDateTodayWithoutTime()), catC.getId());
 		Note noteE = createNote(user, true, dts(cal.getDateTomorrowWithoutTime()), catB.getId());
+		Note noteF = createNote(user, false, dts(cal.getDateNextWeekWithoutTime()), catA.getId());
 
 		Map<Long, Long> catIdByNoteId = noteBo.getCatIdByNoteIdMapToday(user);
-		assertEquals(4, catIdByNoteId.size());
+		assertEquals(5, catIdByNoteId.size());
 		assertEquals(catIdByNoteId.get(noteA.getId()), zero);
 		assertEquals(catIdByNoteId.get(noteB.getId()), catA.getId());
 		assertEquals(catIdByNoteId.get(noteC.getId()), catA.getId());
 		assertEquals(catIdByNoteId.get(noteD.getId()), catC.getId());
-		assertNull(catIdByNoteId.get(noteE.getId()));
+		assertEquals(catIdByNoteId.get(noteE.getId()), catB.getId());
+		assertNull(catIdByNoteId.get(noteF.getId()));
 	}
 
 	@Test

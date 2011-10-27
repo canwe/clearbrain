@@ -132,7 +132,7 @@
 					</c:import>
 				</c:forEach>
 			</div>
-			<br /><br />
+			<br />
 		</div>
 
 		<%-- Done notes --%>

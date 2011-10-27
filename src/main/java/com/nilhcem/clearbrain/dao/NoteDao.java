@@ -183,6 +183,28 @@ public final class NoteDao extends AbstractHibernateDao<Note> {
 	}
 
 	/**
+	 * Returns a map of categories where the {@code key} is the note's id, and the {@code value} is the category's id, for all dates resolved today.
+	 *
+	 * @param user the owner of the notes.
+	 * @return a map of categories where the {@code key} is the note's id, and the {@code value} is the category's id.
+	 */
+	public Map<Long, Long> getCatIdByNoteIdMapResolvedToday(User user) {
+		Criteria crit = criteria()
+				.setProjection(Projections.projectionList()
+					.add(Projections.property("id"))
+					.add(Projections.property("category.id")))
+				.add(Restrictions.eq("user", user))
+				.add(Restrictions.ge("resolvedDate", calendar.getDateTodayWithoutTime()));
+
+		Map<Long, Long> map = new HashMap<Long, Long>();
+		List<Object[]> result = listObjectArray(crit);
+		for (Object[] res : result) {
+			map.put((Long) res[0], (res[1] == null ? 0L : (Long) res[1]));
+		}
+		return map;
+	}
+
+	/**
 	 * Finds a note matching the pattern in parameter.
 	 *
 	 * @param search a string representing a part of the note's content.
