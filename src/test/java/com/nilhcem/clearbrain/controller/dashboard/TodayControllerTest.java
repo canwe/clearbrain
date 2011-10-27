@@ -43,8 +43,8 @@ public class TodayControllerTest extends AbstractDashboardControllerTest {
 		User user = testUtils.createAuthenticatedTestUser("TodayControllerTest@testPopulateDoneNotesList");
 		createNote(user, "Note A", calendar.getDateYesterdayWithoutTime(), calendar.getDateTodayWithoutTime()); // Yes
 		createNote(user, "Note B", calendar.getDateTodayWithoutTime(), calendar.getDateTodayWithoutTime()); // Yes
-		createNote(user, "Note C", calendar.getDateTomorrowWithoutTime(), calendar.getDateTodayWithoutTime()); // No
-		assertEquals(2, controller.populateDoneNotesList().size());
+		createNote(user, "Note C", calendar.getDateTomorrowWithoutTime(), calendar.getDateTodayWithoutTime()); // Yes
+		assertEquals(3, controller.populateDoneNotesList().size());
 	}
 
 	@Test

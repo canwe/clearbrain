@@ -188,7 +188,7 @@ public /*no final*/ class NoteBo {
 	}
 
 	/**
-	 * Returns a list of notes which should be, and are already done for today.
+	 * Returns a list of notes which are done today.
 	 * <p>
 	 * The list is sorted by creation date.
 	 * </p>
@@ -197,8 +197,7 @@ public /*no final*/ class NoteBo {
 	 * @return a list of notes which should be, and are already done for today.
 	 */
 	public List<Note> getDoneNotesToday(User user) {
-		Date today = calendar.getDateTodayWithoutTime();
-		return dao.getDoneNotesBetweenDueDate(user, null, today, today);
+		return dao.getDoneNotesBetweenResolvedDate(user, calendar.getDateTodayWithoutTime(), calendar.getDateTomorrowWithoutTime());
 	}
 
 	/**

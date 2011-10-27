@@ -268,16 +268,19 @@ public class NoteBoTest extends AbstractDbTest {
 	public void testGetDoneNotesToday() {
 		User user = testUtils.createTestUser("NoteBoTest@testGetDoneNotesToday");
 
-		createNote(user, true, null, zero); // No
-		createNote(user, true, dts(cal.getCustomDateFromTodayWithoutTime(-4)), zero); // Yes [tricky] : even if missed due date, it's done today
+		createNote(user, true, null, zero); // Yes
+		createNote(user, true, dts(cal.getCustomDateFromTodayWithoutTime(-4)), zero); // Yes
 		createNote(user, true, dts(cal.getDateYesterdayWithoutTime()), zero); // Yes
 		createNote(user, true, dts(cal.getDateTodayWithoutTime()), zero); // Yes
-		createNote(user, true, dts(cal.getDateTomorrowWithoutTime()), zero); // No
+		createNoteXXDaysAfterToday(user, true, -2); // No
+		createNoteXXDaysAfterToday(user, true, -1); // No
+		createNoteXXDaysAfterToday(user, true, 0); // Yes
+		createNoteXXDaysAfterToday(user, true, 2); // No
+		createNote(user, true, dts(cal.getDateTomorrowWithoutTime()), zero); // Yes
 		createNote(user, false, dts(cal.getDateTodayWithoutTime()), zero); // No
 		createNote(user, false, dts(cal.getDateTomorrowWithoutTime()), zero); // No
 		createNote(user, false, dts(cal.getDateNextWeekWithoutTime()), zero); // No
-
-		assertEquals(3, noteBo.getDoneNotesToday(user).size());
+		assertEquals(6, noteBo.getDoneNotesToday(user).size());
 	}
 
 	@Test
