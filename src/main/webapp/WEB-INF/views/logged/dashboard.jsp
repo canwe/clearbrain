@@ -83,7 +83,7 @@
 		</c:if>
 
 		<%-- Undone notes --%>
-		<div <c:if test="${fn:length(notesList) == 0 && (typeDashboard != 'TODAY' || (typeDashboard == 'TODAY' && (fn:length(doneList) != 0 || (fn:length(doneList) == 0 && fn:length(missedList) != 0))))}">class="hide"</c:if>>
+		<div <c:if test="${(typeDashboard != 'TODAY' && fn:length(notesList) == 0 && fn:length(doneList) != 0) || (typeDashboard == 'TODAY' && fn:length(notesList) == 0 && (fn:length(doneList) != 0 || (fn:length(doneList) == 0 && fn:length(missedList) != 0)))}">class="hide"</c:if>>
 			<%-- Title --%>
 			<div class="title">
 				<c:choose>
