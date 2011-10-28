@@ -20,7 +20,7 @@ $('#notes-container').find('div[id^=note-]').live('mouseleave', function() {
 
 // Checks / unchecks todo.
 $('#notes-container').find('input[type=checkbox]').live('click', function(event) {
-	var noteId = getNoteId($(this).parent().attr('id'));
+	var noteId = getNoteId($(this).parent().parent().attr('id'));
 	$('#notecontent-' + noteId).toggleClass('note-strikethrough');
 
 	$.post('dashboard-js', {
