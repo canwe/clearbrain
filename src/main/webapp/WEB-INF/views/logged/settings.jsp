@@ -5,6 +5,7 @@
 <html>
 <head>
 	<meta name="decorator" content="logged" />
+	<title><spring:message code="settings.title" /></title>
 	<script type="text/javascript" src="<spring:url value="/js/logged/settings.js" />"></script>
 </head>
 

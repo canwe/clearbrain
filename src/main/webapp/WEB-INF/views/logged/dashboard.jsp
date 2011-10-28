@@ -6,6 +6,22 @@
 <html>
 <head>
 	<meta name="decorator" content="logged" />
+	<title>
+		<c:choose>
+			<c:when test="${typeDashboard == 'TODAY'}">
+				<spring:message code="dashboard.title.today" />
+			</c:when>
+			<c:when test="${typeDashboard == 'TOMORROW'}">
+				<spring:message code="dashboard.title.tomorrow" />
+			</c:when>
+			<c:when test="${typeDashboard == 'THIS_WEEK'}">
+				<spring:message code="dashboard.title.week" />
+			</c:when>
+			<c:otherwise>
+				<spring:message code="dashboard.title.global" />
+			</c:otherwise>
+		</c:choose>
+	</title>
 	<script type="text/javascript" src="<spring:url value="/js/logged/dashboard.js" />" ></script>
 	<script type="text/javascript" src="<spring:url value="/js/logged/todo.js" />" ></script>
 

@@ -34,7 +34,7 @@
 			<c:forEach var="entry" items="${i18nJS}">i18n["${entry.key}"]="${entry.value}";</c:forEach>
 		</script>
 	</c:if>
-    <title>ClearBrain - <decorator:title default="Front" /></title>
+    <title>ClearBrain - <decorator:title default="100% Free Online To-do List Manager" /></title>
     <decorator:head />
 </head>
 

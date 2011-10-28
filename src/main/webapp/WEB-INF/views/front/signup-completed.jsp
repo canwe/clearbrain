@@ -2,6 +2,7 @@
 
 <html>
 <head>
+	<title><spring:message code="signupcompleted.title" /></title>
 	<meta name="decorator" content="front" />
 </head>
 

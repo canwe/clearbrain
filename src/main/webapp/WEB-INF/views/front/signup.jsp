@@ -3,6 +3,7 @@
 
 <html>
 <head>
+	<title><spring:message code="signup.title" /></title>
 	<meta name="decorator" content="front" />
 </head>
 

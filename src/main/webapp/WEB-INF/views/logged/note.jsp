@@ -2,9 +2,16 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
+<%-- Check if this is a save or an update --%>
+<c:set var="saveupdate" value="save" />
+<c:if test="${param.id != null}">
+	<c:set var="saveupdate" value="update" />
+</c:if>
+
 <html>
 <head>
 	<meta name="decorator" content="logged" />
+	<title><spring:message code="note.title.${saveupdate}" /></title>
 	<script src="<spring:url value="/js/logged/note.js" />"></script>
 	<spring:message code="note.calendar.locale" var="jslocale" />
 	<c:if test="${!empty jslocale}">
@@ -13,12 +20,6 @@
 </head>
 
 <body>
-	<%-- Check if this is a save or an update --%>
-	<c:set var="saveupdate" value="save" />
-	<c:if test="${param.id != null}">
-		<c:set var="saveupdate" value="update" />
-	</c:if>
-
 	<form:form method="POST" commandName="noteform" class="inline">
 		<form:hidden path="note.id" />
 		<form:hidden id="alt-datepicker" path="dueDate" />

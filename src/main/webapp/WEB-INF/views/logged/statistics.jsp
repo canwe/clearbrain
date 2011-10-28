@@ -3,6 +3,7 @@
 
 <html>
 <head>
+	<title><spring:message code="stats.title" /></title>
 	<meta name="decorator" content="logged" />
 	<script type="text/javascript" src="<spring:url value="/js/jquery/highcharts/highcharts-2.1.6.js" />" ></script>
 	<script type="text/javascript" src="<spring:url value="/js/jquery/highcharts/exporting.js" />" ></script>
