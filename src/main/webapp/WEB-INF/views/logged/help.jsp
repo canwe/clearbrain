@@ -2,8 +2,8 @@
 
 <html>
 <head>
-	<title><spring:message code="help.sub.title" /></title>
 	<meta name="decorator" content="logged" />
+	<title><spring:message code="help.sub.title" /></title>
 	<script type="text/javascript" src="<spring:url value="/js/logged/help.js" />"></script>
 </head>
 

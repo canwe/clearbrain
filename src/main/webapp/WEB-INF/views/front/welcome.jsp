@@ -2,8 +2,8 @@
 
 <html>
 <head>
-	<title><spring:message code="home.title1" /> <spring:message code="home.title2" /> <spring:message code="home.title3" /></title>
 	<meta name="decorator" content="front" />
+	<title><spring:message code="home.title1" /> <spring:message code="home.title2" /> <spring:message code="home.title3" /></title>
 </head>
 
 <body>

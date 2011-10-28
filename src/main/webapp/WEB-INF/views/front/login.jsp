@@ -4,8 +4,8 @@
 
 <html>
 <head>
-	<title><spring:message code="login.title" /></title>
 	<meta name="decorator" content="front" />
+	<title><spring:message code="login.title" /></title>
 </head>
 
 <body>

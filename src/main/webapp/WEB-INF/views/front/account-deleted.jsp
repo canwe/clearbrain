@@ -3,6 +3,7 @@
 <html>
 <head>
 	<meta name="decorator" content="front" />
+	<title><spring:message code="accdeleted.title" /></title>
 </head>
 
 <body>
