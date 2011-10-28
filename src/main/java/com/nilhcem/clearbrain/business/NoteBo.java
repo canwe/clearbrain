@@ -175,7 +175,7 @@ public /*no final*/ class NoteBo {
 	}
 
 	/**
-	 * Returns a list of all the user's notes which are already done.
+	 * Returns a list of the recently done (<= 3 days) notes.
 	 * <p>
 	 * The list is sorted by creation date.
 	 * </p>
@@ -183,8 +183,8 @@ public /*no final*/ class NoteBo {
 	 * @param user the owner of the notes.
 	 * @return a list of notes which are already done, sorted by creation date.
 	 */
-	public List<Note> getDoneNotes(User user) {
-		return dao.getDoneNotesBetweenDueDate(user, null, null, null);
+	public List<Note> getRecentlyDoneNotes(User user) {
+		return dao.getDoneNotesBetweenResolvedDate(user, calendar.getCustomDateFromTodayWithoutTime(-2), calendar.getDateTomorrowWithoutTime());
 	}
 
 	/**
@@ -240,13 +240,15 @@ public /*no final*/ class NoteBo {
 	}
 
 	/**
-	 * Returns a map to know which note from the user specified in parameter belong to which category.
+	 * Returns a map to know which note from the user specified in parameter belong to which category for all the undone notes + the recently (<=3 days) done.
 	 *
 	 * @param user the owner of the notes and categories.
 	 * @return a map where the {@code key} is the note's id, and the {@code value} is the category's id.
 	 */
 	public Map<Long, Long> getCatIdByNoteIdMap(User user) {
-		return dao.getCatIdByNoteIdMapDueDateBetween(user, null, null);
+		Map<Long, Long> map = dao.getCatIdByNoteIdMapDueDateBetween(user, null, null, true);
+		map.putAll(dao.getCatIdByNoteIdMapResolvedFrom(user, calendar.getCustomDateFromTodayWithoutTime(-2)));
+		return map;
 	}
 
 	/**
@@ -271,10 +273,8 @@ public /*no final*/ class NoteBo {
 	 * @return a map where the {@code key} is the note's id, and the {@code value} is the category's id.
 	 */
 	public Map<Long, Long> getCatIdByNoteIdMapToday(User user) {
-		Map<Long, Long> map = dao.getCatIdByNoteIdMapDueDateBetween(user, null, calendar.getDateTodayWithoutTime());
-		Map<Long, Long> resolvedTodayMap = dao.getCatIdByNoteIdMapResolvedToday(user);
-
-		map.putAll(resolvedTodayMap);
+		Map<Long, Long> map = dao.getCatIdByNoteIdMapDueDateBetween(user, null, calendar.getDateTodayWithoutTime(), false);
+		map.putAll(dao.getCatIdByNoteIdMapResolvedFrom(user, calendar.getDateTodayWithoutTime()));
 		return map;
 	}
 
@@ -286,7 +286,7 @@ public /*no final*/ class NoteBo {
 	 */
 	public Map<Long, Long> getCatIdByNoteIdMapTomorrow(User user) {
 		Date tomorrow = calendar.getDateTomorrowWithoutTime();
-		return dao.getCatIdByNoteIdMapDueDateBetween(user, tomorrow, tomorrow);
+		return dao.getCatIdByNoteIdMapDueDateBetween(user, tomorrow, tomorrow, false);
 	}
 
 	/**
@@ -296,7 +296,7 @@ public /*no final*/ class NoteBo {
 	 * @return a map where the {@code key} is the note's id, and the {@code value} is the category's id.
 	 */
 	public Map<Long, Long> getCatIdByNoteIdMapWeek(User user) {
-		return dao.getCatIdByNoteIdMapDueDateBetween(user, calendar.getDateTodayWithoutTime(), calendar.getDateNextWeekWithoutTime());
+		return dao.getCatIdByNoteIdMapDueDateBetween(user, calendar.getDateTodayWithoutTime(), calendar.getDateNextWeekWithoutTime(), false);
 	}
 
 	/**

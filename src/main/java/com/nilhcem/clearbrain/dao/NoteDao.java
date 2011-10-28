@@ -160,13 +160,16 @@ public final class NoteDao extends AbstractHibernateDao<Note> {
 	 * @param to the end of the due date, can be {@code null}.
 	 * @return a map of categories where the {@code key} is the note's id, and the {@code value} is the category's id.
 	 */
-	public Map<Long, Long> getCatIdByNoteIdMapDueDateBetween(User user, Date from, Date to) {
+	public Map<Long, Long> getCatIdByNoteIdMapDueDateBetween(User user, Date from, Date to, boolean onlyUndone) {
 		Criteria crit = criteria()
 				.setProjection(Projections.projectionList()
 					.add(Projections.property("id"))
 					.add(Projections.property("category.id")))
 				.add(Restrictions.eq("user", user));
 
+		if (onlyUndone) {
+			crit.add(Restrictions.isNull("resolvedDate"));
+		}
 		if (from != null) {
 			crit.add(Restrictions.ge("dueDate", from));
 		}
@@ -188,13 +191,17 @@ public final class NoteDao extends AbstractHibernateDao<Note> {
 	 * @param user the owner of the notes.
 	 * @return a map of categories where the {@code key} is the note's id, and the {@code value} is the category's id.
 	 */
-	public Map<Long, Long> getCatIdByNoteIdMapResolvedToday(User user) {
+	public Map<Long, Long> getCatIdByNoteIdMapResolvedFrom(User user, Date from) {
 		Criteria crit = criteria()
 				.setProjection(Projections.projectionList()
 					.add(Projections.property("id"))
 					.add(Projections.property("category.id")))
 				.add(Restrictions.eq("user", user))
-				.add(Restrictions.ge("resolvedDate", calendar.getDateTodayWithoutTime()));
+				.addOrder(Order.desc("resolvedDate"));
+
+		if (from != null) {
+			crit.add(Restrictions.ge("resolvedDate", from));
+		}
 
 		Map<Long, Long> map = new HashMap<Long, Long>();
 		List<Object[]> result = listObjectArray(crit);

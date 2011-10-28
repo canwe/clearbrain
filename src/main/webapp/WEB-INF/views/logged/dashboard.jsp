@@ -166,7 +166,7 @@
 						<spring:message code="dashboard.note.doneWeekTitle" />
 					</c:when>
 					<c:otherwise>
-						<spring:message code="dashboard.note.doneTitle" />
+						<spring:message code="dashboard.note.recentlyDoneTitle" />
 					</c:otherwise>
 				</c:choose>
 			</div><br />

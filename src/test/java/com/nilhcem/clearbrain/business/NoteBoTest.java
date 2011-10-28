@@ -251,16 +251,17 @@ public class NoteBoTest extends AbstractDbTest {
 
 	@Test
 	@TransactionalReadWrite
-	public void testGetDoneNotes() {
-		User user = testUtils.createTestUser("NoteBoTest@testGetDoneNotes");
+	public void testGetRecentlyDoneNotes() {
+		User user = testUtils.createTestUser("NoteBoTest@testGetRecentlyDoneNotes");
 
-		createNote(user, true, null, zero); // Yes
-		createNote(user, true, "05/15/2088", zero); // Yes
-		createNote(user, true, dts(cal.getDateYesterdayWithoutTime()), zero); // Yes
-		createNote(user, false, null, zero); // No
-		createNote(user, false, dts(cal.getDateNextWeekWithoutTime()), zero); // No
+		createNoteXXDaysAfterToday(user, true, -5); // No
+		createNoteXXDaysAfterToday(user, true, -4); // No
+		createNoteXXDaysAfterToday(user, true, -3); // No
+		createNoteXXDaysAfterToday(user, true, -2); // Yes
+		createNoteXXDaysAfterToday(user, true, -1); // Yes
+		createNoteXXDaysAfterToday(user, false, -1); // No
 
-		assertEquals(3, noteBo.getDoneNotes(user).size());
+		assertEquals(2, noteBo.getRecentlyDoneNotes(user).size());
 	}
 
 	@Test

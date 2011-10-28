@@ -39,7 +39,7 @@ public final class GlobalController extends AbstractDashboardController {
 
 	@Override
 	public List<Note> populateDoneNotesList() {
-		return noteBo.getDoneNotes(getCurrentUser());
+		return noteBo.getRecentlyDoneNotes(getCurrentUser());
 	}
 
 	@Override
