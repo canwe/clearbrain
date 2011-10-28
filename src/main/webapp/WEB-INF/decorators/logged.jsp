@@ -8,10 +8,12 @@
 
 <!DOCTYPE html>
 <html>
-<head>
+<head profile="http://www.w3.org/2005/10/profile">
 	<title>Clearbrain - <decorator:title default="Private account" /></title>
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link rel="icon" type="image/png" href="<spring:url value="/images/favicon.png" />" />
+
 	<link rel="stylesheet" href="<spring:url value="/css/blueprint/print.css" />" type="text/css" media="print" />
 	<!--[if lt IE 8]>
 	<link rel="stylesheet" href="<spring:url value="/css/blueprint/ie.css" />" type="text/css" media="screen, projection" />
