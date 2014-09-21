@@ -456,8 +456,14 @@
                             <execution>
                                 <phase>package</phase>
                                 <configuration>
-                                    <propertyFile>src/main/resources/META-INF/database.properties</propertyFile>
+                                    <!--<propertyFile>src/main/resources/META-INF/database.properties</propertyFile>-->
+                                    <url>${env.SNAP_DB_PG_JDBC_URL}</url>
+                                    <username>${env.SNAP_DB_PG_USER}</username>
+                                    <password>${env.SNAP_DB_PG_PASSWORD}</password>
                                     <changeLogFile>src/main/config/liquibase/db.changelog-master.xml</changeLogFile>
+                                    <contexts>prod</contexts>
+                                    <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
+                                    <driver>org.postgresql.Driver</driver>
                                 </configuration>
                                 <goals>
                                     <goal>update</goal>
