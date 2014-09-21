@@ -52,7 +52,14 @@
 			<version>9.0-801.jdbc4</version>
 		</dependency>
 
-		<!-- Spring / Spring MVC -->
+        <dependency>
+            <groupId>hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>1.8.0.10</version>
+        </dependency>
+
+
+        <!-- Spring / Spring MVC -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
@@ -202,8 +209,53 @@
 	<build>
 		<finalName>${project.artifactId}</finalName>
 
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
 		<plugins>
-			<!-- Use JDK 1.6 -->
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>9.2.3.v20140905</version>
+                <configuration>
+                    <stopPort>9999</stopPort>
+                    <stopKey>SHUTDOWN</stopKey>
+                    <scanIntervalSeconds>10</scanIntervalSeconds>
+                    <webApp>
+                        <contextPath>/</contextPath>
+                    </webApp>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/</outputDirectory>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.mortbay.jetty</groupId>
+                                    <artifactId>jetty-runner</artifactId>
+                                    <version>8.1.15.v20140411</version>
+                                    <destFileName>jetty-runner.jar</destFileName>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Use JDK 1.6 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -232,18 +284,45 @@
 				<groupId>org.liquibase</groupId>
 				<artifactId>liquibase-maven-plugin</artifactId>
 				<version>${org.liquibase.version}</version>
-				<executions>
-					<execution>
-						<phase>process-resources</phase>
-						<configuration>
-							<propertyFile>src/main/resources/META-INF/database.properties</propertyFile>
-							<changeLogFile>src/main/config/liquibase/db.changelog-master.xml</changeLogFile>
-						</configuration>
-						<goals>
-							<goal>update</goal>
-						</goals>
-					</execution>
-				</executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.postgresql</groupId>
+                        <artifactId>postgresql</artifactId>
+                        <version>9.3-1101-jdbc41</version>
+                    </dependency>
+
+                    <!-- your own standard logging dependencies -->
+                    <dependency>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                        <version>1.7.5</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-log4j12</artifactId>
+                        <!-- or log4j2 or logback or whatever-->
+                        <version>1.7.5</version>
+                    </dependency>
+
+                    <!-- special dependency to fix liquibase's logging fetish -->
+                    <dependency>
+                        <groupId>com.mattbertolini</groupId>
+                        <artifactId>liquibase-slf4j</artifactId>
+                        <version>1.2.1</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <phase>process-resources</phase>
+                        <configuration>
+                            <propertyFile>src/main/resources/META-INF/database.properties</propertyFile>
+                            <changeLogFile>src/main/config/liquibase/db.changelog-master.xml</changeLogFile>
+                        </configuration>
+                        <goals>
+                            <goal>update</goal>
+                        </goals>
+                    </execution>
+                </executions>
 			</plugin>
 
 			<!-- Create a site using mvn site -->

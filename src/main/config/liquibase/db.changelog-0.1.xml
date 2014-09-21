@@ -6,6 +6,7 @@
 
 	<preConditions>
 		<dbms type="postgresql" />
+		<!--<dbms type="hsqldb" />-->
 	</preConditions>
 
 	<changeSet id="0.1.1" author="nilhcem" runAlways="false">

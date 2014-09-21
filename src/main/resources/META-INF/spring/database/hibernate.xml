@@ -15,7 +15,9 @@
 		<property name="hibernateProperties">
 			<props>
 				<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
-				<prop key="hibernate.show_sql">false</prop>
+                <!--<prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>-->
+
+                <prop key="hibernate.show_sql">false</prop>
 				<!-- remove the INFO 'Disabling contextual LOB creation as createClob() method threw error' on startup -->
 				<prop key="hibernate.temp.use_jdbc_metadata_defaults">false</prop>
 
