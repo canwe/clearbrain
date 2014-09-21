@@ -14,6 +14,9 @@
 		<org.liquibase.version>2.0.3</org.liquibase.version>
 		<org.slf4j.version>1.6.3</org.slf4j.version>
 		<org.springframework.version>3.0.5.RELEASE</org.springframework.version> <!-- 3.0.6 has bug when directed to logout-success-url (null) -->
+        <db.url>${env.SNAP_DB_PG_JDBC_URL}</db.url>
+        <db.username>${env.SNAP_DB_PG_USER}</db.username>
+        <db.password>${env.SNAP_DB_PG_PASSWORD}</db.password>
 	</properties>
 
 	<dependencies>
@@ -279,52 +282,6 @@
 				</configuration>
 			</plugin>
 
-			<!-- Liquibase: Database change management -->
-			<plugin>
-				<groupId>org.liquibase</groupId>
-				<artifactId>liquibase-maven-plugin</artifactId>
-				<version>${org.liquibase.version}</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.postgresql</groupId>
-                        <artifactId>postgresql</artifactId>
-                        <version>9.3-1101-jdbc41</version>
-                    </dependency>
-
-                    <!-- your own standard logging dependencies -->
-                    <dependency>
-                        <groupId>org.slf4j</groupId>
-                        <artifactId>slf4j-api</artifactId>
-                        <version>1.7.5</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.slf4j</groupId>
-                        <artifactId>slf4j-log4j12</artifactId>
-                        <!-- or log4j2 or logback or whatever-->
-                        <version>1.7.5</version>
-                    </dependency>
-
-                    <!-- special dependency to fix liquibase's logging fetish -->
-                    <dependency>
-                        <groupId>com.mattbertolini</groupId>
-                        <artifactId>liquibase-slf4j</artifactId>
-                        <version>1.2.1</version>
-                    </dependency>
-                </dependencies>
-                <executions>
-                    <execution>
-                        <phase>process-resources</phase>
-                        <configuration>
-                            <propertyFile>src/main/resources/META-INF/database.properties</propertyFile>
-                            <changeLogFile>src/main/config/liquibase/db.changelog-master.xml</changeLogFile>
-                        </configuration>
-                        <goals>
-                            <goal>update</goal>
-                        </goals>
-                    </execution>
-                </executions>
-			</plugin>
-
 			<!-- Create a site using mvn site -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -432,7 +389,7 @@
 		</plugins>
 	</build>
 
-	<!-- List the core committers -->
+    <!-- List the core committers -->
 	<developers>
 		<developer>
 			<id>nilhcem</id>
@@ -443,4 +400,74 @@
 			<timezone>+8</timezone>
 		</developer>
 	</developers>
+
+    <profiles>
+
+        <profile>
+            <id>snapci</id>
+            <activation>
+                <property>
+                    <name>SNAP-CI</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <filtering>true</filtering>
+                    </resource>
+                </resources>
+                <plugins>
+
+                    <!-- Liquibase: Database change management -->
+                    <plugin>
+                        <groupId>org.liquibase</groupId>
+                        <artifactId>liquibase-maven-plugin</artifactId>
+                        <version>${org.liquibase.version}</version>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.postgresql</groupId>
+                                <artifactId>postgresql</artifactId>
+                                <version>9.3-1101-jdbc41</version>
+                            </dependency>
+
+                            <!-- your own standard logging dependencies -->
+                            <dependency>
+                                <groupId>org.slf4j</groupId>
+                                <artifactId>slf4j-api</artifactId>
+                                <version>1.7.5</version>
+                            </dependency>
+                            <dependency>
+                                <groupId>org.slf4j</groupId>
+                                <artifactId>slf4j-log4j12</artifactId>
+                                <!-- or log4j2 or logback or whatever-->
+                                <version>1.7.5</version>
+                            </dependency>
+
+                            <!-- special dependency to fix liquibase's logging fetish -->
+                            <dependency>
+                                <groupId>com.mattbertolini</groupId>
+                                <artifactId>liquibase-slf4j</artifactId>
+                                <version>1.2.1</version>
+                            </dependency>
+                        </dependencies>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <configuration>
+                                    <propertyFile>src/main/resources/META-INF/database.properties</propertyFile>
+                                    <changeLogFile>src/main/config/liquibase/db.changelog-master.xml</changeLogFile>
+                                </configuration>
+                                <goals>
+                                    <goal>update</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+
+            </build>
+        </profile>
+    </profiles>
 </project>
