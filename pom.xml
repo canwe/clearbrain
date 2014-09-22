@@ -112,6 +112,12 @@
 			<version>${org.springframework.version}</version>
 		</dependency>
 
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>${org.liquibase.version}</version>
+        </dependency>
+
 		<!-- Hibernate framework -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -186,12 +192,6 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 			<version>${org.springframework.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.liquibase</groupId>
-			<artifactId>liquibase-core</artifactId>
-			<version>${org.liquibase.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
