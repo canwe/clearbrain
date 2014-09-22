@@ -18,4 +18,9 @@
 		<context:include-filter type="regex" expression="com.nilhcem.clearbrain.validator.*" />
 	    <context:exclude-filter expression="org.springframework.stereotype.Controller" type="annotation"/>
 	</context:component-scan>
+
+    <bean class="liquibase.integration.spring.SpringLiquibase" id="liquibase" lazy-init="false">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="changeLog" value="classpath:liquibase/db-changelog-master.xml"/>
+    </bean>
 </beans>
