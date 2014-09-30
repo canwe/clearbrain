@@ -17,3 +17,7 @@ Screenshot
 ----------
 
 <img src="http://nilhcem.github.com/screenshots/clearbrain.png" width="840" height="380" />
+
+Demo
+----------
+<a href="http://clearbrain.heroku.com">Clear Brain</a>
